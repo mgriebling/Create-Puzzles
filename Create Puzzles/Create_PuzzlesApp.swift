@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Create_PuzzlesApp: App {
+    
+    @StateObject var game = Game()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            BoardView(game:game)
         }
     }
 }
