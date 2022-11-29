@@ -9,15 +9,53 @@ import Foundation
 
 struct Cell: Codable, Identifiable {
     let letter: String
-    let highlighted: Bool
     let id:Int
     
-    init(letter: String, index: Int, highlight: Bool) {
+    init(letter: String, index: Int) {
         self.letter = letter
-        self.highlighted = highlight
         self.id = index
     }
 }
+
+enum Direction: Int, Codable {
+    case left=0, right, down, up, diagonalUpLeft, diagonalUpRight, diagonalDownLeft, diagonalDownRight
+    
+    var deltaX: Int {
+        switch self {
+            case .left, .diagonalUpLeft, .diagonalDownLeft: return -1
+            case .right, .diagonalUpRight, .diagonalDownRight: return 1
+            case .up, .down: return 0
+        }
+    }
+    
+    var deltaY: Int {
+        switch self {
+            case .down, .diagonalDownLeft, .diagonalDownRight: return -1
+            case .up, .diagonalUpLeft, .diagonalUpRight: return 1
+            case .left, .right: return 0
+        }
+    }
+    
+    static func random() -> Direction {
+        let choice = Int.random(in: 0...Direction.diagonalDownRight.rawValue)
+        return Direction(rawValue: choice)!
+    }
+}
+
+struct Word: Codable, Identifiable {
+    let word: String
+    let direction: Direction
+    let highlighted: Bool
+    let id: Int
+    
+    init(word:String, id: Int, direction: Direction, highlighted: Bool) {
+        self.word = word
+        self.id = id
+        self.highlighted = highlighted
+        self.direction = direction
+    }
+}
+
 
 struct GameBoard : Codable {
     
@@ -29,30 +67,8 @@ struct GameBoard : Codable {
     private(set) var selectedWord = ""
     private var selectedMoves = [Int]()
     
-    private enum Direction: Int {
-        case left=0, right, down, up, diagonalUpLeft, diagonalUpRight, diagonalDownLeft, diagonalDownRight
-        
-        var deltaX: Int {
-            switch self {
-                case .left, .diagonalUpLeft, .diagonalDownLeft: return -1
-                case .right, .diagonalUpRight, .diagonalDownRight: return 1
-                case .up, .down: return 0
-            }
-        }
-        
-        var deltaY: Int {
-            switch self {
-                case .down, .diagonalDownLeft, .diagonalDownRight: return -1
-                case .up, .diagonalUpLeft, .diagonalUpRight: return 1
-                case .left, .right: return 0
-            }
-        }
-        
-        static func random() -> Direction {
-            let choice = Int.random(in: 0...Direction.diagonalDownRight.rawValue)
-            return Direction(rawValue: choice)!
-        }
-    }
+    // placement of all words
+    private(set) var wordPlacements = [Word]()
     
     private mutating func place (word: String) -> Bool {
         // pick a direction to place the word
@@ -81,7 +97,7 @@ struct GameBoard : Codable {
             let index = indexOf(x, column:y)
             let existing = board[index].letter
             if existing == " " || existing == String(letter) {
-                board[index] = Cell(letter: String(letter), index: index, highlight: false)
+                board[index] = Cell(letter: String(letter), index: index)
                 x += deltaX; y += deltaY
             } else {
                 // need to try new placement
@@ -89,22 +105,24 @@ struct GameBoard : Codable {
                 return false
             }
         }
+        
+        // add word to the word database
+        wordPlacements.append(Word(word: word, id: indexOf(startX, column: startY), direction: direction, highlighted: false))
         return true
     }
     
     mutating func addLetter(_ index: Int) {
         let letter = board[index].letter
-        board[index] = Cell(letter: letter, index: index, highlight: true)
+        board[index] = Cell(letter: letter, index: index)
         selectedWord.append(letter)
         selectedMoves.append(index)
-        print("Word = \(selectedWord)")
     }
     
     mutating func clearWord(_ unhighlight:Bool) {
         if unhighlight {
             for index in selectedMoves {
                 let letter = board[index].letter
-                board[index] = Cell(letter: letter, index: index, highlight: false)
+                board[index] = Cell(letter: letter, index: index)
             }
         }
         
@@ -114,13 +132,13 @@ struct GameBoard : Codable {
     }
     
     func validMove(_ index:Int) -> Bool {
-        let moves = selectedMoves.map { indexToRowCol($0) }
+        let moves = selectedMoves.map { GameBoard.indexToRowCol($0) }
         
         // no moves just allow everything
         if moves.isEmpty { return true }
         
         // check if move is adjacent to first or last piece
-        let (row, col) = indexToRowCol(index)
+        let (row, col) = GameBoard.indexToRowCol(index)
         let (frow, fcol) = moves.first!  // must always be one piece at this point
         if moves.count == 1, row == frow || col == fcol || (abs(row-frow) == 1 && abs(col-fcol) == 1) { return true }
         if moves.count > 1, let (lrow, lcol) = moves.last {
@@ -135,7 +153,7 @@ struct GameBoard : Codable {
         return false
     }
     
-    func isHighlighted(_ index: Int) -> Bool { board[index].highlighted }
+    func isHighlighted(_ index: Int) -> Bool { false }
     
     private func getRandomCharacter() -> String {
         let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -147,10 +165,11 @@ struct GameBoard : Codable {
         
         board = []
         for index in 0..<size*size {
-            board.append(Cell(letter: " ", index: index, highlight: false))
+            board.append(Cell(letter: " ", index: index))
         }
         
         // place the words on the grid
+        wordPlacements = []
         for word in words {
             if word.count > size { return nil }
             
@@ -162,7 +181,7 @@ struct GameBoard : Codable {
         // fill any blanks with random characters
         for i in 0..<size*size {
             if board[i].letter == " " {
-                board[i] = Cell(letter: getRandomCharacter(), index: i, highlight: false)
+                board[i] = Cell(letter: getRandomCharacter(), index: i)
             }
         }
     }
@@ -173,7 +192,7 @@ struct GameBoard : Codable {
         return row * size + column
     }
     
-    func indexToRowCol(_ index:Int) -> (row:Int, col:Int) {
+    static func indexToRowCol(_ index:Int) -> (row:Int, col:Int) {
         return (index / BoardView.size, index % BoardView.size)
     }
     

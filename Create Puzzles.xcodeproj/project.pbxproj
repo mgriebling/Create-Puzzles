@@ -13,6 +13,11 @@
 		472CE137291858DB0074891E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE136291858DB0074891E /* Preview Assets.xcassets */; };
 		472CE13E291BE6380074891E /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13D291BE6380074891E /* GameBoard.swift */; };
 		472CE140291BFA8C0074891E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13F291BFA8C0074891E /* Game.swift */; };
+		47820B8329298242009B16A1 /* Subsonic in Frameworks */ = {isa = PBXBuildFile; productRef = 47820B8229298242009B16A1 /* Subsonic */; };
+		47820B852929833F009B16A1 /* service-bell-ring-14610.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */; };
+		47820B8729298439009B16A1 /* ding-47489.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 47820B8629298439009B16A1 /* ding-47489.mp3 */; };
+		47820B89292D7490009B16A1 /* View-Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47820B88292D7490009B16A1 /* View-Size.swift */; };
+		47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C079E6291FD1FC003D0248 /* HighlightView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,10 @@
 		472CE136291858DB0074891E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		472CE13D291BE6380074891E /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		472CE13F291BFA8C0074891E /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
+		47820B8629298439009B16A1 /* ding-47489.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ding-47489.mp3"; sourceTree = "<group>"; };
+		47820B88292D7490009B16A1 /* View-Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-Size.swift"; sourceTree = "<group>"; };
+		47C079E6291FD1FC003D0248 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47820B8329298242009B16A1 /* Subsonic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,11 +68,15 @@
 			children = (
 				472CE12E291858D90074891E /* Create_PuzzlesApp.swift */,
 				472CE130291858D90074891E /* BoardView.swift */,
+				47C079E6291FD1FC003D0248 /* HighlightView.swift */,
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
 				472CE132291858DB0074891E /* Assets.xcassets */,
+				47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */,
+				47820B8629298439009B16A1 /* ding-47489.mp3 */,
 				472CE134291858DB0074891E /* Create_Puzzles.entitlements */,
 				472CE135291858DB0074891E /* Preview Content */,
+				47820B88292D7490009B16A1 /* View-Size.swift */,
 			);
 			path = "Create Puzzles";
 			sourceTree = "<group>";
@@ -91,6 +105,9 @@
 			dependencies = (
 			);
 			name = "Create Puzzles";
+			packageProductDependencies = (
+				47820B8229298242009B16A1 /* Subsonic */,
+			);
 			productName = "Create Puzzles";
 			productReference = 472CE12B291858D90074891E /* Create Puzzles.app */;
 			productType = "com.apple.product-type.application";
@@ -119,6 +136,9 @@
 				Base,
 			);
 			mainGroup = 472CE122291858D90074891E;
+			packageReferences = (
+				47820B8129298242009B16A1 /* XCRemoteSwiftPackageReference "Subsonic" */,
+			);
 			productRefGroup = 472CE12C291858D90074891E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -135,6 +155,8 @@
 			files = (
 				472CE137291858DB0074891E /* Preview Assets.xcassets in Resources */,
 				472CE133291858DB0074891E /* Assets.xcassets in Resources */,
+				47820B852929833F009B16A1 /* service-bell-ring-14610.mp3 in Resources */,
+				47820B8729298439009B16A1 /* ding-47489.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +170,9 @@
 				472CE131291858D90074891E /* BoardView.swift in Sources */,
 				472CE12F291858D90074891E /* Create_PuzzlesApp.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
+				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
+				47820B89292D7490009B16A1 /* View-Size.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +302,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -318,6 +343,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -366,6 +392,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		47820B8129298242009B16A1 /* XCRemoteSwiftPackageReference "Subsonic" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/Subsonic";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		47820B8229298242009B16A1 /* Subsonic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47820B8129298242009B16A1 /* XCRemoteSwiftPackageReference "Subsonic" */;
+			productName = Subsonic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 472CE123291858D90074891E /* Project object */;
 }
