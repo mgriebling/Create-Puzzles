@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct HighlightView: View {
-    var word: Word
+	var word: Word
     var size: CGSize
-    var cellWidth: Int
+    var cellWidth: CGFloat
     
     var body: some View {
         // place horizontal highlight
         let len = CGFloat(word.word.count)
-        let xsize = size.width / CGFloat(cellWidth)
-        let ysize = size.height / CGFloat(cellWidth)
+        let xsize = size.width / cellWidth
+        let ysize = size.height / cellWidth
         switch word.direction {
             case .left, .right:
                 getView2(xsize: xsize, ysize: ysize, id: word.id, len: len)

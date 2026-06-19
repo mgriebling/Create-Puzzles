@@ -9,7 +9,7 @@ import Foundation
 
 struct Cell: Codable, Identifiable {
     let letter: String
-    let id:Int
+    let id: Int
     
     init(letter: String, index: Int) {
         self.letter = letter
@@ -18,7 +18,8 @@ struct Cell: Codable, Identifiable {
 }
 
 enum Direction: Int, Codable {
-    case left=0, right, down, up, diagonalUpLeft, diagonalUpRight, diagonalDownLeft, diagonalDownRight
+    case left=0, right, down, up, diagonalUpLeft, diagonalUpRight,
+		 diagonalDownLeft, diagonalDownRight
     
     var deltaX: Int {
         switch self {
@@ -42,11 +43,11 @@ enum Direction: Int, Codable {
     }
 }
 
-struct Word: Codable, Identifiable {
+public struct Word: Codable, Identifiable {
     let word: String
     let direction: Direction
     let highlighted: Bool
-    let id: Int
+    public let id: Int
     
     init(word:String, id: Int, direction: Direction, highlighted: Bool) {
         self.word = word
@@ -112,7 +113,9 @@ struct GameBoard : Codable {
     }
     
     mutating func addLetter(_ index: Int) {
+		if selectedMoves.contains(index) { return }
         let letter = board[index].letter
+		print("Adding letter \(letter)")
         board[index] = Cell(letter: letter, index: index)
         selectedWord.append(letter)
         selectedMoves.append(index)
@@ -153,7 +156,9 @@ struct GameBoard : Codable {
         return false
     }
     
-    func isHighlighted(_ index: Int) -> Bool { false }
+	func isHighlighted(_ index: Int) -> Bool {
+		selectedMoves.contains(index)
+	}
     
     private func getRandomCharacter() -> String {
         let alphabet = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -187,7 +192,7 @@ struct GameBoard : Codable {
     }
     
     // not sure if this is the most efficient way of accessing a board piece?
-    private func indexOf(_ row: Int, column: Int) -> Int {
+    func indexOf(_ row: Int, column: Int) -> Int {
         assert(row >= 0 && row < size && column >= 0 && column < size, "Index of board is out of limits")
         return row * size + column
     }
