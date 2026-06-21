@@ -19,6 +19,7 @@ struct BoardView: View {
     
     let fontSize = CGFloat(30)
 	let cellSize: CGFloat = gsize / CGFloat(size)
+	let boardSize: CGSize = CGSize(width: gsize, height: gsize)
 	
 	@State private var wasSelected: [[Bool]] = Array(repeating: rowInit, count: size)
 	@State private var isDragging: Bool = false
@@ -38,12 +39,12 @@ struct BoardView: View {
             Text("Score: \(game.score) %").font(.system(size: fontSize)).bold()
 				.padding(.bottom, 10)
 			ZStack {
-				Grid() {
+				Grid(horizontalSpacing: 8, verticalSpacing: 8) {
 					ForEach(0..<Self.size, id: \.self) { row in
 						GridRow {
 							ForEach(0..<Self.size, id: \.self) { col in
 								Text(game.board[row,col].letter)
-									.bold().font(.system(size: fontSize+5))
+									.font(.system(size: fontSize+5, weight: game.board[row,col].solution ? .bold : .regular))
 									.aspectRatio(1, contentMode: .fit)
 									.frame(width: cellSize, height: cellSize)
 									.gesture(dragGesture(col, row))
@@ -52,6 +53,10 @@ struct BoardView: View {
 						}
 					}
 				}
+				
+				// Display the highlighted words
+				let word = game.board.wordPlacements[0]
+				HighlightView(word: word, size: boardSize, cellWidth: cellSize)
 			}
 			
 			Spacer()
@@ -79,32 +84,28 @@ struct BoardView: View {
 				if !isDragging {
 					isDragging = true
 					start = (row, col)
-					wasSelected[row][col] = true
 					game.addLetter(game.board.indexOf(row, column: col))
-					pcol = col
-					prow = row
 				}
 				
-				// determine drag direction
 				if dragDirection == nil {
 					if let direction = getDirection(value.translation) {
 						print("Direction", direction)
 						dragDirection = direction
+						selectLetter(row, col, value)
 					}
 				} else {
 					selectLetter(row, col, value)
-					// print("Word = \(game.board.selectedWord)")
+					// print("Word: \(game.board.selectedWord)")
 				}
 			}
 			.onEnded { value in
-				print("Word = \(game.board.selectedWord)")
 				if game.isWordMatch() {
-					print("Matched word")
+					print("Matched \(game.board.selectedWord)")
 					game.removeActiveWord()
 				}
 				game.clearWord()
-				dragDirection = nil
 				isDragging = false
+				dragDirection = nil
 			}
 	}
 	
@@ -130,10 +131,11 @@ struct BoardView: View {
 	func getDirection(_ size: CGSize) -> Direction? {
 		let dx = size.width
 		let dy = size.height
-		if abs(dx) < 2 && abs(dy) > cellSize {
+		let minDistance = 5.0
+		if abs(dx) < minDistance && abs(dy) > cellSize {
 			// direction is either up or down
 			return dy > 0 ? .down : .up
-		} else if abs(dy) < 2 && abs(dx) > cellSize {
+		} else if abs(dy) < minDistance && abs(dx) > cellSize {
 			// direction is either left or right
 			return dx > 0 ? .right : .left
 		} else if abs(dx) > cellSize && abs(dy) > cellSize {

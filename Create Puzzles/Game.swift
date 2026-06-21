@@ -11,10 +11,10 @@ class Game : ObservableObject {
     
     static let maxSize = 18
     static let words =
-        ["alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
-         "india", "juliett", "kilo", "lima", "mike", "november", "oscar",
+        ["alpha"] /*, "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
+         "india", "juliet", "kilo", "lima", "mike", "november", "oscar",
          "papa", "quebec", "romeo", "sierra", "tango", "uniform", "victor",
-         "whiskey", "xray", "yankie", "zulu"]
+         "whiskey", "xray", "yankee", "zulu"] */
     
     var found = (1...Game.words.count).map { _ in false }
     
@@ -43,7 +43,7 @@ class Game : ObservableObject {
     
     func isWordMatch() -> Bool { Game.words.contains(board.selectedWord.lowercased()) }
     func isValidMove(_ index: Int) -> Bool { board.validMove(index) }
-    func clearWord() { board.clearWord(true) }
+    func clearWord() { board.clearWord(false) }
     func addLetter(_ index: Int) { board.addLetter(index) }
     func isHighlighted(_ index: Int) -> Bool { board.isHighlighted(index) }
     
