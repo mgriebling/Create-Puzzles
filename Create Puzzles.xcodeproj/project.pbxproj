@@ -13,6 +13,7 @@
 		472CE137291858DB0074891E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE136291858DB0074891E /* Preview Assets.xcassets */; };
 		472CE13E291BE6380074891E /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13D291BE6380074891E /* GameBoard.swift */; };
 		472CE140291BFA8C0074891E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13F291BFA8C0074891E /* Game.swift */; };
+		47578B062FE885B90072FFED /* Alphabets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47578B052FE885B90072FFED /* Alphabets.swift */; };
 		47820B8329298242009B16A1 /* Subsonic in Frameworks */ = {isa = PBXBuildFile; productRef = 47820B8229298242009B16A1 /* Subsonic */; };
 		47820B852929833F009B16A1 /* service-bell-ring-14610.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */; };
 		47820B8729298439009B16A1 /* ding-47489.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 47820B8629298439009B16A1 /* ding-47489.mp3 */; };
@@ -29,6 +30,7 @@
 		472CE136291858DB0074891E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		472CE13D291BE6380074891E /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		472CE13F291BFA8C0074891E /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		47578B052FE885B90072FFED /* Alphabets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alphabets.swift; sourceTree = "<group>"; };
 		47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
 		47820B8629298439009B16A1 /* ding-47489.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ding-47489.mp3"; sourceTree = "<group>"; };
 		47820B88292D7490009B16A1 /* View-Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-Size.swift"; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				472CE134291858DB0074891E /* Create_Puzzles.entitlements */,
 				472CE135291858DB0074891E /* Preview Content */,
 				47820B88292D7490009B16A1 /* View-Size.swift */,
+				47578B052FE885B90072FFED /* Alphabets.swift */,
 			);
 			path = "Create Puzzles";
 			sourceTree = "<group>";
@@ -120,7 +123,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					472CE12A291858D90074891E = {
 						CreatedOnToolsVersion = 14.1;
@@ -170,6 +173,7 @@
 				472CE131291858D90074891E /* BoardView.swift in Sources */,
 				472CE12F291858D90074891E /* Create_PuzzlesApp.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
+				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
 				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
 				47820B89292D7490009B16A1 /* View-Size.swift in Sources */,
@@ -212,9 +216,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6389FT2N69;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -232,6 +239,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -270,9 +278,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6389FT2N69;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -283,6 +294,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -297,8 +309,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Create Puzzles/Preview Content\"";
-				DEVELOPMENT_TEAM = 6389FT2N69;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -313,7 +325,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
@@ -338,8 +350,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Create Puzzles/Preview Content\"";
-				DEVELOPMENT_TEAM = 6389FT2N69;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -354,7 +366,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 12.4;

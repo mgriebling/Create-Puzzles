@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Game : ObservableObject {
+@Observable class Game {
     
     static let maxSize = 18
     static let words =
@@ -15,6 +15,8 @@ class Game : ObservableObject {
          "india", "juliet", "kilo", "lima", "mike", "november", "oscar",
          "papa", "quebec", "romeo", "sierra", "tango", "uniform", "victor",
          "whiskey", "xray", "yankee", "zulu"]
+	
+	private(set) var board = newGame()
     
     var found = (1...Game.words.count).map { _ in false }
     
@@ -29,10 +31,10 @@ class Game : ObservableObject {
         return false
     }
 
-    func removeActiveWord(_ unhighlight: Bool = false) {
+    func removeActiveWord() {
         if let index = Game.words.firstIndex(of: board.selectedWord.lowercased()) {
 			board.highlightWord(index)
-            board.clearWord(unhighlight)
+            board.clearWord()
         }
     }
     
@@ -48,11 +50,8 @@ class Game : ObservableObject {
 		}
 		return false
 	}
-    func isValidMove(_ index: Int) -> Bool { board.validMove(index) }
-    func clearWord() { board.clearWord(false) }
+    // func isValidMove(_ index: Int) -> Bool { board.validMove(index) }
+    func clearWord() { board.clearWord() }
     func addLetter(_ index: Int) { board.addLetter(index) }
     func isHighlighted(_ index: Int) -> Bool { board.isHighlighted(index) }
-    
-    @Published private(set) var board = newGame()
-    
 }

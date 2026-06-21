@@ -11,7 +11,7 @@ import Subsonic
 
 struct BoardView: View {
 
-    @ObservedObject var game: Game
+    @State var game: Game
 
     static let size = Game.maxSize
 	static let gsize = 750.0
@@ -22,30 +22,33 @@ struct BoardView: View {
 	
 	@State private var isDragging: Bool = false
 	@State private var start: (row: Int, col: Int) = (0, 0)
-	@State private var offset: (row: Int, col: Int) = (0, 0)
-	@State private var dragOffset: CGSize = .init(width: 0, height: 0)
 	@State private var dragDirection: Direction?
 	@State private var actualSize: CGSize = .zero
 	
 	var body: some View {
         VStack {
+            Text("Word Search")
+				.font(.system(.largeTitle).bold())
+				.padding(.bottom, 10)
+            Text("Score: \(game.score) %")
+				.font(.system(size: fontSize)).bold()
+			
 			Spacer()
-            Text("Word Search").font(.system(.largeTitle).bold())
-				.padding(.bottom, 10)
-            Text("Score: \(game.score) %").font(.system(size: fontSize)).bold()
-				.padding(.bottom, 10)
 			
 			ZStack {
 				Grid {
 					ForEach(0..<Self.size, id: \.self) { row in
 						GridRow {
 							ForEach(0..<Self.size, id: \.self) { col in
-								Text(game.board[row,col].letter)
-									.font(.system(size: fontSize+5)).bold()
+								let index = game.board.indexOf(row, column: col)
+								let highlighted = game.board.isHighlighted(index)
+								let backColor = highlighted ? Color.accentColor : .clear
+								Text(game.board[row, col].letter)
+									.font(.system(size: fontSize+5, weight: .bold))
 									.aspectRatio(1, contentMode: .fit)
 									.frame(width: cellSize, height: cellSize)
 									.gesture(dragGesture(col, row))
-									.background(game.board.isHighlighted(game.board.indexOf(row, column: col)) ? .blue : .clear)
+									.background(backColor)
 							}
 						}
 					}
@@ -54,7 +57,7 @@ struct BoardView: View {
 					proxy.size
 				} action: { newValue in
 					actualSize = newValue
-					// print("New size: \(newValue.width) x \(newValue.height)")
+					print("New size: \(newValue.width) x \(newValue.height)")
 				}
 				
 				// Display the highlighted words
@@ -68,20 +71,18 @@ struct BoardView: View {
 			
 			Spacer()
 			
-			let fg = GridItem(.flexible())
-			LazyVGrid(columns: [fg, fg, fg, fg, fg], alignment: .leading) {
+			let columns = Array(repeating: GridItem(.flexible()), count: 5)
+			LazyVGrid(columns: columns, alignment: .leading) {
 				ForEach(Game.words.indices, id:\.self) { index in
 					let word = Game.words[index]
+					let textColor = game.found[index] ? Color(.gray) : Color.primary
 					Text(word.capitalized)
-						.foregroundColor(game.found[index] ? .gray : .black)
-						.bold()
-						.font(.system(size: fontSize+2))
+						.foregroundColor(textColor)
+						.font(.system(size: fontSize+2, weight: .bold))
 						.strikethrough(game.found[index])
 				}
 			}
 			.padding(.leading, 75)
-			
-			Spacer()
         }
     }
 	
