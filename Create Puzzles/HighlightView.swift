@@ -10,91 +10,102 @@ import SwiftUI
 struct HighlightView: View {
 	var word: Word
     var size: CGSize
-    var cellWidth: CGFloat
+	var numberOfCells: Int
+	let spacing: CGFloat = 8
     
     var body: some View {
         let len = CGFloat(word.word.count)
-        let xsize = cellWidth // size.width / cellWidth
-        let ysize = cellWidth // size.height / cellWidth
+        let size = size.width / CGFloat(numberOfCells)
+        // let ysize = size.height / CGFloat(numberOfCells)
+		let center = CGFloat(numberOfCells) / 2
         switch word.direction {
             case .left, .right:
-                getView2(xsize: xsize, ysize: ysize, id: word.id, len: len)
+				getView2(size: size, center: center, id: word.id, len: len)
             case .up, .down:
-                getView1(xsize: xsize, ysize: ysize, id: word.id, len: len)
+                getView1(size: size, center: center, id: word.id, len: len)
             case .diagonalDownLeft, .diagonalUpRight:
-				getView3(xsize: xsize, ysize: ysize, id: word.id, len: len)
+				getView3(size: size, center: center, id: word.id, len: len)
             case .diagonalDownRight, .diagonalUpLeft:
-				getView4(xsize: xsize, ysize: ysize, id: word.id, len: len)
+				getView4(size: size, center: center, id: word.id, len: len)
         }
     }
     
     @ViewBuilder
-    func getView1(xsize: CGFloat, ysize: CGFloat, id: Int, len: CGFloat) -> some View {
+    func getView1(size: CGFloat, center: CGFloat, id: Int, len: CGFloat) -> some View {
 		// Up/down highlights
         let z = GameBoard.indexToRowCol(id)
-		let x = CGFloat(z.col)
-		let y = CGFloat(z.row) - (word.direction == .up ? (len-1) : 0)
-		let xshift = CGFloat(x - 9) * xsize - 48 // 0 - -48
-		let yshift = CGFloat(y - 10) * ysize + (y * 22.7) - 95 // 0 - 95, 13 - 200
+		let xs = spacing / self.size.width
+		let x = CGFloat(z.col) + 0.4 + xs * CGFloat(z.col)
+		let y = CGFloat(z.row) + (word.direction == .up ? -len/2+1 : len/2)
+		let xshift = CGFloat(x - center) * size
+		let yshift = CGFloat(y - center) * size
         Capsule()
             .stroke(.blue, lineWidth: 4)
-			.frame(width:xsize, height: ysize*(len+1), alignment: .leading)
+			.frame(width:size, height: size*(len), alignment: .leading)
             .offset(x:xshift, y:yshift)
-			.onAppear {
-				print("1. Showing highlight for \(word.word) direction \(word.direction), size: \(xsize)")
-			}
+//			.onAppear {
+//				print("1. Showing highlight for \(word.word) direction \(word.direction), size: \(size)")
+//			}
     }
     
     @ViewBuilder
-    func getView2(xsize: CGFloat, ysize: CGFloat, id: Int, len: CGFloat) -> some View {
+    func getView2(size: CGFloat, center: CGFloat, id: Int, len: CGFloat) -> some View {
 		// Left/right highlights
 		let z = GameBoard.indexToRowCol(id)
-		let x = CGFloat(z.col) - (word.direction == .left ? (len-1) : 0)
-		let y = CGFloat(z.row)
-		let xshift = CGFloat(x - 9) * xsize + (x * 7.69) + 54  // 0 - 54, 13 - 154
-		let yshift = CGFloat(y - 10) * ysize + (y * 8.0) - 5 // 0 - -5, 17 - 132
+		let ys = spacing / self.size.height
+		let x = CGFloat(z.col) - (word.direction == .left ? len/2 - 1 : -len/2)
+		let y = CGFloat(z.row) + 0.4 + ys * CGFloat(z.row)
+		let xshift = CGFloat(x - center) * size
+		let yshift = CGFloat(y - center) * size
         Capsule()
             .stroke(.blue, lineWidth: 4)
-            .frame(width:xsize*(len+1), height: ysize, alignment: .leading)
+            .frame(width:size*(len), height: size, alignment: .leading)
             .offset(x:xshift, y:yshift)
-			.onAppear {
-				print("2. Showing highlight for \(word.word) direction \(word.direction), xsize: \(xsize), xy: \(x),\(y)")
-			}
+//			.onAppear {
+//				print("2. Showing highlight for \(word.word) direction \(word.direction), xsize: \(size), xy: \(x),\(y)")
+//			}
     }
     
     @ViewBuilder
-    func getView3(xsize: CGFloat, ysize: CGFloat, id: Int, len: CGFloat) -> some View {
+    func getView3(size: CGFloat, center: CGFloat, id: Int, len: CGFloat) -> some View {
 		// Diagonal down left/up right
-        let (y,x) = GameBoard.indexToRowCol(id)
-        let xysize = CGFloat(sqrt(xsize * xsize + ysize * ysize))
+        let z = GameBoard.indexToRowCol(id)
+		let offset = word.direction == .diagonalDownLeft ? -len/2+1 : len/2
+		let x = CGFloat(z.col) + offset
+		let y = CGFloat(z.row) - offset + 1
+        let xysize = CGFloat(sqrt(2 * size * size))
         let length = xysize * len
-        let xshift = CGFloat(x-1) * xsize - size.width/2 + 145
-        let yshift = CGFloat(y-1) * ysize - size.height/2 - 115
+        let xshift = CGFloat(x-center) * size
+        let yshift = CGFloat(y-center) * size
         Capsule()
             .stroke(.blue, lineWidth: 4)
-            .frame(width:length, height: ysize, alignment: .leading)
+			.frame(width:length, height: size*0.8, alignment: .leading)
             .rotationEffect(.degrees(-45))
             .offset(x:xshift, y:yshift)
-			.onAppear {
-				print("3. Showing highlight for \(word.word) direction \(word.direction)")
-			}
+//			.onAppear {
+//				print("3. Showing highlight for \(word.word) direction \(word.direction)")
+//			}
     }
     
     @ViewBuilder
-    func getView4(xsize: CGFloat, ysize: CGFloat, id: Int, len: CGFloat) -> some View {
-		let (y,x) = GameBoard.indexToRowCol(id)
-        let xysize = CGFloat(sqrt(xsize * xsize + ysize * ysize))
+    func getView4(size: CGFloat, center: CGFloat, id: Int, len: CGFloat) -> some View {
+		// Diagonal down right/up left
+		let z = GameBoard.indexToRowCol(id)
+		let offset = word.direction == .diagonalUpLeft ? -len/2+1 : len/2
+		let x = CGFloat(z.col) + offset
+		let y = CGFloat(z.row) + offset
+        let xysize = CGFloat(sqrt(2 * size * size))
         let length = xysize * len
-		let xshift = CGFloat(x-1) * xsize - size.width/2 + 93
-		let yshift = CGFloat(y-1) * ysize - size.height/2 + 93
+		let xshift = CGFloat(x-center) * size
+		let yshift = CGFloat(y-center) * size
         Capsule()
             .stroke(.blue, lineWidth: 4)
-            .frame(width:length, height: ysize, alignment: .leading)
+			.frame(width:length*0.95, height: size*0.8, alignment: .leading)
             .rotationEffect(.degrees(45))
             .offset(x:xshift, y:yshift)
-			.onAppear {
-				print("4. Showing highlight for \(word.word) direction \(word.direction)")
-			}
+//			.onAppear {
+//				print("4. Showing highlight for \(word.word) direction \(word.direction)")
+//			}
     }
     
     

@@ -15,21 +15,17 @@ struct BoardView: View {
 
     static let size = Game.maxSize
 	static let gsize = 750.0
-	static let rowInit: [Bool] = Array(repeating: false, count: size)
     
     let fontSize = CGFloat(30)
 	let cellSize: CGFloat = gsize / CGFloat(size)
 	let boardSize: CGSize = CGSize(width: gsize, height: gsize)
 	
-	@State private var wasSelected: [[Bool]] = Array(repeating: rowInit, count: size)
 	@State private var isDragging: Bool = false
 	@State private var start: (row: Int, col: Int) = (0, 0)
 	@State private var offset: (row: Int, col: Int) = (0, 0)
 	@State private var dragOffset: CGSize = .init(width: 0, height: 0)
 	@State private var dragDirection: Direction?
-	// @State private var word: String = ""
-	@State private var prow: Int = -1
-	@State private var pcol: Int = -1
+	@State private var actualSize: CGSize = .zero
 	
 	var body: some View {
         VStack {
@@ -38,13 +34,14 @@ struct BoardView: View {
 				.padding(.bottom, 10)
             Text("Score: \(game.score) %").font(.system(size: fontSize)).bold()
 				.padding(.bottom, 10)
+			
 			ZStack {
-				Grid(horizontalSpacing: 8, verticalSpacing: 8) {
+				Grid {
 					ForEach(0..<Self.size, id: \.self) { row in
 						GridRow {
 							ForEach(0..<Self.size, id: \.self) { col in
 								Text(game.board[row,col].letter)
-									.font(.system(size: fontSize+5, weight: game.board[row,col].solution ? .bold : .regular))
+									.font(.system(size: fontSize+5)).bold()
 									.aspectRatio(1, contentMode: .fit)
 									.frame(width: cellSize, height: cellSize)
 									.gesture(dragGesture(col, row))
@@ -53,10 +50,20 @@ struct BoardView: View {
 						}
 					}
 				}
+				.onGeometryChange(for: CGSize.self) { proxy in
+					proxy.size
+				} action: { newValue in
+					actualSize = newValue
+					// print("New size: \(newValue.width) x \(newValue.height)")
+				}
 				
 				// Display the highlighted words
-				let word = game.board.wordPlacements[0]
-				HighlightView(word: word, size: boardSize, cellWidth: cellSize)
+				ForEach(game.board.wordPlacements.indices, id: \.self) { index in
+					let word = game.board.wordPlacements[index]
+					if word.highlighted {
+						HighlightView(word: word, size: actualSize, numberOfCells: Self.size)
+					}
+				}
 			}
 			
 			Spacer()

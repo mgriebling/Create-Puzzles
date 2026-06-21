@@ -10,12 +10,10 @@ import Foundation
 struct Cell: Codable, Identifiable {
     let letter: String
     let id: Int
-	let solution: Bool
     
-	init(letter: String, index: Int, solution: Bool) {
+	init(letter: String, index: Int) {
         self.letter = letter
         self.id = index
-		self.solution = solution
     }
 }
 
@@ -39,21 +37,19 @@ enum Direction: Int, Codable, CaseIterable {
         }
     }
     
-    static func random() -> Direction {
-		Direction.allCases.randomElement()!
-    }
+    static func random() -> Direction { Direction.allCases.randomElement()! }
 }
 
 public struct Word: Codable, Identifiable {
     let word: String
     let direction: Direction
-    let highlighted: Bool
+    var highlighted: Bool
     public let id: Int
     
     init(word:String, id: Int, direction: Direction, highlighted: Bool) {
         self.word = word
         self.id = id
-        self.highlighted = true // highlighted
+        self.highlighted = false
         self.direction = direction
     }
 }
@@ -74,13 +70,13 @@ struct GameBoard : Codable {
     
     private mutating func place (word: String) -> Bool {
         // pick a direction to place the word
-		let direction = Direction.up // Direction.random()
-        var startCol = 0 // Int.random(in: 0..<size)
-        var startRow = 0 // Int.random(in: 0..<size)
+		let direction = Direction.random()
+        var startCol = Int.random(in: 0..<size)
+        var startRow = Int.random(in: 0..<size)
         let deltaCol = direction.deltaCol
         let deltaRow = direction.deltaRow
 		
-		print("Start col, row: \(startCol), \(startRow)")
+//		print("Start col, row: \(startCol), \(startRow)")
 
         // adjust starting x point to fit in puzzle
         let lastCol = startCol + deltaCol * (word.count - 1)
@@ -94,19 +90,19 @@ struct GameBoard : Codable {
         if lastRow >= size { startRow -= lastRow - size + 1 }
         if startRow < 0 || startRow >= size { return false }
 		
-		print("End position (col, row): \(lastCol), \(lastRow)")
+//		print("End position (col, row): \(lastCol), \(lastRow)")
         
         // place the letters
         let backupBoard = board
         var c = startCol; var r = startRow
-		print("Placing word: \(word), direction: \(direction), at col: \(c), row: \(r)")
+//		print("Placing word: \(word), direction: \(direction), at col: \(c), row: \(r)")
         for letter in word.uppercased() {
             let index = indexOf(r, column:c)
             let existing = board[index].letter
             if existing == " " || existing == String(letter) {
 				// place letter if location is empty or already has the letter
-                board[index] = Cell(letter: String(letter), index: index, solution: true)
-				print("Placed letter: \(letter) at col: \(c), row: \(r)")
+                board[index] = Cell(letter: String(letter), index: index)
+//				print("Placed letter: \(letter) at col: \(c), row: \(r)")
                 c += deltaCol; r += deltaRow
             } else {
                 // need to try new placement
@@ -118,7 +114,6 @@ struct GameBoard : Codable {
         // add word to the word database
         wordPlacements.append(Word(word: word, id: indexOf(startRow, column: startCol),
 								   direction: direction, highlighted: false))
-		//print(wordPlacements)
         return true
     }
     
@@ -126,16 +121,20 @@ struct GameBoard : Codable {
 		if selectedMoves.contains(index) { return }
         let letter = board[index].letter
 		print("Adding letter \(letter)")
-        board[index] = Cell(letter: letter, index: index, solution: false)
+        board[index] = Cell(letter: letter, index: index)
         selectedWord.append(letter)
         selectedMoves.append(index)
     }
+	
+	mutating func highlightWord(_ index: Int) {
+		wordPlacements[index].highlighted.toggle()
+	}
     
     mutating func clearWord(_ unhighlight: Bool) {
         if unhighlight {
             for index in selectedMoves {
                 let letter = board[index].letter
-                board[index] = Cell(letter: letter, index: index, solution: false)
+                board[index] = Cell(letter: letter, index: index)
             }
         }
         
@@ -180,7 +179,7 @@ struct GameBoard : Codable {
         
         board = []
         for index in 0..<size*size {
-            board.append(Cell(letter: " ", index: index, solution: false))
+            board.append(Cell(letter: " ", index: index))
         }
         
         // place the words on the grid
@@ -196,7 +195,7 @@ struct GameBoard : Codable {
         // fill any blanks with random characters
         for i in 0..<size*size {
             if board[i].letter == " " {
-                board[i] = Cell(letter: getRandomCharacter(), index: i, solution: false)
+                board[i] = Cell(letter: getRandomCharacter(), index: i)
             }
         }
     }
