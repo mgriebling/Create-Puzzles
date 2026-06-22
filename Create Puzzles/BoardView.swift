@@ -8,18 +8,16 @@
 import SwiftUI
 import Subsonic
 
-
 struct BoardView: View {
-
-    @State var game: Game
-
     static let size = Game.maxSize
-	static let gsize = 750.0
+	static let gsize = 250.0
     
-    let fontSize = CGFloat(30)
+    let fontSize = CGFloat(14)  // ipad 30
 	let cellSize: CGFloat = gsize / CGFloat(size)
 	let boardSize: CGSize = CGSize(width: gsize, height: gsize)
+	let columns = Array(repeating: GridItem(.flexible()), count: 4) // 5)
 	
+	@State private var game = Game(board: GameBoard(size: Game.maxSize, words: Game.words)!)
 	@State private var isDragging: Bool = false
 	@State private var start: (row: Int, col: Int) = (0, 0)
 	@State private var dragDirection: Direction?
@@ -31,7 +29,7 @@ struct BoardView: View {
 				.font(.system(.largeTitle).bold())
 				.padding(.bottom, 10)
             Text("Score: \(game.score) %")
-				.font(.system(size: fontSize)).bold()
+				.font(.system(.title2)).bold()
 			
 			Spacer()
 			
@@ -40,8 +38,7 @@ struct BoardView: View {
 					ForEach(0..<Self.size, id: \.self) { row in
 						GridRow {
 							ForEach(0..<Self.size, id: \.self) { col in
-								let index = game.board.indexOf(row, column: col)
-								let highlighted = game.board.isHighlighted(index)
+								let highlighted = game.charIsHighlighted(row, col: col)
 								let backColor = highlighted ? Color.accentColor : .clear
 								Text(game.board[row, col].letter)
 									.font(.system(size: fontSize+5, weight: .bold))
@@ -53,17 +50,13 @@ struct BoardView: View {
 						}
 					}
 				}
-				.onGeometryChange(for: CGSize.self) { proxy in
-					proxy.size
-				} action: { newValue in
-					actualSize = newValue
-					print("New size: \(newValue.width) x \(newValue.height)")
-				}
+				.onGeometryChange(for: CGSize.self, of: { $0.size },
+								  action: { actualSize = $0; print($0) })
 				
 				// Display the highlighted words
 				ForEach(game.board.wordPlacements.indices, id: \.self) { index in
 					let word = game.board.wordPlacements[index]
-					if word.highlighted {
+					if game.wordIsHighlighted(index) {
 						HighlightView(word: word, size: actualSize, numberOfCells: Self.size)
 					}
 				}
@@ -71,18 +64,17 @@ struct BoardView: View {
 			
 			Spacer()
 			
-			let columns = Array(repeating: GridItem(.flexible()), count: 5)
 			LazyVGrid(columns: columns, alignment: .leading) {
-				ForEach(Game.words.indices, id:\.self) { index in
-					let word = Game.words[index]
-					let textColor = game.found[index] ? Color(.gray) : Color.primary
-					Text(word.capitalized)
+				ForEach(game.board.wordPlacements.indices, id: \.self) { index in
+					let word = game.board.wordPlacements[index]
+					let textColor = game.wordIsHighlighted(index) ? Color(.gray) : .primary
+					Text(word.word.capitalized)
 						.foregroundColor(textColor)
 						.font(.system(size: fontSize+2, weight: .bold))
-						.strikethrough(game.found[index])
+						.strikethrough(game.wordIsHighlighted(index))
 				}
 			}
-			.padding(.leading, 75)
+			.padding(.leading, 35) // 75)
         }
     }
 	
@@ -92,24 +84,23 @@ struct BoardView: View {
 				if !isDragging {
 					isDragging = true
 					start = (row, col)
-					game.addLetter(game.board.indexOf(row, column: col))
+					game.addLetter(row, col: col)
 				}
 				
 				if dragDirection == nil {
 					if let direction = getDirection(value.translation) {
-						print("Direction", direction)
 						dragDirection = direction
 						selectLetter(row, col, value)
 					}
 				} else {
 					selectLetter(row, col, value)
-					// print("Word: \(game.board.selectedWord)")
 				}
 			}
 			.onEnded { value in
 				if game.isWordMatch() {
-					print("Matched \(game.board.selectedWord)")
+					print("Matched \(game.activeWord)")
 					game.removeActiveWord()
+					// play(sound: "ding-47489.mp3")
 				}
 				game.clearWord()
 				isDragging = false
@@ -118,6 +109,7 @@ struct BoardView: View {
 	}
 	
 	private func selectLetter(_ row: Int, _ col: Int,_ value: DragGesture.Value) {
+		let cellSize = actualSize.width / CGFloat(Self.size)
 		let x = Int(abs(value.translation.width) / cellSize)
 		let y = Int(abs(value.translation.height) / cellSize)
 		let d = max(x, y)
@@ -133,7 +125,7 @@ struct BoardView: View {
 			case .diagonalDownLeft:  row += d; col -= d
 			default: break
 		}
-		game.addLetter(game.board.indexOf(row, column: col))
+		game.addLetter(row, col: col)
 	}
 	
 	func getDirection(_ size: CGSize) -> Direction? {
@@ -147,6 +139,7 @@ struct BoardView: View {
 			// direction is either left or right
 			return dx > 0 ? .right : .left
 		} else if abs(dx) > cellSize && abs(dy) > cellSize {
+			// diagonal directions
 			if dx > 0 {
 				return dy > 0 ? .diagonalDownRight : .diagonalUpRight
 			} else {
@@ -158,6 +151,6 @@ struct BoardView: View {
 }
 
 #Preview {
-	BoardView(game: Game())
+	BoardView()
 }
 

@@ -43,9 +43,6 @@ struct HighlightView: View {
             .stroke(.blue, lineWidth: 4)
 			.frame(width:size, height: size*(len), alignment: .leading)
             .offset(x:xshift, y:yshift)
-//			.onAppear {
-//				print("1. Showing highlight for \(word.word) direction \(word.direction), size: \(size)")
-//			}
     }
     
     @ViewBuilder
@@ -61,9 +58,6 @@ struct HighlightView: View {
             .stroke(.blue, lineWidth: 4)
             .frame(width:size*(len), height: size, alignment: .leading)
             .offset(x:xshift, y:yshift)
-//			.onAppear {
-//				print("2. Showing highlight for \(word.word) direction \(word.direction), xsize: \(size), xy: \(x),\(y)")
-//			}
     }
     
     @ViewBuilder
@@ -82,9 +76,6 @@ struct HighlightView: View {
 			.frame(width:length, height: size*0.8, alignment: .leading)
             .rotationEffect(.degrees(-45))
             .offset(x:xshift, y:yshift)
-//			.onAppear {
-//				print("3. Showing highlight for \(word.word) direction \(word.direction)")
-//			}
     }
     
     @ViewBuilder
@@ -103,9 +94,6 @@ struct HighlightView: View {
 			.frame(width:length*0.95, height: size*0.8, alignment: .leading)
             .rotationEffect(.degrees(45))
             .offset(x:xshift, y:yshift)
-//			.onAppear {
-//				print("4. Showing highlight for \(word.word) direction \(word.direction)")
-//			}
     }
     
     

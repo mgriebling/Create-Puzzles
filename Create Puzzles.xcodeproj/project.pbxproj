@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,8 +15,6 @@
 		472CE140291BFA8C0074891E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13F291BFA8C0074891E /* Game.swift */; };
 		47578B062FE885B90072FFED /* Alphabets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47578B052FE885B90072FFED /* Alphabets.swift */; };
 		47820B8329298242009B16A1 /* Subsonic in Frameworks */ = {isa = PBXBuildFile; productRef = 47820B8229298242009B16A1 /* Subsonic */; };
-		47820B852929833F009B16A1 /* service-bell-ring-14610.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */; };
-		47820B8729298439009B16A1 /* ding-47489.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 47820B8629298439009B16A1 /* ding-47489.mp3 */; };
 		47820B89292D7490009B16A1 /* View-Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47820B88292D7490009B16A1 /* View-Size.swift */; };
 		47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C079E6291FD1FC003D0248 /* HighlightView.swift */; };
 /* End PBXBuildFile section */
@@ -31,11 +29,13 @@
 		472CE13D291BE6380074891E /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		472CE13F291BFA8C0074891E /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		47578B052FE885B90072FFED /* Alphabets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alphabets.swift; sourceTree = "<group>"; };
-		47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
-		47820B8629298439009B16A1 /* ding-47489.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "ding-47489.mp3"; sourceTree = "<group>"; };
 		47820B88292D7490009B16A1 /* View-Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-Size.swift"; sourceTree = "<group>"; };
 		47C079E6291FD1FC003D0248 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		47578B0B2FE960580072FFED /* Sounds */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Sounds; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		472CE128291858D90074891E /* Frameworks */ = {
@@ -53,6 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				472CE12D291858D90074891E /* Create Puzzles */,
+				47578B0B2FE960580072FFED /* Sounds */,
 				472CE12C291858D90074891E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,8 +75,6 @@
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
 				472CE132291858DB0074891E /* Assets.xcassets */,
-				47820B842929833F009B16A1 /* service-bell-ring-14610.mp3 */,
-				47820B8629298439009B16A1 /* ding-47489.mp3 */,
 				472CE134291858DB0074891E /* Create_Puzzles.entitlements */,
 				472CE135291858DB0074891E /* Preview Content */,
 				47820B88292D7490009B16A1 /* View-Size.swift */,
@@ -106,6 +105,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				47578B0B2FE960580072FFED /* Sounds */,
 			);
 			name = "Create Puzzles";
 			packageProductDependencies = (
@@ -158,8 +160,6 @@
 			files = (
 				472CE137291858DB0074891E /* Preview Assets.xcassets in Resources */,
 				472CE133291858DB0074891E /* Assets.xcassets in Resources */,
-				47820B852929833F009B16A1 /* service-bell-ring-14610.mp3 in Resources */,
-				47820B8729298439009B16A1 /* ding-47489.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +311,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Create Puzzles/Preview Content\"";
+				DEVELOPMENT_TEAM = RMP42XUC38;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -328,7 +329,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.Create-Puzzles";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -352,6 +353,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Create Puzzles/Preview Content\"";
+				DEVELOPMENT_TEAM = RMP42XUC38;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -369,7 +371,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.Create-Puzzles";
 				PRODUCT_NAME = "$(TARGET_NAME)";

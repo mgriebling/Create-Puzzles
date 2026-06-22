@@ -15,7 +15,6 @@ struct Alphabets {
 		
 		// Retrieve the core alphabet character set for that locale
 		if let characterSet = locale.exemplarCharacterSet {
-			print(characterSet)
 			let upper = characterSet.uppercaseStringRepresentation
 			if upper.count > 0 {
 				return upper
@@ -23,7 +22,7 @@ struct Alphabets {
 				return characterSet.stringRepresentation
 			}
 		}
-		return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		return "ABCDEFGHIJKLMNOPQRSTUVWXYZ" // default
 	}
 	
 	static var englishAlphabet: String { getAlphabet(for: "en") }
@@ -36,6 +35,8 @@ struct Alphabets {
 	static var chineseAlphabet: String { getAlphabet(for: "zh-Hans") }
 	static var japaneseAlphabet: String { getAlphabet(for: "ja-JP") }
 	static var frenchAlphabet: String { getAlphabet(for: "fr") }
+	static var arabicAlphabet: String { getAlphabet(for: "ar") }
+	static var indianAlphabet: String { getAlphabet(for: "hi") }
 }
 
 extension CharacterSet {

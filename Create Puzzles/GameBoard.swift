@@ -70,24 +70,11 @@ struct GameBoard : Codable {
 	init?(size: Int, words: [String]) {
 		guard !words.isEmpty && size > 0 else { return nil }
 		self.size = size
-		
-		board = []
-		for index in 0..<size*size {
-			board.append(Cell(letter: " ", index: index))
-		}
-		
-		// place the words on the grid
 		wordPlacements = []
-		for word in words {
-			if word.count > size { return nil }
-			
-			// try to place word up to exitCount times
-			var exitCount = 100
-			while !place(word: word) {
-				exitCount -= 1
-				if exitCount == 0 { return nil}
-			}
-		}
+		board = []
+		
+		// iterate to find the best board placement
+		bestPlacement(size, words)
 		
 		// fill any blanks with random characters
 		for i in 0..<size*size {
@@ -96,50 +83,148 @@ struct GameBoard : Codable {
 			}
 		}
 	}
-    
-    private mutating func place (word: String) -> Bool {
-        // pick a direction to place the word
-		let direction = Direction.random()
-        var startCol = Int.random(in: 0..<size)
-        var startRow = Int.random(in: 0..<size)
-        let deltaCol = direction.deltaCol
-        let deltaRow = direction.deltaRow
+	
+	private mutating func bestPlacement(_ size: Int, _ words: [String]) {
+		// print(wordsSortedByLength)
+		var unplaced = 0
+		var limit = 10
+		var bestPlacement = 100
+		var bestPlacementWords = [Word]()
+		var bestBoard = [Cell]()
+		repeat {
+			clearBoard()
+			wordPlacements = []
+			unplaced = generatePuzzle(with: words)
+			print("Unplaced: \(unplaced) ----------------------------")
+			if unplaced < bestPlacement {
+				bestPlacement = unplaced
+				bestPlacementWords = wordPlacements
+				bestBoard = board
+			}
+			limit -= 1
+		} while unplaced > 0 && limit > 0
 		
-        // adjust starting x point to fit in puzzle
-        let lastCol = startCol + deltaCol * (word.count - 1)
-        if lastCol < 0 { startCol -= lastCol }
-        if lastCol >= size { startCol -= lastCol - size + 1 }
-        if startCol < 0 || startCol >= size { return false }
-        
-        // adjust starting y point to fit in puzzle
-        let lastRow = startRow + deltaRow * (word.count - 1)
-        if lastRow < 0 { startRow -= lastRow }
-        if lastRow >= size { startRow -= lastRow - size + 1 }
-        if startRow < 0 || startRow >= size { return false }
+		// show final placements
+		board = bestBoard
+		wordPlacements = bestPlacementWords.sorted(by: { $0.word < $1.word } )
+		print("Best placement: \(bestPlacement)")
+	}
+	
+	private mutating func clearBoard() {
+		board = []
+		for index in 0..<size*size {
+			board.append(Cell(letter: " ", index: index))
+		}
+	}
+	
+	// Checks placement validity and scores the quality of the overlap
+	private func scorePlacement(for word: String, atRow row: Int, col: Int, direction: Direction) -> Int? {
+		let letters = Array(word.uppercased())
+		var currentScore = 0
 		
-        // place the letters
-        let backupBoard = board
-        var c = startCol, r = startRow
-
-        for letter in word.uppercased() {
-			let index = indexOf(r, column:c)
-			let existing = board[index].letter
-			if existing == " " || existing == String(letter) {
-				// place letter if location is empty or already has the letter
-				board[index] = Cell(letter: String(letter), index: index)
-				c += deltaCol; r += deltaRow
-			} else {
-				// need to try new placement
-				board = backupBoard
+		for i in 0..<letters.count {
+			let newRow = row + (i * direction.deltaRow)
+			let newCol = col + (i * direction.deltaCol)
+			
+			// 1. Fail if out of bounds
+			guard newRow >= 0 && newRow < size && newCol >= 0 && newCol < size else {
+				return nil
+			}
+			
+			// 2. Fail if there is a letter conflict
+			let currentCell = board[indexOf(newRow, column: newCol)].letter
+			if currentCell != " " && currentCell != String(letters[i]) {
+				return nil
+			}
+			
+			// 3. Reward valid overlaps
+			if currentCell == String(letters[i]) {
+				currentScore += 10
+			}
+		}
+		
+		return currentScore
+	}
+	
+	// Write the word letters into the matrix
+	private mutating func placeWord(_ word: String, atRow row: Int, col: Int, direction: Direction) {
+		let letters = Array(word.uppercased())
+		for i in 0..<letters.count {
+			let newRow = row + (i * direction.deltaRow)
+			let newCol = col + (i * direction.deltaCol)
+			let index = indexOf(newRow, column:newCol)
+			board[index] = Cell(letter: String(letters[i]), index: index)
+		}
+		
+		// add word to the word database
+		let index = indexOf(row, column:col)
+		wordPlacements.append(Word(word: word, id: index, direction: direction))
+	}
+	
+	// Check if the word fits at the given coordinates
+	private func canPlaceWord(_ word: String, atRow row: Int, col: Int, direction: Direction) -> Bool {
+		let letters = Array(word.uppercased())
+		for i in 0..<letters.count {
+			let newRow = row + (i * direction.deltaRow)
+			let newCol = col + (i * direction.deltaCol)
+			
+			// Check bounds
+			guard newRow >= 0 && newRow < size && newCol >= 0 && newCol < size else {
+				return false
+			}
+			
+			// Check conflicts (empty spaces or matching characters are fine)
+			let currentCell = board[indexOf(newRow, column: newCol)].letter
+			if currentCell != " " && currentCell != String(letters[i]) {
 				return false
 			}
 		}
-        
-        // add word to the word database
-		let index = indexOf(startRow, column:startCol)
-		wordPlacements.append(Word(word: word, id: index, direction: direction))
-        return true
-    }
+		return true
+	}
+	
+	// Automatically loops through all words and places them randomly
+	private mutating func generatePuzzle(with words: [String]) -> Int {
+		// Sort words by length so long words establish a base infrastructure first
+		let sortedWords = words.sorted { $0.count > $1.count }
+		var unplaced = 0
+		
+		for word in sortedWords {
+			var bestRow = 0
+			var bestCol = 0
+			var bestDirection = Direction.right
+			var maxScore = -1
+			
+			// Test 150 random combinations to find the best overlapping spot
+			let sampleSize = 150
+			for _ in 0..<sampleSize {
+				let r = Int.random(in: 0..<size)
+				let c = Int.random(in: 0..<size)
+				guard let d = Direction.allCases.randomElement() else { continue }
+				
+				if let score = scorePlacement(for: word, atRow: r, col: c, direction: d) {
+					// Introduce a tiny random bonus (+0 or +1) so non-overlapping words
+					// don't always cluster in the top-left corner (0,0) when maxScore is 0
+					let tieBreakerScore = score + Int.random(in: 0...1)
+					
+					if tieBreakerScore > maxScore {
+						maxScore = tieBreakerScore
+						bestRow = r
+						bestCol = c
+						bestDirection = d
+					}
+				}
+			}
+			
+			// If maxScore is still -1, it means no valid spot was found in 150 tries
+			if maxScore >= 0 {
+				placeWord(word, atRow: bestRow, col: bestCol, direction: bestDirection)
+			} else {
+				print("Could not place word: \(word)")
+				unplaced += 1
+			}
+		}
+		return unplaced
+	}
     
     mutating func addLetter(_ index: Int) {
 		if selectedMoves.contains(index) { return }
@@ -150,7 +235,11 @@ struct GameBoard : Codable {
     }
 	
 	mutating func highlightWord(_ index: Int) {
-		wordPlacements[index].highlighted.toggle()
+		wordPlacements[index].highlighted = true
+	}
+	
+	func ishighlighted(_ index: Int) -> Bool {
+		wordPlacements[index].highlighted
 	}
     
     mutating func clearWord() {
@@ -159,12 +248,12 @@ struct GameBoard : Codable {
         selectedMoves = []
     }
     
-	func isHighlighted(_ index: Int) -> Bool {
+	func charIsHighlighted(_ index: Int) -> Bool {
 		selectedMoves.contains(index)
 	}
 	
     private func getRandomCharacter() -> String {
-		let alphabet = Array(Alphabets.japaneseAlphabet)
+		let alphabet = Array(Alphabets.englishAlphabet)
 		return String(alphabet[Int.random(in: 0..<alphabet.count)])
     }
  
@@ -176,8 +265,7 @@ struct GameBoard : Codable {
     
     static func indexToRowCol(_ index:Int) -> (row:Int, col:Int) {
 		let size = BoardView.size
-		guard size > 0 else { return (row: 0, col: 0) }
-		let index = max(0, min(index, size*size-1))
+		guard size > 0 && index < size*size else { return (row: 0, col: 0) }
 		return (row: index / size, col: index % size)
     }
     
