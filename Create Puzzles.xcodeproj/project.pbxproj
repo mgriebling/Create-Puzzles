@@ -14,8 +14,13 @@
 		472CE13E291BE6380074891E /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13D291BE6380074891E /* GameBoard.swift */; };
 		472CE140291BFA8C0074891E /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13F291BFA8C0074891E /* Game.swift */; };
 		47578B062FE885B90072FFED /* Alphabets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47578B052FE885B90072FFED /* Alphabets.swift */; };
+		47800D142FE9CD9C009537EC /* Words.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D132FE9CD9C009537EC /* Words.swift */; };
+		47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D152FE9D2FE009537EC /* WordsEditor.swift */; };
+		47800D1C2FEA9789009537EC /* WordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D1B2FEA9789009537EC /* WordView.swift */; };
+		47800D1E2FEAA9E5009537EC /* WordLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D1D2FEAA9E5009537EC /* WordLists.swift */; };
+		47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D1F2FEAAC90009537EC /* WordListSummary.swift */; };
+		47800D222FEAD186009537EC /* StringList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D212FEAD186009537EC /* StringList.swift */; };
 		47820B8329298242009B16A1 /* Subsonic in Frameworks */ = {isa = PBXBuildFile; productRef = 47820B8229298242009B16A1 /* Subsonic */; };
-		47820B89292D7490009B16A1 /* View-Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47820B88292D7490009B16A1 /* View-Size.swift */; };
 		47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C079E6291FD1FC003D0248 /* HighlightView.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,7 +34,12 @@
 		472CE13D291BE6380074891E /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		472CE13F291BFA8C0074891E /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		47578B052FE885B90072FFED /* Alphabets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alphabets.swift; sourceTree = "<group>"; };
-		47820B88292D7490009B16A1 /* View-Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-Size.swift"; sourceTree = "<group>"; };
+		47800D132FE9CD9C009537EC /* Words.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Words.swift; sourceTree = "<group>"; };
+		47800D152FE9D2FE009537EC /* WordsEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsEditor.swift; sourceTree = "<group>"; };
+		47800D1B2FEA9789009537EC /* WordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordView.swift; sourceTree = "<group>"; };
+		47800D1D2FEAA9E5009537EC /* WordLists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLists.swift; sourceTree = "<group>"; };
+		47800D1F2FEAAC90009537EC /* WordListSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListSummary.swift; sourceTree = "<group>"; };
+		47800D212FEAD186009537EC /* StringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringList.swift; sourceTree = "<group>"; };
 		47C079E6291FD1FC003D0248 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,14 +81,19 @@
 			children = (
 				472CE12E291858D90074891E /* Create_PuzzlesApp.swift */,
 				472CE130291858D90074891E /* BoardView.swift */,
+				47800D1B2FEA9789009537EC /* WordView.swift */,
 				47C079E6291FD1FC003D0248 /* HighlightView.swift */,
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
 				472CE132291858DB0074891E /* Assets.xcassets */,
 				472CE134291858DB0074891E /* Create_Puzzles.entitlements */,
 				472CE135291858DB0074891E /* Preview Content */,
-				47820B88292D7490009B16A1 /* View-Size.swift */,
 				47578B052FE885B90072FFED /* Alphabets.swift */,
+				47800D132FE9CD9C009537EC /* Words.swift */,
+				47800D152FE9D2FE009537EC /* WordsEditor.swift */,
+				47800D1D2FEAA9E5009537EC /* WordLists.swift */,
+				47800D1F2FEAAC90009537EC /* WordListSummary.swift */,
+				47800D212FEAD186009537EC /* StringList.swift */,
 			);
 			path = "Create Puzzles";
 			sourceTree = "<group>";
@@ -170,13 +185,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */,
 				472CE131291858D90074891E /* BoardView.swift in Sources */,
 				472CE12F291858D90074891E /* Create_PuzzlesApp.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
 				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
+				47800D222FEAD186009537EC /* StringList.swift in Sources */,
+				47800D142FE9CD9C009537EC /* Words.swift in Sources */,
+				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
+				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
-				47820B89292D7490009B16A1 /* View-Size.swift in Sources */,
+				47800D1E2FEAA9E5009537EC /* WordLists.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

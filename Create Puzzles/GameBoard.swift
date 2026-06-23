@@ -17,43 +17,6 @@ struct Cell: Codable, Identifiable {
     }
 }
 
-enum Direction: Int, Codable, CaseIterable {
-    case left, right, down, up, diagonalUpLeft, diagonalUpRight,
-		 diagonalDownLeft, diagonalDownRight
-    
-    var deltaCol: Int {
-        switch self {
-            case .left, .diagonalUpLeft, .diagonalDownLeft: return -1
-            case .right, .diagonalUpRight, .diagonalDownRight: return 1
-            case .up, .down: return 0
-        }
-    }
-    
-    var deltaRow: Int {
-        switch self {
-            case .down, .diagonalDownLeft, .diagonalDownRight: return 1
-            case .up, .diagonalUpLeft, .diagonalUpRight: return -1
-            case .left, .right: return 0
-        }
-    }
-    
-    static func random() -> Direction { Direction.allCases.randomElement()! }
-}
-
-public struct Word: Codable, Identifiable {
-    let word: String
-    let direction: Direction
-    var highlighted: Bool
-    public let id: Int
-    
-    init(word:String, id: Int, direction: Direction, highlighted: Bool = false) {
-        self.word = word
-        self.id = id
-        self.highlighted = highlighted
-        self.direction = direction
-    }
-}
-
 struct GameBoard : Codable {
     
     let size: Int
@@ -67,14 +30,18 @@ struct GameBoard : Codable {
     // placement of all words
     private(set) var wordPlacements = [Word]()
 	
-	init?(size: Int, words: [String]) {
-		guard !words.isEmpty && size > 0 else { return nil }
+	init?(size: Int, words: [String] = []) {
+		guard size > 0 else { return nil }
 		self.size = size
 		wordPlacements = []
 		board = []
 		
 		// iterate to find the best board placement
-		bestPlacement(size, words)
+		if words.isEmpty {
+			clearBoard()
+		} else {
+			bestPlacement(size, words)
+		}
 		
 		// fill any blanks with random characters
 		for i in 0..<size*size {

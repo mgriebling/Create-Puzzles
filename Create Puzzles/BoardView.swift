@@ -9,15 +9,15 @@ import SwiftUI
 import Subsonic
 
 struct BoardView: View {
+	@State var game: Game
+	
     static let size = Game.maxSize
 	static let gsize = 250.0
     
     let fontSize = CGFloat(14)  // ipad 30
 	let cellSize: CGFloat = gsize / CGFloat(size)
 	let boardSize: CGSize = CGSize(width: gsize, height: gsize)
-	let columns = Array(repeating: GridItem(.flexible()), count: 4) // 5)
-	
-	@State private var game = Game(board: GameBoard(size: Game.maxSize, words: Game.words)!)
+
 	@State private var isDragging: Bool = false
 	@State private var start: (row: Int, col: Int) = (0, 0)
 	@State private var dragDirection: Direction?
@@ -64,17 +64,7 @@ struct BoardView: View {
 			
 			Spacer()
 			
-			LazyVGrid(columns: columns, alignment: .leading) {
-				ForEach(game.board.wordPlacements.indices, id: \.self) { index in
-					let word = game.board.wordPlacements[index]
-					let textColor = game.wordIsHighlighted(index) ? Color(.gray) : .primary
-					Text(word.word.capitalized)
-						.foregroundColor(textColor)
-						.font(.system(size: fontSize+2, weight: .bold))
-						.strikethrough(game.wordIsHighlighted(index))
-				}
-			}
-			.padding(.leading, 35) // 75)
+			WordView(words: game.board.wordPlacements)
         }
     }
 	
@@ -151,6 +141,6 @@ struct BoardView: View {
 }
 
 #Preview {
-	BoardView()
+	BoardView(game: Game(board: GameBoard(size: 12, words: Game.words)!))
 }
 
