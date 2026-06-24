@@ -21,6 +21,9 @@ struct StringList: View {
 	let title: String
 	@Binding var strings: [String]
 	
+	// MARK: Data (Function) In
+	@Environment(\.dismiss) var dismiss
+	
 	@State private var lstrings = [ListItem]()
 	@State private var selectedItem: ListItem?
 	@State private var editString: String = ""
@@ -54,22 +57,40 @@ struct StringList: View {
 				}
 			}
 		}
+		.onAppear {
+			lstrings = strings.map { ListItem($0) }
+		}
 		.navigationTitle("\(title) Words")
 		.listStyle(.plain)
 		.toolbar {
-			addButton
-			EditButton()
+			ToolbarItem(placement: .cancellationAction) {
+				Button("Cancel") {
+					dismiss()
+				}
+			}
+			#if os(iOS)
+			ToolbarItem(placement: .navigationBarTrailing) {
+				addButton
+			}
+			ToolbarItem(placement: .navigationBarTrailing) {
+				EditButton()
+			}
+			ToolbarItem(placement: .navigationBarTrailing) {
+				Button("Done") {
+					done()
+				}
+			}
+			#endif
 		}
-		.onAppear { lstrings = strings.map{ ListItem($0) } }
 	}
-	
+		
 	var addButton: some View {
 		Button("Add Word", systemImage: "plus") {
 			// Add a unique name
 			let strings = lstrings.map(\.title)
 			var postFix: Int = 1
 			let itemName: String
-			if let index = strings.firstIndex(of: "untitled") {
+			if let _ = strings.firstIndex(of: "untitled") {
 				while strings.contains("untitled\(postFix)") {
 					postFix += 1
 				}
@@ -81,6 +102,11 @@ struct StringList: View {
 				lstrings.insert(ListItem(itemName), at: 0)
 			}
 		}
+	}
+	
+	func done() {
+		strings = lstrings.map(\.title)
+		dismiss()
 	}
 }
 

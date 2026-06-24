@@ -48,9 +48,16 @@ struct WordLists: View {
 		.listStyle(.plain)
 		.toolbar {
 			addButton
+			#if !os(macos)
 			EditButton()
+			#endif
 		}
-		.onAppear { addSampleWordLists() }
+		.onAppear {
+			if wordLists.isEmpty {
+				wordLists = Self.createSampleWordLists()
+				selection = wordLists[Int.random(in: 0..<wordLists.count)]
+			}
+		}
     }
 	
 	func editButton(for wordList: Words) -> some View {
@@ -89,14 +96,13 @@ struct WordLists: View {
 		}
 	}
 	
-	func addSampleWordLists() {
-		if wordLists.isEmpty {
-			wordLists.append(Words(name: "Numbers", words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]))
-			wordLists.append(Words(name: "Colors", words: ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]))
-			wordLists.append(Words(name: "Alphabet Codes", words: Game.words))
-			wordLists.append(Words(name: "Animals", words: ["dog", "cat", "snake", "elephant", "kangaroo", "penguin", "octopus", "penguin", "koala", "penguin", "horse", "cow", "donkey"]))
-			selection = wordLists[Int.random(in: 0..<wordLists.count)]
-		}
+	static func createSampleWordLists() -> [Words] {
+		var wordLists: [Words] = []
+		wordLists.append(Words(name: "Numbers", words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]))
+		wordLists.append(Words(name: "Colors", words: ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]))
+		wordLists.append(Words(name: "Alphabet Codes", words: Game.words))
+		wordLists.append(Words(name: "Animals", words: ["dog", "cat", "snake", "elephant", "kangaroo", "penguin", "octopus", "penguin", "koala", "penguin", "horse", "cow", "donkey"]))
+		return wordLists
 	}
 }
 

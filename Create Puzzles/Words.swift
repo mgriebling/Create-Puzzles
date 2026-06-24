@@ -6,14 +6,15 @@
 //
 
 import Foundation
+import NaturalLanguage
 
-public struct Word: Codable, Identifiable {
-	let word: String
+public struct Word: Codable, Identifiable, Hashable {
+	var word: String
 	let direction: Direction
 	var highlighted: Bool
 	public let id: Int
 	
-	init(word:String, id: Int, direction: Direction, highlighted: Bool = false) {
+	init(word:String, id: Int, direction: Direction = .right, highlighted: Bool = false) {
 		self.word = word
 		self.id = id
 		self.highlighted = highlighted
@@ -66,6 +67,14 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 		let myLocale = Locale.current
 		let name = myLocale.localizedString(forLanguageCode: self.rawValue)
 		return name ?? "Unknown"
+	}
+	
+	public static func getLanguage(from text: String) -> Language? {
+		if let languageCode = NLLanguageRecognizer.dominantLanguage(for: text) {
+			return Language(rawValue: languageCode.rawValue)
+		} else {
+			return nil
+		}
 	}
 }
 

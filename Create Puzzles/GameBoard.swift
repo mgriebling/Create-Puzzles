@@ -19,7 +19,7 @@ struct Cell: Codable, Identifiable {
 
 struct GameBoard : Codable {
     
-    let size: Int
+	let size: Int
     
     private(set) var board: [Cell]
     

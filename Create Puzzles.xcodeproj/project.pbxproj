@@ -21,6 +21,9 @@
 		47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D1F2FEAAC90009537EC /* WordListSummary.swift */; };
 		47800D222FEAD186009537EC /* StringList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D212FEAD186009537EC /* StringList.swift */; };
 		47820B8329298242009B16A1 /* Subsonic in Frameworks */ = {isa = PBXBuildFile; productRef = 47820B8229298242009B16A1 /* Subsonic */; };
+		478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF1342FEC13A3001F4018 /* FileImportButton.swift */; };
+		478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13A2FEC2E6E001F4018 /* GameEditor.swift */; };
+		478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */; };
 		47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C079E6291FD1FC003D0248 /* HighlightView.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +43,9 @@
 		47800D1D2FEAA9E5009537EC /* WordLists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLists.swift; sourceTree = "<group>"; };
 		47800D1F2FEAAC90009537EC /* WordListSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListSummary.swift; sourceTree = "<group>"; };
 		47800D212FEAD186009537EC /* StringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringList.swift; sourceTree = "<group>"; };
+		478BF1342FEC13A3001F4018 /* FileImportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportButton.swift; sourceTree = "<group>"; };
+		478BF13A2FEC2E6E001F4018 /* GameEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditor.swift; sourceTree = "<group>"; };
+		478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGridView.swift; sourceTree = "<group>"; };
 		47C079E6291FD1FC003D0248 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,19 +87,22 @@
 			children = (
 				472CE12E291858D90074891E /* Create_PuzzlesApp.swift */,
 				472CE130291858D90074891E /* BoardView.swift */,
+				478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */,
 				47800D1B2FEA9789009537EC /* WordView.swift */,
 				47C079E6291FD1FC003D0248 /* HighlightView.swift */,
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
-				472CE132291858DB0074891E /* Assets.xcassets */,
-				472CE134291858DB0074891E /* Create_Puzzles.entitlements */,
-				472CE135291858DB0074891E /* Preview Content */,
 				47578B052FE885B90072FFED /* Alphabets.swift */,
 				47800D132FE9CD9C009537EC /* Words.swift */,
 				47800D152FE9D2FE009537EC /* WordsEditor.swift */,
 				47800D1D2FEAA9E5009537EC /* WordLists.swift */,
 				47800D1F2FEAAC90009537EC /* WordListSummary.swift */,
 				47800D212FEAD186009537EC /* StringList.swift */,
+				478BF1342FEC13A3001F4018 /* FileImportButton.swift */,
+				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
+				472CE134291858DB0074891E /* Create_Puzzles.entitlements */,
+				472CE132291858DB0074891E /* Assets.xcassets */,
+				472CE135291858DB0074891E /* Preview Content */,
 			);
 			path = "Create Puzzles";
 			sourceTree = "<group>";
@@ -187,12 +196,15 @@
 			files = (
 				47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */,
 				472CE131291858D90074891E /* BoardView.swift in Sources */,
+				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
 				472CE12F291858D90074891E /* Create_PuzzlesApp.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
 				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
 				47800D222FEAD186009537EC /* StringList.swift in Sources */,
 				47800D142FE9CD9C009537EC /* Words.swift in Sources */,
+				478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */,
+				478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */,
 				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,

@@ -10,14 +10,22 @@ import SwiftUI
 struct WordListSummary: View {
 	let wordList: Words
 	
+	@Environment(\.horizontalSizeClass) var size
+	
 	var body: some View {
+		let isCompact: Bool = size == .compact
 		VStack(alignment: .leading) {
-			Text(wordList.name).font(.title)
-			Text("Author: \(wordList.author)")
-			// Text("Created: \(wordList.date, format: )")
-			Text("\(wordList.words.count) words (\(wordList.language.description))")
+			Text(wordList.name).font(isCompact ? .title2 : .title)
+			let author = wordList.author.isEmpty ? "Anonymous" : wordList.author
+			if isCompact && author != "Anonymous" && author != "Unknown" {
+				Text("Author: \(wordList.author)")
+			}
+			if !isCompact {
+				Text("Created: \(wordList.date, format: .dateTime.day().month().year())")
+			}
+			Text("^[\(wordList.words.count) word](inflect: true) (\(wordList.language.description))")
 			Text(wordList.words.map({ $0.capitalized }).joined(separator: ", "))
-				.font(.caption)
+				.font(isCompact ? .caption2 : .caption)
 		}
 		.padding(.horizontal)
 	}
