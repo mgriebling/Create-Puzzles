@@ -64,23 +64,13 @@ struct StringList: View {
 		.listStyle(.plain)
 		.toolbar {
 			ToolbarItem(placement: .cancellationAction) {
-				Button("Cancel") {
-					dismiss()
-				}
+				Button("Cancel") { dismiss() }
 			}
-			#if os(iOS)
-			ToolbarItem(placement: .navigationBarTrailing) {
-				addButton
+			ToolbarItem(placement: .automatic) { addButton }
+			ToolbarItem(placement: .automatic) { EditButton() }
+			ToolbarItem(placement: .confirmationAction) {
+				Button("Done") { done() }
 			}
-			ToolbarItem(placement: .navigationBarTrailing) {
-				EditButton()
-			}
-			ToolbarItem(placement: .navigationBarTrailing) {
-				Button("Done") {
-					done()
-				}
-			}
-			#endif
 		}
 	}
 		
@@ -111,7 +101,7 @@ struct StringList: View {
 }
 
 #Preview {
-	@Previewable @State var strings = Game.words
+	@Previewable @State var strings = Game.words.words
 	NavigationStack {
 		StringList(title: "Default", strings: $strings)
 	}

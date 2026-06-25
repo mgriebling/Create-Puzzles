@@ -10,15 +10,17 @@ import SwiftUI
 @Observable class Game {
     
     static let maxSize = 12 // 18
-    static let words =
+    static let words = Words(name: "Default", words:
         ["alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
          "india", "juliet", "kilo", "lima", "mike", "november", "oscar",
          "papa", "quebec", "romeo", "sierra", "tango", "uniform", "victor",
-         "whiskey", "xray", "yankee", "zulu"]
+		 "whiskey", "xray", "yankee", "zulu"])
 	
-	var board: GameBoard // = GameBoard(size: maxSize, words: words)!
+	var board: GameBoard
 	var activeWord: String { board.selectedWord }
-	var words: [String] { board.wordPlacements.map(\.word) }
+	var words: [String]    { board.wordPlacements.map(\.word) }
+	var size: Int		   { board.size }
+	// var cellSize: CGFloat  { board.size.isMultiple(of: 2) ? 20 : 15 }
 	
 	init(board: GameBoard) {
 		self.board = board

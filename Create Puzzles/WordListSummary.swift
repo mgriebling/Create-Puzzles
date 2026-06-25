@@ -32,6 +32,6 @@ struct WordListSummary: View {
 }
 
 #Preview {
-	@Previewable @State var wordList = Words(language: .english, author: "Michael Griebling", date: Date(), words: Game.words)
+	@Previewable @State var wordList = Game.words
     WordListSummary(wordList: wordList)
 }

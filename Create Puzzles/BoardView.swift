@@ -6,18 +6,12 @@
 //
 
 import SwiftUI
-import Subsonic
+//import Subsonic
 
 struct BoardView: View {
 	@State var game: Game
 	
-    static let size = Game.maxSize
-	static let gsize = 250.0
-    
-    let fontSize = CGFloat(14)  // ipad 30
-	let cellSize: CGFloat = gsize / CGFloat(size)
-	let boardSize: CGSize = CGSize(width: gsize, height: gsize)
-
+	// Internal State
 	@State private var actualSize: CGSize = .zero
 	
 	var body: some View {
@@ -31,15 +25,19 @@ struct BoardView: View {
 			Spacer()
 			
 			ZStack {
-				LetterGridView(game: game, fontSize: fontSize, cellSize: cellSize, actualSize: actualSize)
-					.onGeometryChange(for: CGSize.self, of: { $0.size },
-									  action: { actualSize = $0; print($0) })
+				LetterGridView(game: game, noDrag: false)
+					.onGeometryChange(for: CGSize.self) { proxy in
+						proxy.size
+					} action: { newValue in
+						self.actualSize = newValue
+						print("Width: \(newValue.width)")
+					}
 				
 				// Display the highlighted words
 				ForEach(game.board.wordPlacements.indices, id: \.self) { index in
 					let word = game.board.wordPlacements[index]
 					if game.wordIsHighlighted(index) {
-						HighlightView(word: word, size: actualSize, numberOfCells: Self.size)
+						HighlightView(word: word, size: actualSize, board: game.board)
 					}
 				}
 			}

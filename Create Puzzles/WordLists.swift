@@ -100,7 +100,7 @@ struct WordLists: View {
 		var wordLists: [Words] = []
 		wordLists.append(Words(name: "Numbers", words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]))
 		wordLists.append(Words(name: "Colors", words: ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]))
-		wordLists.append(Words(name: "Alphabet Codes", words: Game.words))
+		wordLists.append(Game.words)
 		wordLists.append(Words(name: "Animals", words: ["dog", "cat", "snake", "elephant", "kangaroo", "penguin", "octopus", "penguin", "koala", "penguin", "horse", "cow", "donkey"]))
 		return wordLists
 	}

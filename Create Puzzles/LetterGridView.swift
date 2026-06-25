@@ -9,14 +9,14 @@ import SwiftUI
 
 struct LetterGridView: View {
 	let game: Game
-	let fontSize: CGFloat
-	let cellSize: CGFloat
-	var actualSize: CGSize = .zero
 	var noDrag: Bool = true
+	var fontSize: CGFloat = 20
+	var cellSize: CGFloat = 22
 	
 	@State private var isDragging: Bool = false
 	@State private var start: (row: Int, col: Int) = (0, 0)
 	@State private var dragDirection: Direction?
+	@State private var contentHeight: CGFloat = 0
 	
 	var body: some View {
 		Grid {
@@ -26,19 +26,25 @@ struct LetterGridView: View {
 						let highlighted = game.charIsHighlighted(row, col: col)
 						let backColor = highlighted ? Color.accentColor : .clear
 						Text(game.board[row, col].letter)
-							.font(.system(size: fontSize+5, weight: .bold))
+							.font(.system(size: fontSize, weight: .bold))
 							.aspectRatio(1, contentMode: .fit)
 							.frame(width: cellSize, height: cellSize)
-							.gesture(dragGesture(col, row))
+							.gesture(dragGesture(col, row), isEnabled: !noDrag)
 							.background(backColor)
 					}
 				}
 			}
 		}
+		.onGeometryChange(for: CGSize.self) { proxy in
+			proxy.size
+		} action: { newValue in
+			self.contentHeight = newValue.height
+			print("Height: \(newValue.height)")
+		}
+		.presentationDetents([.height(contentHeight)])
 	}
 	
 	private func dragGesture(_ col: Int, _ row: Int) -> some Gesture {
-		// guard !noDrag else { return nil }
 		DragGesture()
 			.onChanged { value in
 				if !isDragging {
@@ -69,7 +75,7 @@ struct LetterGridView: View {
 	}
 	
 	private func selectLetter(_ row: Int, _ col: Int,_ value: DragGesture.Value) {
-		let cellSize = actualSize.width / CGFloat(game.board.size)
+		let cellSize = contentHeight / CGFloat(game.board.size)
 		let x = Int(abs(value.translation.width) / cellSize)
 		let y = Int(abs(value.translation.height) / cellSize)
 		let d = max(x, y)
@@ -89,6 +95,7 @@ struct LetterGridView: View {
 	}
 	
 	func getDirection(_ size: CGSize) -> Direction? {
+		let cellSize = contentHeight / CGFloat(game.board.size)
 		let dx = size.width
 		let dy = size.height
 		let minDistance = 5.0
@@ -111,9 +118,9 @@ struct LetterGridView: View {
 }
 
 #Preview {
-	@Previewable @State var game = Game(board: GameBoard(size: 12, words: Game.words)!)
+	@Previewable @State var game = Game(board: GameBoard(size: 12)!)
 	NavigationStack {
-		LetterGridView(game: game, fontSize: 14, cellSize: 20.8)
+		LetterGridView(game: game, fontSize: 20)
 	}
 }
 

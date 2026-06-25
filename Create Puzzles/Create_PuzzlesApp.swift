@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct Create_PuzzlesApp: App {
     
-	@State var game = Game(board: GameBoard(size: Game.maxSize, words: Game.words)!)
+	@State var game = Game(board: GameBoard(size: Game.maxSize)!)
     
     var body: some Scene {
         WindowGroup {

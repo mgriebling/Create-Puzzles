@@ -26,21 +26,27 @@ struct GameBoard : Codable {
     // active word selection
     private(set) var selectedWord = ""
     private var selectedMoves = [Int]()
+	
+	// active set of words
+	private(set) var words: Words
     
     // placement of all words
     private(set) var wordPlacements = [Word]()
+	private(set) var missingWords = [String]()
 	
-	init?(size: Int, words: [String] = []) {
+	init?(size: Int, words: Words = Words()) {
 		guard size > 0 else { return nil }
 		self.size = size
+		self.words = words
 		wordPlacements = []
 		board = []
+		missingWords = []
 		
 		// iterate to find the best board placement
-		if words.isEmpty {
+		if words.words.isEmpty {
 			clearBoard()
 		} else {
-			bestPlacement(size, words)
+			bestPlacement(size, words.words)
 		}
 		
 		// fill any blanks with random characters
@@ -52,7 +58,6 @@ struct GameBoard : Codable {
 	}
 	
 	private mutating func bestPlacement(_ size: Int, _ words: [String]) {
-		// print(wordsSortedByLength)
 		var unplaced = 0
 		var limit = 10
 		var bestPlacement = 100
@@ -75,6 +80,12 @@ struct GameBoard : Codable {
 		board = bestBoard
 		wordPlacements = bestPlacementWords.sorted(by: { $0.word < $1.word } )
 		print("Best placement: \(bestPlacement)")
+		
+		let newSet = Set(wordPlacements.map(\.word))
+		missingWords = words.filter { !newSet.contains($0) }.sorted(by: <)
+		if !missingWords.isEmpty {
+			print("Missing: \(missingWords.joined(separator: ", "))")
+		}
 	}
 	
 	private mutating func clearBoard() {
@@ -230,8 +241,8 @@ struct GameBoard : Codable {
 		return row * size + column
     }
     
-    static func indexToRowCol(_ index:Int) -> (row:Int, col:Int) {
-		let size = BoardView.size
+    func indexToRowCol(_ index:Int) -> (row:Int, col:Int) {
+		// let size = BoardView.size
 		guard size > 0 && index < size*size else { return (row: 0, col: 0) }
 		return (row: index / size, col: index % size)
     }

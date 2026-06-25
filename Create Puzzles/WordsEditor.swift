@@ -96,6 +96,6 @@ struct WordsEditor: View {
 }
 
 #Preview {
-	@Previewable @State var words = Words(words: Game.words)
+	@Previewable @State var words = Game.words
 	WordsEditor(words: $words)
 }

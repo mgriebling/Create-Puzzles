@@ -85,7 +85,7 @@ public struct Words: Codable, Hashable {
 	public var date: Date
 	public var words: [String]
 	
-	init(name: String = "Default Wordlist", language: Language = .english,
+	init(name: String = "Empty", language: Language = .english,
 		 author: String = "Unknown", date: Date = Date(), words: [String] = []) {
 		self.name = name
 		self.language = language

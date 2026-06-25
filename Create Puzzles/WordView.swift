@@ -32,7 +32,7 @@ struct WordView: View {
 #Preview {
 	let words: [Word] = {
 		var w = [Word]()
-		for (id, word) in Game.words.enumerated() {
+		for (id, word) in Game.words.words.enumerated() {
 			w.append(Word(word: word, id: id))
 		}
 		return w
