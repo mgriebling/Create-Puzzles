@@ -28,14 +28,14 @@ struct GameBoard : Codable {
     private var selectedMoves = [Int]()
 	
 	// active set of words
-	private(set) var words: Words
+	private(set) var words: WordList
     
     // placement of all words
-    private(set) var wordPlacements = [Word]()
+    private(set) var wordPlacements = [PlacedWord]()
 	private(set) var missingWords = [String]()
 	
-	init?(size: Int, words: Words = Words()) {
-		guard size > 0 else { return nil }
+	init(size: Int, words: WordList = WordList()) {
+		let size = min(size, 10)
 		self.size = size
 		self.words = words
 		wordPlacements = []
@@ -61,7 +61,7 @@ struct GameBoard : Codable {
 		var unplaced = 0
 		var limit = 10
 		var bestPlacement = 100
-		var bestPlacementWords = [Word]()
+		var bestPlacementWords = [PlacedWord]()
 		var bestBoard = [Cell]()
 		repeat {
 			clearBoard()
@@ -136,7 +136,7 @@ struct GameBoard : Codable {
 		
 		// add word to the word database
 		let index = indexOf(row, column:col)
-		wordPlacements.append(Word(word: word, id: index, direction: direction))
+		wordPlacements.append(PlacedWord(word: word, id: index, direction: direction))
 	}
 	
 	// Check if the word fits at the given coordinates

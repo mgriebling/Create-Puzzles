@@ -9,12 +9,12 @@ import SwiftUI
 
 struct WordLists: View {
 	// MARK: Data Shared with Me
-	@Binding var selection: Words?
+	@Binding var selection: WordList?
 	
-	@State private var wordLists: [Words] = []
-	@State private var wordListToEdit: Words = .init()
+	@State private var wordLists: [WordList] = []
+	@State private var wordListToEdit: WordList = .init()
 	@State private var showWordListEditor: Bool = false
-	@State private var originalWordList: Words? = nil
+	@State private var originalWordList: WordList? = nil
 	
     var body: some View {
 		List(selection: $selection) {
@@ -60,7 +60,7 @@ struct WordLists: View {
 		}
     }
 	
-	func editButton(for wordList: Words) -> some View {
+	func editButton(for wordList: WordList) -> some View {
 		Button("Edit", systemImage: "pencil") {
 			originalWordList = wordList
 			wordListToEdit = wordList
@@ -68,7 +68,7 @@ struct WordLists: View {
 		}
 	}
 	
-	func deleteButton(for wordList: Words) -> some View {
+	func deleteButton(for wordList: WordList) -> some View {
 		Button("Delete", systemImage: "minus.circle", role: .destructive) {
 			withAnimation {
 				wordLists.removeAll { $0 == wordList }
@@ -78,7 +78,7 @@ struct WordLists: View {
 	
 	var addButton: some View {
 		Button("Add Word List", systemImage: "plus") {
-			wordListToEdit = Words(name: "Untitled", words: ["word1", "word2", "word3"])
+			wordListToEdit = WordList(name: "Untitled", words: ["word1", "word2", "word3"])
 			showWordListEditor.toggle()
 		}
 		.sheet(isPresented: $showWordListEditor) {
@@ -96,18 +96,18 @@ struct WordLists: View {
 		}
 	}
 	
-	static func createSampleWordLists() -> [Words] {
-		var wordLists: [Words] = []
-		wordLists.append(Words(name: "Numbers", words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]))
-		wordLists.append(Words(name: "Colors", words: ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]))
+	static func createSampleWordLists() -> [WordList] {
+		var wordLists: [WordList] = []
+		wordLists.append(WordList(name: "Number", words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]))
+		wordLists.append(WordList(name: "Color", words: ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]))
 		wordLists.append(Game.words)
-		wordLists.append(Words(name: "Animals", words: ["dog", "cat", "snake", "elephant", "kangaroo", "penguin", "octopus", "penguin", "koala", "penguin", "horse", "cow", "donkey"]))
+		wordLists.append(WordList(name: "Animal", words: ["dog", "cat", "snake", "elephant", "kangaroo", "penguin", "octopus", "penguin", "koala", "penguin", "horse", "cow", "donkey"]))
 		return wordLists
 	}
 }
 
 #Preview {
-	@Previewable @State var selection: Words?
+	@Previewable @State var selection: WordList?
 	NavigationStack {
 		WordLists(selection: $selection)
 	}

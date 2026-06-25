@@ -16,10 +16,10 @@ struct GameEditor: View {
 	// MARK: Size Range (should be global somewhere else)
 	static let range = 10.0...20.0
 	
-	@State private var lgame = Game(board: GameBoard(size: Int(range.lowerBound))!)
-	@State private var selectedWords: Words = .init()
-	@State private var words = [Words]()
-	@State private var wordList = [Word]()
+	@State private var lgame = Game(board: GameBoard(size: Int(range.lowerBound)))
+	@State private var selectedWords: WordList = .init()
+	@State private var words = [WordList]()
+	@State private var wordList = [PlacedWord]()
 	@State private var size = range.lowerBound
 	@State private var actualSize: CGSize = .zero
 	
@@ -48,7 +48,7 @@ struct GameEditor: View {
 					withAnimation {
 						wordList = []
 						for (id, word) in selectedWords.words.enumerated() {
-							wordList.append(Word(word: word, id: id))
+							wordList.append(PlacedWord(word: word, id: id))
 						}
 						updateGame()
 					}
@@ -67,8 +67,7 @@ struct GameEditor: View {
 					}
 				})
 				{
-					let size = -0.0239 * self.size * self.size * self.size + 1.2211 * self.size * self.size - 21.607 * self.size + 144.82
-					LetterGridView(game: lgame, fontSize: size, cellSize: size)
+					LetterGridView(game: lgame)
 				}
 		}
 		.onAppear {
@@ -102,7 +101,7 @@ struct GameEditor: View {
 	
 	func updateGame() {
 		Task.detached {
-			let updatedGame = await Game(board: GameBoard(size: Int(size), words: selectedWords)!)
+			let updatedGame = await Game(board: GameBoard(size: Int(size), words: selectedWords))
 			await MainActor.run {
 				self.lgame = updatedGame
 			}
@@ -112,7 +111,7 @@ struct GameEditor: View {
 }
 
 #Preview {
-	@Previewable @State var game = Game(board: GameBoard(size: 12)!)
+	@Previewable @State var game = Game(board: GameBoard(size: 12))
 	NavigationStack {
 		GameEditor(game: $game)
 	}

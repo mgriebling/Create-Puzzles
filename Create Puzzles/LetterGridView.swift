@@ -10,8 +10,7 @@ import SwiftUI
 struct LetterGridView: View {
 	let game: Game
 	var noDrag: Bool = true
-	var fontSize: CGFloat = 20
-	var cellSize: CGFloat = 22
+	var scale: CGFloat = 1
 	
 	@State private var isDragging: Bool = false
 	@State private var start: (row: Int, col: Int) = (0, 0)
@@ -19,6 +18,7 @@ struct LetterGridView: View {
 	@State private var contentHeight: CGFloat = 0
 	
 	var body: some View {
+		let cellSize = cellSize(with: game.size) * scale
 		Grid {
 			ForEach(0..<game.board.size, id: \.self) { row in
 				GridRow {
@@ -26,7 +26,7 @@ struct LetterGridView: View {
 						let highlighted = game.charIsHighlighted(row, col: col)
 						let backColor = highlighted ? Color.accentColor : .clear
 						Text(game.board[row, col].letter)
-							.font(.system(size: fontSize, weight: .bold))
+							.font(.system(size: cellSize, weight: .bold))
 							.aspectRatio(1, contentMode: .fit)
 							.frame(width: cellSize, height: cellSize)
 							.gesture(dragGesture(col, row), isEnabled: !noDrag)
@@ -42,6 +42,11 @@ struct LetterGridView: View {
 			print("Height: \(newValue.height)")
 		}
 		.presentationDetents([.height(contentHeight)])
+	}
+	
+	private func cellSize(with cells: Int) -> CGFloat {
+		let size = CGFloat(cells)
+		return ((-0.0239 * size + 1.2211) * size - 21.607) * size + 144.82
 	}
 	
 	private func dragGesture(_ col: Int, _ row: Int) -> some Gesture {
@@ -118,9 +123,9 @@ struct LetterGridView: View {
 }
 
 #Preview {
-	@Previewable @State var game = Game(board: GameBoard(size: 12)!)
+	@Previewable @State var game = Game(board: GameBoard(size: 12))
 	NavigationStack {
-		LetterGridView(game: game, fontSize: 20)
+		LetterGridView(game: game)
 	}
 }
 

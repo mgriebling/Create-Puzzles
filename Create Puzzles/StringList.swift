@@ -103,6 +103,6 @@ struct StringList: View {
 #Preview {
 	@Previewable @State var strings = Game.words.words
 	NavigationStack {
-		StringList(title: "Default", strings: $strings)
+		StringList(title: Game.words.name, strings: $strings)
 	}
 }

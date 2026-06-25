@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WordListSummary: View {
-	let wordList: Words
+	let wordList: WordList
 	
 	@Environment(\.horizontalSizeClass) var size
 	

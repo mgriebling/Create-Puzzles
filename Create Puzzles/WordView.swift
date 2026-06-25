@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WordView: View {
-	let words: [Word]
+	let words: [PlacedWord]
 	
 	@Environment(\.horizontalSizeClass) var size
 	
@@ -30,10 +30,10 @@ struct WordView: View {
 }
 
 #Preview {
-	let words: [Word] = {
-		var w = [Word]()
+	let words: [PlacedWord] = {
+		var w = [PlacedWord]()
 		for (id, word) in Game.words.words.enumerated() {
-			w.append(Word(word: word, id: id))
+			w.append(PlacedWord(word: word, id: id))
 		}
 		return w
 	}()

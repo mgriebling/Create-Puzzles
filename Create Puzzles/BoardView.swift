@@ -9,7 +9,7 @@ import SwiftUI
 //import Subsonic
 
 struct BoardView: View {
-	@State var game: Game
+	@Binding var game: Game
 	
 	// Internal State
 	@State private var actualSize: CGSize = .zero
@@ -24,23 +24,7 @@ struct BoardView: View {
 			
 			Spacer()
 			
-			ZStack {
-				LetterGridView(game: game, noDrag: false)
-					.onGeometryChange(for: CGSize.self) { proxy in
-						proxy.size
-					} action: { newValue in
-						self.actualSize = newValue
-						print("Width: \(newValue.width)")
-					}
-				
-				// Display the highlighted words
-				ForEach(game.board.wordPlacements.indices, id: \.self) { index in
-					let word = game.board.wordPlacements[index]
-					if game.wordIsHighlighted(index) {
-						HighlightView(word: word, size: actualSize, board: game.board)
-					}
-				}
-			}
+			HighlightedGridView(game: $game)
 			
 			Spacer()
 			
@@ -50,6 +34,8 @@ struct BoardView: View {
 }
 
 #Preview {
-	BoardView(game: Game(board: GameBoard(size: 12, words: Game.words)!))
+	@Previewable
+	@State var game = Game(board: GameBoard(size: 12, words: Game.words))
+	BoardView(game: $game)
 }
 

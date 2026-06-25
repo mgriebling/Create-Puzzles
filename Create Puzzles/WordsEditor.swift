@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct WordsEditor: View {
-	@Binding var words: Words
+	@Binding var words: WordList
 	var onDone: (() -> Void)?
 	
 	// MARK: Data (Function) In
 	@Environment(\.dismiss) var dismiss
 	
-	@State private var lwords: Words = Words()
+	@State private var lwords: WordList = WordList()
 	@State private var name: String = ""
-	@State private var wordList = [Word]()
+	@State private var wordList = [PlacedWord]()
 	@State private var selectedLanguage = Language.english
 	@State private var editWordList: Bool = false
 	
@@ -60,7 +60,7 @@ struct WordsEditor: View {
 				}
 				.onChange(of: lwords) { oldValue, newValue in
 					wordList = lwords.words.enumerated().map { id, word in
-						Word(word: word, id: id, direction: .right)
+						PlacedWord(word: word, id: id, direction: .right)
 					}
 				}
 			}
@@ -82,7 +82,7 @@ struct WordsEditor: View {
 				lwords = words
 				selectedLanguage = words.language
 				wordList = words.words.enumerated().map { id, word in
-					Word(word: word, id: id, direction: .right)
+					PlacedWord(word: word, id: id, direction: .right)
 				}
 			}
 		}

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HighlightView: View {
-	var word: Word
+	var word: PlacedWord
     var size: CGSize
 	let board: GameBoard
 	
