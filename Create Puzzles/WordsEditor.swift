@@ -66,23 +66,21 @@ struct WordsEditor: View {
 			}
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
-					Button("Cancel") {
-						dismiss()
-					}
+					Button("Cancel") { dismiss() }
+						.tint(Color(.systemRed))
 				}
 				ToolbarItem(placement: .confirmationAction) {
-					Button("Done") {
-						done()
-						onDone?()
-					}
+					Button("Done") { done(); onDone?() }
+						.tint(Color(.systemGreen))
 				}
 			}
 			.navigationTitle("Word List Editor")
+			.navigationBarTitleDisplayMode(.inline)
 			.onAppear {
 				lwords = words
-				selectedLanguage = words.language
-				wordList = words.words.enumerated().map { id, word in
-					PlacedWord(word: word, id: id, direction: .right)
+				selectedLanguage = lwords.language
+				wordList = lwords.words.enumerated().map { id, word in
+					PlacedWord(word: word, id: id)
 				}
 			}
 		}
@@ -96,6 +94,6 @@ struct WordsEditor: View {
 }
 
 #Preview {
-	@Previewable @State var words = Game.words
+	@Previewable @State var words = SampleWordLists.all.randomElement()!
 	WordsEditor(words: $words)
 }

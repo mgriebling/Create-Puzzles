@@ -13,8 +13,8 @@ struct WordView: View {
 	@Environment(\.horizontalSizeClass) var size
 	
 	var body: some View {
-		let fontSize: CGFloat = size == .compact ? 16 : 32
-		let columns = Array(repeating: GridItem(.flexible(), alignment: .leading), count: size == .compact ? 3 : 5)
+		let fontSize: CGFloat = size == .compact ? 14 : 32
+		let columns = Array(repeating: GridItem(.flexible(), alignment: .leading), count: size == .compact ? 4 : 5)
 		LazyVGrid(columns: columns, alignment: .trailing) {
 			ForEach(words.indices, id: \.self) { index in
 				let word = words[index]
@@ -25,18 +25,15 @@ struct WordView: View {
 					.strikethrough(word.highlighted)
 			}
 		}
-		.padding(.leading, size == .compact ? 35 : 75)
+		.padding(.leading, size == .compact ? 25 : 75)
 	}
 }
 
 #Preview {
-	let words: [PlacedWord] = {
-		var w = [PlacedWord]()
-		for (id, word) in Game.words.words.enumerated() {
-			w.append(PlacedWord(word: word, id: id))
+	let words: [PlacedWord] =
+		SampleWordLists.all[2].words.enumerated().map { index, word in
+			PlacedWord(word: word, id: index)
 		}
-		return w
-	}()
 	WordView(words: words)
 }
 

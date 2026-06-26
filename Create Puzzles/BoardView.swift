@@ -32,7 +32,7 @@ struct BoardView: View {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 12, words: Game.words))
+	@State var game = Game(board: GameBoard(size: 12, words: SampleWordLists.all[0]))
 	BoardView(game: $game)
 }
 

@@ -9,8 +9,7 @@ import SwiftUI
 
 @main
 struct Create_PuzzlesApp: App {
-    
-	@State var game = Game(board: GameBoard(size: Game.maxSize))
+	@State var game = Game(board: GameBoard(size: GameBoard.maximumSize))
     
     var body: some Scene {
         WindowGroup {

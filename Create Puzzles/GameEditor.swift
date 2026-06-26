@@ -87,7 +87,7 @@ struct GameEditor: View {
 		lgame = game.copy()
 		size = Double(game.board.size)
 		if wordLists.isEmpty {
-			wordLists = WordLists.createSampleWordLists()
+			wordLists = SampleWordLists.all
 		}
 		if !wordLists.contains(game.board.words) {
 			wordLists.insert(game.board.words, at: 0)

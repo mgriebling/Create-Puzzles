@@ -11,8 +11,8 @@ struct WordLists: View {
 	// MARK: Data Shared with Me
 	@Binding var selection: WordList?
 	
-	@State private var wordLists: [WordList] = []
-	@State private var wordListToEdit: WordList = .init()
+	@State private var wordLists = [WordList]()
+	@State private var wordListToEdit = WordList()
 	@State private var showWordListEditor: Bool = false
 	@State private var originalWordList: WordList? = nil
 	
@@ -54,7 +54,7 @@ struct WordLists: View {
 		}
 		.onAppear {
 			if wordLists.isEmpty {
-				wordLists = Self.createSampleWordLists()
+				wordLists = SampleWordLists.all
 				selection = wordLists[Int.random(in: 0..<wordLists.count)]
 			}
 		}
@@ -96,14 +96,7 @@ struct WordLists: View {
 		}
 	}
 	
-	static func createSampleWordLists() -> [WordList] {
-		var wordLists: [WordList] = []
-		wordLists.append(WordList(name: "Number", words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]))
-		wordLists.append(WordList(name: "Color", words: ["red", "blue", "green", "yellow", "orange", "purple", "pink", "brown", "black", "white"]))
-		wordLists.append(Game.words)
-		wordLists.append(WordList(name: "Animal", words: ["dog", "cat", "snake", "elephant", "kangaroo", "penguin", "octopus", "penguin", "koala", "penguin", "horse", "cow", "donkey"]))
-		return wordLists
-	}
+
 }
 
 #Preview {

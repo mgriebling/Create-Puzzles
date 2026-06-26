@@ -26,6 +26,6 @@ struct GameSummary: View {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 14, words: Game.words))
+	@State var game = Game(board: GameBoard(size: 14, words: SampleWordLists.all.randomElement()!))
 	GameSummary(game: $game)
 }

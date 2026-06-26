@@ -101,8 +101,8 @@ struct StringList: View {
 }
 
 #Preview {
-	@Previewable @State var strings = Game.words.words
+	@Previewable @State var strings = SampleWordLists.all[0].words
 	NavigationStack {
-		StringList(title: Game.words.name, strings: $strings)
+		StringList(title: SampleWordLists.all[0].name, strings: $strings)
 	}
 }

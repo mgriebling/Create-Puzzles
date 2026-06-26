@@ -8,12 +8,6 @@
 import SwiftUI
 
 @Observable class Game {
-    static let maxSize = 12 // 18
-    static let words = WordList(name: "Letter Code", words:
-        ["alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
-         "india", "juliet", "kilo", "lima", "mike", "november", "oscar",
-         "papa", "quebec", "romeo", "sierra", "tango", "uniform", "victor",
-		 "whiskey", "xray", "yankee", "zulu"])
 	
 	var board: GameBoard
 	
