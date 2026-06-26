@@ -8,7 +8,6 @@
 import SwiftUI
 
 @Observable class Game {
-    
     static let maxSize = 12 // 18
     static let words = WordList(name: "Letter Code", words:
         ["alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
@@ -18,13 +17,16 @@ import SwiftUI
 	
 	var board: GameBoard
 	
-	var activeWord: String { board.selectedWord }
-	var words: [String]    { board.wordPlacements.map(\.word) }
-	var size: Int		   { board.size }
+	// Convenience attributes
+	var activeWord: String 		  { board.selectedWord }
+	var words: [String]    		  { board.wordPlacements.map(\.word) }
+	var placedWords: [PlacedWord] { board.wordPlacements }
+	var size: Int		   		  { board.size }
 	
-	init(board: GameBoard) {
-		self.board = board
-	}
+	// Initializer
+	init(board: GameBoard) { self.board = board }
+	
+	func copy() -> Game { Game(board: self.board) }
 
     func removeActiveWord() {
 		if let index = words.firstIndex(of: activeWord.lowercased()) {
@@ -46,6 +48,12 @@ import SwiftUI
 		}
 		return false
 	}
+	
+	func placeWords ( words: [String]) -> [PlacedWord] {
+		words.enumerated().map { index, word in
+			PlacedWord(word: word, id: index)
+		}
+	}
 
     func clearWord() { board.clearWord() }
 	
@@ -61,3 +69,4 @@ import SwiftUI
 		board.ishighlighted(index)
 	}
 }
+	

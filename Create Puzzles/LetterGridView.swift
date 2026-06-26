@@ -39,7 +39,7 @@ struct LetterGridView: View {
 			proxy.size
 		} action: { newValue in
 			self.contentHeight = newValue.height
-			print("Height: \(newValue.height)")
+			// print("Height: \(newValue.height)")
 		}
 		.presentationDetents([.height(contentHeight)])
 	}

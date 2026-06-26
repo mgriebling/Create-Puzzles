@@ -7,19 +7,23 @@
 
 import Foundation
 
-struct Cell: Codable, Identifiable {
+struct Cell: Codable, Identifiable, Equatable {
     let letter: String
     let id: Int
 	static var nextId: Int = 0
     
-	init(letter: String, index: Int) {
-        self.letter = letter
+	init(letter: String? = nil, index: Int) {
+		if let letter {
+			self.letter = letter
+		} else {
+			self.letter = Cell.randomCharacter
+		}
         self.id = index
     }
 	
-	// Initializes with random characters
+	// Initializes with blanks
 	init() {
-		self.letter = Cell.randomCharacter
+		self.letter = " "
 		self.id = Cell.nextId
 		Cell.nextId += 1
 	}
@@ -31,7 +35,11 @@ struct Cell: Codable, Identifiable {
 }
 
 struct GameBoard : Codable {
-    
+	// MARK: Board size Range
+	static let maximumSize: Int = 20
+	static let minimumSize: Int = 10
+	static let range = Double(minimumSize)...Double(maximumSize)
+	
 	let size: Int
     
     private(set) var board = [Cell]()
@@ -47,44 +55,27 @@ struct GameBoard : Codable {
     private(set) var wordPlacements = [PlacedWord]()
 	private(set) var missingWords = [String]()
 	
-	init(size: Int, words: WordList = WordList()) {
-		let size = max(size, 10)	// ensures minimum size
+	init(size: Int = Self.minimumSize, words: WordList = WordList()) {
+		let size = max(size, Self.minimumSize)	// ensures size >= minimumSize
 		self.size = size
 		self.words = words
 		wordPlacements = []
 		board = []
-		// board.reserveCapacity(size*size)
 		missingWords = []
 		
 		// iterate to find the best board placement
 		if words.words.isEmpty {
-			print("Clearing board... \(Date.now)")
-			// board = Array(repeating: Cell(), count: size*size)
 			randomFillBoard()
-			print("Done \(Date.now)")
-			return
 		} else {
-			print("Placing words... \(Date.now)")
 			bestPlacement(size, words.words)
-		}
-		
-		// fill any blanks with random characters
-		print("Filling blanks... \(Date.now)")
-//		randomFillBoard()
-//		print("Done")
-//		let filledBoard = board.enumerated().filter { $0.element.letter == " " }.map {
-//			Cell(letter: getRandomCharacter(), index: $0.offset)
-//		}
-//		filledBoard.forEach { item in
-//			// fill back the values into the original board
-//			board[item.id] = item
-//		}
-		for i in 0..<size*size {
-			if board[i].letter == " " {
-				board[i] = Cell(letter: Cell.randomCharacter, index: i)
+			
+			// fill gaps with random letters
+			for i in 0..<size*size {
+				if board[i].letter == " " {
+					board[i] = Cell(index: i)
+				}
 			}
 		}
-		print("Done \(Date.now)")
 	}
 	
 	private mutating func randomFillBoard() {
@@ -93,9 +84,10 @@ struct GameBoard : Codable {
 		let ultraFastArray = Array<Cell>(unsafeUninitializedCapacity: arraySize) { buffer, initializedCount in
 			buffer.initialize(repeating: Cell())
 			for i in 0..<arraySize {
-				buffer[i] = Cell(letter: Cell.randomCharacter, index: i)
+				buffer[i] = Cell(index: i)  // fill with random letters
 			}
-			initializedCount = arraySize // You must manually specify how many items were initialized
+			// You must manually specify how many items were initialized
+			initializedCount = arraySize
 		}
 		board = ultraFastArray
 	}
@@ -110,7 +102,6 @@ struct GameBoard : Codable {
 			clearBoard()
 			wordPlacements = []
 			unplaced = generatePuzzle(with: words)
-			print("Unplaced: \(unplaced) ----------------------------")
 			if unplaced < bestPlacement {
 				bestPlacement = unplaced
 				bestPlacementWords = wordPlacements
@@ -122,20 +113,14 @@ struct GameBoard : Codable {
 		// show final placements
 		board = bestBoard
 		wordPlacements = bestPlacementWords.sorted(by: { $0.word < $1.word } )
-		print("Best placement: \(bestPlacement)")
-		
+
 		let newSet = Set(wordPlacements.map(\.word))
 		missingWords = words.filter { !newSet.contains($0) }.sorted(by: <)
-		if !missingWords.isEmpty {
-			print("Missing: \(missingWords.joined(separator: ", "))")
-		}
 	}
 	
 	private mutating func clearBoard() {
-		board = []
-		for index in 0..<size*size {
-			board.append(Cell(letter: " ", index: index))
-		}
+		// place blanks everywhere
+		board = Array(repeating: Cell(), count: size*size)
 	}
 	
 	// Checks placement validity and scores the quality of the overlap
@@ -280,7 +265,6 @@ struct GameBoard : Codable {
     }
     
     func indexToRowCol(_ index:Int) -> (row:Int, col:Int) {
-		// let size = BoardView.size
 		guard size > 0 && index < size*size else { return (row: 0, col: 0) }
 		return (row: index / size, col: index % size)
     }
