@@ -22,6 +22,7 @@ struct GameEditor: View {
 	@State private var wordList = [PlacedWord]()
 	@State private var size = range.lowerBound
 	@State private var actualSize: CGSize = .zero
+	@State private var isLoading: Bool = false
 	
     var body: some View {
         Form {
@@ -33,18 +34,16 @@ struct GameEditor: View {
 					Text("\(Int(Self.range.lowerBound))")
 				} maximumValueLabel: {
 					Text("\(Int(Self.range.upperBound))")
-				} onEditingChanged: { changed in
-					if changed || size == 10 { // Bug? Doesn't change at minimum
-						withAnimation { updateGame() }
-					}
 				}
-
+				.onChange(of: size) {
+					withAnimation { updateGame() }
+				}
 				Picker("Word List", selection: $selectedWords) {
 					ForEach(words, id: \.self) { words in
 						Text(words.name)
 					}
 				}
-				.onChange(of: selectedWords) { _, newValue in
+				.onChange(of: selectedWords) {
 					withAnimation {
 						wordList = []
 						for (id, word) in selectedWords.words.enumerated() {
@@ -67,7 +66,20 @@ struct GameEditor: View {
 					}
 				})
 				{
-					LetterGridView(game: lgame)
+					ZStack {
+						LetterGridView(game: lgame)
+						if isLoading {
+							Color(.systemBackground).opacity(0.5)
+								.ignoresSafeArea()
+							ProgressView("Performing layout...")
+								.padding(20)
+								.background(Color(.systemBackground))
+								.cornerRadius(10)
+								.shadow(radius: 10)
+								.offset(CGSize(width: 0, height: -100))
+								.controlSize(.large)
+						}
+					}
 				}
 		}
 		.onAppear {
@@ -100,10 +112,13 @@ struct GameEditor: View {
 	}
 	
 	func updateGame() {
+		// guard Int(size) != lgame.board.size else { return }
+		isLoading = true
 		Task.detached {
 			let updatedGame = await Game(board: GameBoard(size: Int(size), words: selectedWords))
 			await MainActor.run {
 				self.lgame = updatedGame
+				isLoading = false
 			}
 		}
 		

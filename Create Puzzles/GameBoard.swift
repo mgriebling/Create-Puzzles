@@ -10,18 +10,31 @@ import Foundation
 struct Cell: Codable, Identifiable {
     let letter: String
     let id: Int
+	static var nextId: Int = 0
     
 	init(letter: String, index: Int) {
         self.letter = letter
         self.id = index
     }
+	
+	// Initializes with random characters
+	init() {
+		self.letter = Cell.randomCharacter
+		self.id = Cell.nextId
+		Cell.nextId += 1
+	}
+	
+	static let alphabet = Array(Alphabets.englishAlphabet)
+	static var randomCharacter: String {
+		String(alphabet[Int.random(in: 0..<alphabet.count)])
+	}
 }
 
 struct GameBoard : Codable {
     
 	let size: Int
     
-    private(set) var board: [Cell]
+    private(set) var board = [Cell]()
     
     // active word selection
     private(set) var selectedWord = ""
@@ -35,26 +48,56 @@ struct GameBoard : Codable {
 	private(set) var missingWords = [String]()
 	
 	init(size: Int, words: WordList = WordList()) {
-		let size = min(size, 10)
+		let size = max(size, 10)	// ensures minimum size
 		self.size = size
 		self.words = words
 		wordPlacements = []
 		board = []
+		// board.reserveCapacity(size*size)
 		missingWords = []
 		
 		// iterate to find the best board placement
 		if words.words.isEmpty {
-			clearBoard()
+			print("Clearing board... \(Date.now)")
+			// board = Array(repeating: Cell(), count: size*size)
+			randomFillBoard()
+			print("Done \(Date.now)")
+			return
 		} else {
+			print("Placing words... \(Date.now)")
 			bestPlacement(size, words.words)
 		}
 		
 		// fill any blanks with random characters
+		print("Filling blanks... \(Date.now)")
+//		randomFillBoard()
+//		print("Done")
+//		let filledBoard = board.enumerated().filter { $0.element.letter == " " }.map {
+//			Cell(letter: getRandomCharacter(), index: $0.offset)
+//		}
+//		filledBoard.forEach { item in
+//			// fill back the values into the original board
+//			board[item.id] = item
+//		}
 		for i in 0..<size*size {
 			if board[i].letter == " " {
-				board[i] = Cell(letter: getRandomCharacter(), index: i)
+				board[i] = Cell(letter: Cell.randomCharacter, index: i)
 			}
 		}
+		print("Done \(Date.now)")
+	}
+	
+	private mutating func randomFillBoard() {
+		// fill with random characters
+		let arraySize = size * size
+		let ultraFastArray = Array<Cell>(unsafeUninitializedCapacity: arraySize) { buffer, initializedCount in
+			buffer.initialize(repeating: Cell())
+			for i in 0..<arraySize {
+				buffer[i] = Cell(letter: Cell.randomCharacter, index: i)
+			}
+			initializedCount = arraySize // You must manually specify how many items were initialized
+		}
+		board = ultraFastArray
 	}
 	
 	private mutating func bestPlacement(_ size: Int, _ words: [String]) {
@@ -229,11 +272,6 @@ struct GameBoard : Codable {
 	func charIsHighlighted(_ index: Int) -> Bool {
 		selectedMoves.contains(index)
 	}
-	
-    private func getRandomCharacter() -> String {
-		let alphabet = Array(Alphabets.englishAlphabet)
-		return String(alphabet[Int.random(in: 0..<alphabet.count)])
-    }
  
     func indexOf(_ row: Int, column: Int) -> Int {
 		let row = max(0, min(row, size-1))

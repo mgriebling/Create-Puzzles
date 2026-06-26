@@ -11,9 +11,6 @@ import SwiftUI
 struct BoardView: View {
 	@Binding var game: Game
 	
-	// Internal State
-	@State private var actualSize: CGSize = .zero
-	
 	var body: some View {
         VStack {
             Text("Word Search")
@@ -24,7 +21,7 @@ struct BoardView: View {
 			
 			Spacer()
 			
-			HighlightedGridView(game: $game)
+			HighlightedGridView(game: $game, noDrag: false)
 			
 			Spacer()
 			
