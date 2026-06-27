@@ -43,7 +43,7 @@ import SwiftUI
 		return false
 	}
 	
-	func placeWords ( words: [String]) -> [PlacedWord] {
+	func placeWords (words: [String]) -> [PlacedWord] {
 		words.enumerated().map { index, word in
 			PlacedWord(word: word, id: index)
 		}

@@ -24,7 +24,8 @@ struct HighlightedGridView: View {
 			ForEach(game.board.wordPlacements.indices, id: \.self) { index in
 				let word = game.board.wordPlacements[index]
 				if game.wordIsHighlighted(index) {
-					HighlightView(word: word, size: actualSize, board: game.board)
+					HighlightView(word: word, size: actualSize, board: game.board,
+					scale: scale)
 				}
 			}
 		}

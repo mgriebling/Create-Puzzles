@@ -14,12 +14,11 @@ struct GameEditor: View {
 	@Environment(\.dismiss) var dismiss
 	
 	// MARK: Internal State
-	@State private var lgame = Game(board: GameBoard())
-	@State private var selectedWordList = WordList()
+	@State private var lgame = Game(board: GameBoard()) // dummy board
+	@State private var selectedWordList = WordList()    // empty list
 	@State private var wordLists = [WordList]()
 	@State private var placedWords = [PlacedWord]()
 	@State private var size = GameBoard.range.lowerBound
-	@State private var actualSize: CGSize = .zero
 	@State private var isLoading: Bool = false
 	@State private var showWordList: Bool = true
 	@State private var showEmptyAlert: Bool = false
@@ -76,6 +75,7 @@ struct GameEditor: View {
     }
 	
 	func updateWords() {
+		print("Updating words for \(selectedWordList.name)")
 		withAnimation {
 			placedWords = game.placeWords(words: selectedWordList.words)
 			showWordList = true

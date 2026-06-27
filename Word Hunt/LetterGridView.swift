@@ -19,6 +19,7 @@ struct LetterGridView: View {
 	
 	var body: some View {
 		let cellSize = cellSize(with: game.size) * scale
+		let fontSize = scale < 1 ? cellSize * 1.4 : cellSize * 1.1
 		Grid {
 			ForEach(0..<game.board.size, id: \.self) { row in
 				GridRow {
@@ -26,7 +27,7 @@ struct LetterGridView: View {
 						let highlighted = game.charIsHighlighted(row, col: col)
 						let backColor = highlighted ? Color.accentColor : .clear
 						Text(game.board[row, col].letter)
-							.font(.system(size: cellSize, weight: .bold))
+							.font(.system(size: fontSize, weight: .bold))
 							.aspectRatio(1, contentMode: .fit)
 							.frame(width: cellSize, height: cellSize)
 							.gesture(dragGesture(col, row), isEnabled: !noDrag)
@@ -52,7 +53,6 @@ struct LetterGridView: View {
 					isDragging = true
 					start = (row, col)
 					game.addLetter(row, col: col)
-					print("Starting drag...")
 				}
 				
 				if dragDirection == nil {
@@ -66,7 +66,6 @@ struct LetterGridView: View {
 			}
 			.onEnded { value in
 				if game.isWordMatch() {
-					print("Matched \(game.activeWord)")
 					game.removeActiveWord()
 					// play(sound: "ding-47489.mp3")
 				}

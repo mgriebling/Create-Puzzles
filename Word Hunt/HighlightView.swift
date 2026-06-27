@@ -11,6 +11,7 @@ struct HighlightView: View {
 	var word: PlacedWord
     var size: CGSize
 	let board: GameBoard
+	var scale: CGFloat = 1
 	
 	let spacing: CGFloat = 8
     
@@ -41,7 +42,7 @@ struct HighlightView: View {
 		let xshift = CGFloat(x - center) * size
 		let yshift = CGFloat(y - center) * size
         Capsule()
-            .stroke(.blue, lineWidth: 4)
+            .stroke(.blue, lineWidth: 4*scale)
 			.frame(width:size, height: size*(len), alignment: .leading)
             .offset(x:xshift, y:yshift)
     }
@@ -56,7 +57,7 @@ struct HighlightView: View {
 		let xshift = CGFloat(x - center) * size
 		let yshift = CGFloat(y - center) * size
         Capsule()
-            .stroke(.blue, lineWidth: 4)
+            .stroke(.blue, lineWidth: 4*scale)
             .frame(width:size*(len), height: size, alignment: .leading)
             .offset(x:xshift, y:yshift)
     }
@@ -73,7 +74,7 @@ struct HighlightView: View {
         let xshift = CGFloat(x-center) * size
         let yshift = CGFloat(y-center) * size
         Capsule()
-            .stroke(.blue, lineWidth: 4)
+            .stroke(.blue, lineWidth: 4*scale)
 			.frame(width:length, height: size*0.8, alignment: .leading)
             .rotationEffect(.degrees(-45))
             .offset(x:xshift, y:yshift)
@@ -91,7 +92,7 @@ struct HighlightView: View {
 		let xshift = CGFloat(x-center) * size
 		let yshift = CGFloat(y-center) * size
         Capsule()
-            .stroke(.blue, lineWidth: 4)
+            .stroke(.blue, lineWidth: 4*scale)
 			.frame(width:length*0.95, height: size*0.8, alignment: .leading)
             .rotationEffect(.degrees(45))
             .offset(x:xshift, y:yshift)
