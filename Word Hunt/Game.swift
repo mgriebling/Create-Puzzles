@@ -13,7 +13,7 @@ import SwiftUI
 	
 	// Convenience attributes
 	var activeWord: String 		  { board.selectedWord }
-	var words: [String]    		  { board.wordPlacements.map(\.word) }
+	var words: [String] 		  { board.wordPlacements.map(\.word) }
 	var placedWords: [PlacedWord] { board.wordPlacements }
 	var size: Int		   		  { board.size }
 	
@@ -51,16 +51,12 @@ import SwiftUI
 
     func clearWord() { board.clearWord() }
 	
-	func addLetter(_ row: Int, col: Int) {
-		board.addLetter(board.indexOf(row, column: col))
-	}
+	func addLetter(_ row: Int, col: Int) { board.addLetter(row, column: col) }
 	
 	func charIsHighlighted(_ row: Int, col: Int) -> Bool {
-		board.charIsHighlighted(board.indexOf(row, column: col))
+		board.charIsHighlighted(row, column: col)
 	}
 	
-	func wordIsHighlighted(_ index: Int) -> Bool {
-		board.ishighlighted(index)
-	}
+	func wordIsHighlighted(_ index: Int) -> Bool { board.ishighlighted(index) }
 }
 	

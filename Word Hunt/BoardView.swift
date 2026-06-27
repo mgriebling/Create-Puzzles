@@ -13,26 +13,24 @@ struct BoardView: View {
 	
 	var body: some View {
         VStack {
-            Text("Word Search")
-				.font(.system(.largeTitle).bold())
-				.padding(.bottom, 10)
-            Text("Score: \(game.score) %")
-				.font(.system(.title2)).bold()
-			
+            Text("Score: \(game.score) %").font(.title2).bold()
 			Spacer()
-			
+
 			HighlightedGridView(game: $game, noDrag: false)
-			
 			Spacer()
 			
 			WordView(words: game.board.wordPlacements)
         }
+		.navigationTitle("\(game.board.words.name) Word Hunt")
+		.navigationBarTitleDisplayMode(.automatic)
     }
 }
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 12, words: SampleWordLists.all[0]))
-	BoardView(game: $game)
+	@State var game = Game(board: GameBoard(size: 12, words: SampleWordLists.all.randomElement()!))
+	NavigationStack {
+		BoardView(game: $game)
+	}
 }
 

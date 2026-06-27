@@ -17,12 +17,8 @@ struct HighlightedGridView: View {
 	var body: some View {
 		ZStack {
 			LetterGridView(game: game, noDrag: noDrag, scale: scale)
-				.onGeometryChange(for: CGSize.self) { proxy in
-					proxy.size
-				} action: { newValue in
-					self.actualSize = newValue
-					print("Width: \(newValue.width)")
-				}
+				.onGeometryChange(for: CGSize.self) { $0.size }
+					action: { self.actualSize = $0 }
 			
 			// Display the highlighted words
 			ForEach(game.board.wordPlacements.indices, id: \.self) { index in

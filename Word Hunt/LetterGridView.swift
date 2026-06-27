@@ -35,12 +35,8 @@ struct LetterGridView: View {
 				}
 			}
 		}
-		.onGeometryChange(for: CGSize.self) { proxy in
-			proxy.size
-		} action: { newValue in
-			self.contentHeight = newValue.height
-			// print("Height: \(newValue.height)")
-		}
+		.onGeometryChange(for: CGSize.self) { $0.size }
+			action: { self.contentHeight = $0.height }
 		.presentationDetents([.height(contentHeight)])
 	}
 	
@@ -56,6 +52,7 @@ struct LetterGridView: View {
 					isDragging = true
 					start = (row, col)
 					game.addLetter(row, col: col)
+					print("Starting drag...")
 				}
 				
 				if dragDirection == nil {

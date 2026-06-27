@@ -27,7 +27,7 @@ struct GameEditor: View {
 	var body: some View {
         Form {
 			Section(header: Text("\(selectedWordList.name) Game")) {
-				Text("\(Int(size)) Rows/Columns")
+				Text("\(Int(size)) Rows/Columns").bold()
 				Slider(value: $size, in: GameBoard.range, step: 1) {
 					Text("Rows/Columns:")
 				} minimumValueLabel: {

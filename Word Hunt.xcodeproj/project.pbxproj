@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		472CE12F291858D90074891E /* Create_PuzzlesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE12E291858D90074891E /* Create_PuzzlesApp.swift */; };
+		472CE12F291858D90074891E /* WordHunt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE12E291858D90074891E /* WordHunt.swift */; };
 		472CE131291858D90074891E /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE130291858D90074891E /* BoardView.swift */; };
 		472CE133291858DB0074891E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE132291858DB0074891E /* Assets.xcassets */; };
 		472CE137291858DB0074891E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE136291858DB0074891E /* Preview Assets.xcassets */; };
@@ -32,11 +32,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		472CE12B291858D90074891E /* Create Puzzles.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Create Puzzles.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		472CE12E291858D90074891E /* Create_PuzzlesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Create_PuzzlesApp.swift; sourceTree = "<group>"; };
+		472CE12B291858D90074891E /* Word Hunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Hunt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		472CE12E291858D90074891E /* WordHunt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordHunt.swift; sourceTree = "<group>"; };
 		472CE130291858D90074891E /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		472CE132291858DB0074891E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		472CE134291858DB0074891E /* Create_Puzzles.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Create_Puzzles.entitlements; sourceTree = "<group>"; };
+		472CE134291858DB0074891E /* WordHunt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordHunt.entitlements; sourceTree = "<group>"; };
 		472CE136291858DB0074891E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		472CE13D291BE6380074891E /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		472CE13F291BFA8C0074891E /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -76,7 +76,7 @@
 		472CE122291858D90074891E = {
 			isa = PBXGroup;
 			children = (
-				472CE12D291858D90074891E /* Create Puzzles */,
+				472CE12D291858D90074891E /* Word Hunt */,
 				47578B0B2FE960580072FFED /* Sounds */,
 				472CE12C291858D90074891E /* Products */,
 			);
@@ -85,12 +85,12 @@
 		472CE12C291858D90074891E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				472CE12B291858D90074891E /* Create Puzzles.app */,
+				472CE12B291858D90074891E /* Word Hunt.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		472CE12D291858D90074891E /* Create Puzzles */ = {
+		472CE12D291858D90074891E /* Word Hunt */ = {
 			isa = PBXGroup;
 			children = (
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
@@ -110,13 +110,13 @@
 				47800D212FEAD186009537EC /* StringList.swift */,
 				478BF1342FEC13A3001F4018 /* FileImportButton.swift */,
 				476F03E52FED4F3A0041F2B8 /* Extensions.swift */,
-				472CE12E291858D90074891E /* Create_PuzzlesApp.swift */,
-				472CE134291858DB0074891E /* Create_Puzzles.entitlements */,
+				472CE12E291858D90074891E /* WordHunt.swift */,
+				472CE134291858DB0074891E /* WordHunt.entitlements */,
 				472CE132291858DB0074891E /* Assets.xcassets */,
 				472CE135291858DB0074891E /* Preview Content */,
 				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 			);
-			path = "Create Puzzles";
+			path = "Word Hunt";
 			sourceTree = "<group>";
 		};
 		472CE135291858DB0074891E /* Preview Content */ = {
@@ -130,9 +130,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		472CE12A291858D90074891E /* Create Puzzles */ = {
+		472CE12A291858D90074891E /* Word Hunt */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 472CE13A291858DB0074891E /* Build configuration list for PBXNativeTarget "Create Puzzles" */;
+			buildConfigurationList = 472CE13A291858DB0074891E /* Build configuration list for PBXNativeTarget "Word Hunt" */;
 			buildPhases = (
 				472CE127291858D90074891E /* Sources */,
 				472CE128291858D90074891E /* Frameworks */,
@@ -145,12 +145,12 @@
 			fileSystemSynchronizedGroups = (
 				47578B0B2FE960580072FFED /* Sounds */,
 			);
-			name = "Create Puzzles";
+			name = "Word Hunt";
 			packageProductDependencies = (
 				47820B8229298242009B16A1 /* Subsonic */,
 			);
 			productName = "Create Puzzles";
-			productReference = 472CE12B291858D90074891E /* Create Puzzles.app */;
+			productReference = 472CE12B291858D90074891E /* Word Hunt.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -168,7 +168,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 472CE126291858D90074891E /* Build configuration list for PBXProject "Create Puzzles" */;
+			buildConfigurationList = 472CE126291858D90074891E /* Build configuration list for PBXProject "Word Hunt" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -184,7 +184,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				472CE12A291858D90074891E /* Create Puzzles */,
+				472CE12A291858D90074891E /* Word Hunt */,
 			);
 		};
 /* End PBXProject section */
@@ -210,7 +210,7 @@
 				47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */,
 				472CE131291858D90074891E /* BoardView.swift in Sources */,
 				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
-				472CE12F291858D90074891E /* Create_PuzzlesApp.swift in Sources */,
+				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
 				476F03EE2FEDD6B10041F2B8 /* HightlightedGridView.swift in Sources */,
@@ -353,16 +353,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Create Puzzles/Create_Puzzles.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"Create Puzzles/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = RMP42XUC38;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Word Hunt";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -379,7 +380,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.Create-Puzzles";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.WordHunt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -395,16 +396,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Create Puzzles/Create_Puzzles.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"Create Puzzles/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = RMP42XUC38;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Word Hunt";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.word-games";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -421,7 +423,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.Create-Puzzles";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.WordHunt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
@@ -435,7 +437,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		472CE126291858D90074891E /* Build configuration list for PBXProject "Create Puzzles" */ = {
+		472CE126291858D90074891E /* Build configuration list for PBXProject "Word Hunt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				472CE138291858DB0074891E /* Debug */,
@@ -444,7 +446,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		472CE13A291858DB0074891E /* Build configuration list for PBXNativeTarget "Create Puzzles" */ = {
+		472CE13A291858DB0074891E /* Build configuration list for PBXNativeTarget "Word Hunt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				472CE13B291858DB0074891E /* Debug */,

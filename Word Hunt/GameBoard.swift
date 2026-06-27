@@ -81,7 +81,7 @@ struct GameBoard : Codable {
 	private mutating func randomFillBoard() {
 		// fill with random characters
 		let arraySize = size * size
-		let ultraFastArray = Array<Cell>(unsafeUninitializedCapacity: arraySize) { buffer, initializedCount in
+		let ultraFastArray = [Cell](unsafeUninitializedCapacity: arraySize) { buffer, initializedCount in
 			buffer.initialize(repeating: Cell())
 			for i in 0..<arraySize {
 				buffer[i] = Cell(index: i)  // fill with random letters
@@ -225,17 +225,19 @@ struct GameBoard : Codable {
 			if maxScore >= 0 {
 				placeWord(word, atRow: bestRow, col: bestCol, direction: bestDirection)
 			} else {
-				print("Could not place word: \(word)")
 				unplaced += 1
 			}
 		}
 		return unplaced
 	}
+	
+	mutating func addLetter(_ row: Int, column: Int) {
+		addLetter(indexOf(row, column: column))
+	}
     
     mutating func addLetter(_ index: Int) {
 		if selectedMoves.contains(index) { return }
         let letter = board[index].letter
-        board[index] = Cell(letter: letter, index: index)
         selectedWord.append(letter)
         selectedMoves.append(index)
     }
@@ -253,6 +255,10 @@ struct GameBoard : Codable {
         selectedWord = ""
         selectedMoves = []
     }
+	
+	func charIsHighlighted(_ row: Int, column: Int) -> Bool {
+		charIsHighlighted(indexOf(row, column: column))
+	}
     
 	func charIsHighlighted(_ index: Int) -> Bool {
 		selectedMoves.contains(index)

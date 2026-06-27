@@ -1,5 +1,5 @@
 //
-//  Create_PuzzlesApp.swift
+//  WordHunt.swift
 //  Create Puzzles
 //
 //  Created by Mike Griebling on 2022-11-06.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct Create_PuzzlesApp: App {
+struct WordHunt: App {
 	@State var game = Game(board: GameBoard(size: GameBoard.maximumSize))
     
     var body: some Scene {

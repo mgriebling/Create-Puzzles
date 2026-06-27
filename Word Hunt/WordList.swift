@@ -15,7 +15,7 @@ public struct PlacedWord: Codable, Identifiable, Hashable {
 	public let id: Int
 	
 	init(word:String, id: Int, direction: Direction = .right, highlighted: Bool = false) {
-		self.word = word
+		self.word = word.lowercased()
 		self.id = id
 		self.highlighted = highlighted
 		self.direction = direction
