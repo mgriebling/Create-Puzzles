@@ -19,6 +19,24 @@ public struct PlacedWord: Codable, Identifiable, Hashable {
 		self.id = id
 		self.highlighted = highlighted
 		self.direction = direction
+//		if let word = getSystemRandomWord() {
+//			print("Random word: \(word)")
+//		}
+	}
+	
+	func getSystemRandomWord() -> String? {
+		let path = "/usr/share/dict/words"
+		guard let content = try? String(contentsOfFile: path, encoding: .utf8) else {
+			return nil
+		}
+		
+		// Split the large text file into an array of words
+		let allWords = content.components(separatedBy: "\n")
+		if let word = allWords.randomElement() {
+			print("Random system word: \(word)")
+			return word
+		}
+		return nil
 	}
 }
 

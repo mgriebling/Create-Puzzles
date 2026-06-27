@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct GameEditor: View {
-	@Binding var game: Game
+	@Binding var game: Game?
+	
+	// MARK: Action Function
+	let onChoose: () -> Void
 	
 	// MARK: Data (Function) In
 	@Environment(\.dismiss) var dismiss
@@ -24,76 +27,80 @@ struct GameEditor: View {
 	@State private var showEmptyAlert: Bool = false
 	
 	var body: some View {
-        Form {
-			Section(header: Text("\(selectedWordList.name) Game")) {
-				Text("\(Int(size)) Rows/Columns").bold()
-				Slider(value: $size, in: GameBoard.range, step: 1) {
-					Text("Rows/Columns:")
-				} minimumValueLabel: {
-					Text("\(GameBoard.minimumSize)")
-				} maximumValueLabel: {
-					Text("\(GameBoard.maximumSize)")
+		NavigationStack {
+			Form {
+				Section(header: Text("\(selectedWordList.name) Game")) {
+					Text("\(Int(size)) Rows/Columns").bold()
+					Slider(value: $size, in: GameBoard.range, step: 1) {
+						Text("Rows/Columns:")
+					} minimumValueLabel: {
+						Text("\(GameBoard.minimumSize)")
+					} maximumValueLabel: {
+						Text("\(GameBoard.maximumSize)")
+					}
+					.onChange(of: size) { withAnimation { updateGame() } }
+					
+					Picker(wordHeader, selection: $selectedWordList) {
+						ForEach(wordLists, id:\.self) { Text($0.name) }
+					}
+					.onChange(of: selectedWordList, updateWords)
+					
+					if showWordList && !placedWords.isEmpty {
+						WordView(words: placedWords).onTapGesture(perform: toggleWordList)
+					} else {
+						if !placedWords.isEmpty {
+							Button("Show Word List", action: toggleWordList)
+						}
+					}
 				}
-				.onChange(of: size) { withAnimation { updateGame() } }
-				
-				Picker(wordHeader, selection: $selectedWordList) {
-					ForEach(wordLists, id:\.self) { Text($0.name) }
-				}
-				.onChange(of: selectedWordList, updateWords)
-	
-				if showWordList && !placedWords.isEmpty {
-					WordView(words: placedWords).onTapGesture(perform: toggleWordList)
-				} else {
-					if !placedWords.isEmpty {
-						Button("Show Word List", action: toggleWordList)
+				Section(header: wordListTitle) {
+					ZStack {
+						LetterGridView(game: lgame)
+						showLoading()
 					}
 				}
 			}
-			Section(header: wordListTitle) {
-				ZStack {
-					LetterGridView(game: lgame)
-					showLoading()
+			.onAppear(perform: setUpGame)
+			.toolbar {
+				ToolbarItem(placement: .cancellationAction) {
+					Button("Cancel") { dismiss() }
+						.tint(Color(.systemRed))
+				}
+				ToolbarItem(placement: .confirmationAction) {
+					Button("Done") { done() }
+						.tint(Color(.systemGreen))
+						.alert(isPresented: $showEmptyAlert) {
+							Alert(title: Text("Error"), message: Text("The game must contain a non-empty word list."), dismissButton: .cancel())
+						}
 				}
 			}
+			.navigationTitle(Text("Game Editor"))
+			.navigationBarTitleDisplayMode(.inline)
 		}
-		.onAppear(perform: setUpGame)
-		.toolbar {
-			ToolbarItem(placement: .cancellationAction) {
-				Button("Cancel") { dismiss() }
-					.tint(Color(.systemRed))
-			}
-			ToolbarItem(placement: .confirmationAction) {
-				Button("Done") { done() }
-					.tint(Color(.systemGreen))
-					.alert(isPresented: $showEmptyAlert) {
-						Alert(title: Text("Error"), message: Text("The game must contain a non-empty word list."), dismissButton: .cancel())
-					}
-			}
-		}
-		.navigationTitle(Text("Game Editor"))
-		.navigationBarTitleDisplayMode(.inline)
     }
 	
 	func updateWords() {
 		print("Updating words for \(selectedWordList.name)")
 		withAnimation {
-			placedWords = game.placeWords(words: selectedWordList.words)
+			placedWords = lgame.placeWords(words: selectedWordList.words)
 			showWordList = true
 			updateGame()
 		}
 	}
 	
 	func setUpGame() {
-		lgame = game.copy()
-		size = Double(game.board.size)
-		if wordLists.isEmpty {
-			wordLists = SampleWordLists.all
+		if let game {
+			lgame = game.copy()
+			size = Double(game.board.size)
+			if wordLists.isEmpty {
+				wordLists = SampleWordLists.all
+			}
+			if !wordLists.contains(game.board.words) {
+				wordLists.insert(game.board.words, at: 0)
+			}
+			selectedWordList = game.board.words
+			updateGame()
 		}
-		if !wordLists.contains(game.board.words) {
-			wordLists.insert(game.board.words, at: 0)
-		}
-		selectedWordList = game.board.words
-		updateGame()
 	}
 	
 	func toggleWordList() {
@@ -108,6 +115,7 @@ struct GameEditor: View {
 			return
 		}
 		game = lgame.copy()
+		onChoose()
 		dismiss()
 	}
 	
@@ -159,8 +167,8 @@ struct GameEditor: View {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 12))
-	NavigationStack {
-		GameEditor(game: $game)
+	@State var game : Game? = Game(board: GameBoard(size: 12))
+	GameEditor(game: $game) {
+		print("Updated game")
 	}
 }

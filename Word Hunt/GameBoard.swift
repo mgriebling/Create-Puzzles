@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Cell: Codable, Identifiable, Equatable {
+struct Cell: Codable, Identifiable, Equatable, Hashable {
     let letter: String
     let id: Int
 	static var nextId: Int = 0
@@ -34,7 +34,7 @@ struct Cell: Codable, Identifiable, Equatable {
 	}
 }
 
-struct GameBoard : Codable {
+struct GameBoard : Codable, Equatable, Hashable {
 	// MARK: Board size Range
 	static let maximumSize: Int = 20
 	static let minimumSize: Int = 10

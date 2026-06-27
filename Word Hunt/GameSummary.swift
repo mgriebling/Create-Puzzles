@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameSummary: View {
-	@Binding var game: Game
+	var game: Game
 	
 	@Environment(\.horizontalSizeClass) var size
 
@@ -19,7 +19,7 @@ struct GameSummary: View {
 				.font(isCompact ? .title2 : .title)
 			Text("\(game.size) rows ⨉ \(game.size) columns")
 			// Text("Completion: \(game.score, specifier: "%.0f")%")
-			HighlightedGridView(game: $game, scale: 0.5)
+			HighlightedGridView(game: .constant(game), scale: 0.5)
 			Text(game.words.map({ $0.capitalized }).joined(separator: ", "))
 				.font(isCompact ? .caption2 : .caption)
 		}
@@ -30,7 +30,7 @@ struct GameSummary: View {
 #Preview {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 14, words: SampleWordLists.all[0]))
-	GameSummary(game: $game)
+	GameSummary(game: game)
 		.onAppear {
 			game.board.highlightWord(0)
 			game.board.highlightWord(5)

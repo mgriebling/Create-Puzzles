@@ -7,8 +7,7 @@
 
 import SwiftUI
 
-@Observable class Game {
-	
+@Observable class Game: Equatable, Identifiable, Codable {
 	var board: GameBoard
 	
 	// Convenience attributes
@@ -16,6 +15,7 @@ import SwiftUI
 	var words: [String] 		  { board.wordPlacements.map(\.word) }
 	var placedWords: [PlacedWord] { board.wordPlacements }
 	var size: Int		   		  { board.size }
+	var name: String			  { board.words.name }
 	
 	// Initializer
 	init(board: GameBoard) { self.board = board }
@@ -58,5 +58,13 @@ import SwiftUI
 	}
 	
 	func wordIsHighlighted(_ index: Int) -> Bool { board.ishighlighted(index) }
+	
+	static func == (lhs: Game, rhs: Game) -> Bool {
+		lhs.board == rhs.board && lhs.size == rhs.size
+	}
+}
+
+extension Game: Hashable {
+	func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }
 	

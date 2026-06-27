@@ -10,19 +10,28 @@ import SwiftUI
 
 struct BoardView: View {
 	@Binding var game: Game
+	@State private var selection: Game? = nil
 	
 	var body: some View {
-        VStack {
-            Text("Score: \(game.score) %").font(.title2).bold()
-			Spacer()
-
-			HighlightedGridView(game: $game, noDrag: false)
-			Spacer()
-			
-			WordView(words: game.board.wordPlacements)
-        }
-		.navigationTitle("\(game.board.words.name) Word Hunt")
-		.navigationBarTitleDisplayMode(.automatic)
+		NavigationSplitView(columnVisibility: .constant(.all)) {
+			GameList(selection: $selection)
+		} detail: {
+			if let game = selection {
+				VStack {
+					Text("Score: \(game.score) %").font(.title2).bold()
+					Spacer()
+					
+					HighlightedGridView(game: $game, noDrag: false)
+					Spacer()
+					
+					WordView(words: game.board.wordPlacements)
+				}
+				.navigationTitle(game.name)
+				.navigationBarTitleDisplayMode(.automatic)
+			} else {
+				Text("Choose a game!")
+			}
+		}
     }
 }
 

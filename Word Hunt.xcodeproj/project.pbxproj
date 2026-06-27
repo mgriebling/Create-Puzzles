@@ -29,6 +29,7 @@
 		478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13A2FEC2E6E001F4018 /* GameEditor.swift */; };
 		478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */; };
 		47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C079E6291FD1FC003D0248 /* HighlightView.swift */; };
+		47E0ABE52FF069CB009D7BB0 /* GameList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0ABE42FF069CB009D7BB0 /* GameList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		478BF13A2FEC2E6E001F4018 /* GameEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditor.swift; sourceTree = "<group>"; };
 		478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGridView.swift; sourceTree = "<group>"; };
 		47C079E6291FD1FC003D0248 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
+		47E0ABE42FF069CB009D7BB0 /* GameList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -94,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
+				47E0ABE42FF069CB009D7BB0 /* GameList.swift */,
 				472CE130291858D90074891E /* BoardView.swift */,
 				476F03ED2FEDD6B10041F2B8 /* HightlightedGridView.swift */,
 				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
@@ -213,6 +216,7 @@
 				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
+				47E0ABE52FF069CB009D7BB0 /* GameList.swift in Sources */,
 				476F03EE2FEDD6B10041F2B8 /* HightlightedGridView.swift in Sources */,
 				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
 				47800D222FEAD186009537EC /* StringList.swift in Sources */,
