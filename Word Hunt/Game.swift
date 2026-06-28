@@ -16,6 +16,7 @@ import SwiftUI
 	var placedWords: [PlacedWord] { board.wordPlacements }
 	var size: Int		   		  { board.size }
 	var name: String			  { board.words.name }
+	var time: Duration = .seconds(0)
 	
 	// Initializer
 	init(board: GameBoard) { self.board = board }
@@ -28,12 +29,10 @@ import SwiftUI
             board.clearWord()
         }
     }
+	
+	var matched: Int { placedWords.filter(\.highlighted).count }
     
-    var score: Int {
-		guard !board.wordPlacements.isEmpty else { return 0 }
-		let x = board.wordPlacements.filter(\.highlighted)
-		return (100 * x.count) / board.wordPlacements.count
-    }
+    var score: Double { (100.0 * Double(matched)) / Double(words.count) }
     
 	func isWordMatch() -> Bool {
 		if let index = words.firstIndex(of: activeWord.lowercased()) {

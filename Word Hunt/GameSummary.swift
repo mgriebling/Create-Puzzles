@@ -11,19 +11,26 @@ struct GameSummary: View {
 	var game: Game
 	
 	@Environment(\.horizontalSizeClass) var size
-
+	
 	var body: some View {
 		let isCompact: Bool = size == .compact
 		VStack(alignment: .center) {
-			Text("\(game.board.words.name) Game (\(game.score, specifier: "%.0f")%)")
+			Text("\(game.board.words.name) Game")
 				.font(isCompact ? .title2 : .title)
-			Text("\(game.size) rows ⨉ \(game.size) columns")
-			// Text("Completion: \(game.score, specifier: "%.0f")%")
-			HighlightedGridView(game: .constant(game), scale: 0.5)
-			Text(game.words.map({ $0.capitalized }).joined(separator: ", "))
-				.font(isCompact ? .caption2 : .caption)
+			HStack {
+				VStack(alignment: .leading) {
+					Text("Size: \(game.size)⨉\(game.size)")
+					Text("Matched: ^[\(game.matched) word](inflect: true)")
+					Text("Total: ^[\(game.words.count) word](inflect: true)")
+					Text("Time: \(game.time, format: .time(pattern: .minuteSecond))")
+					Text("Difficulty: \(game.size - GameBoard.minimumSize)")
+					Text("Language: \(game.board.words.language.description)")
+				}.font(isCompact ? .caption : .callout)
+				HighlightedGridView(game: .constant(game), scale: 0.5)
+			}
+			WordView(words: game.placedWords, style: .paragraph)
+				.padding()
 		}
-		.padding()
 	}
 }
 

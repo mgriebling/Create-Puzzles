@@ -119,7 +119,8 @@ struct LetterGridView: View {
 }
 
 #Preview {
-	@Previewable @State var game = Game(board: GameBoard(size: 12))
+	@Previewable
+	@State var game = Game(board: GameBoard(size: 12))
 	NavigationStack {
 		LetterGridView(game: game)
 	}
