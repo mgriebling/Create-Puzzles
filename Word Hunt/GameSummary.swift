@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GameSummary: View {
-	var game: Game
+	let game: Game
 	
 	@Environment(\.horizontalSizeClass) var size
 	
@@ -22,11 +22,11 @@ struct GameSummary: View {
 					Text("Size: \(game.size)⨉\(game.size)")
 					Text("Matched: ^[\(game.matched) word](inflect: true)")
 					Text("Total: ^[\(game.words.count) word](inflect: true)")
-					Text("Time: \(game.time, format: .time(pattern: .minuteSecond))")
+					Text("Time: \(.seconds(game.timer.elapsedTime), format: .time(pattern: .minuteSecond))")
 					Text("Difficulty: \(game.size - GameBoard.minimumSize)")
 					Text("Language: \(game.board.words.language.description)")
 				}.font(isCompact ? .caption : .callout)
-				HighlightedGridView(game: .constant(game), scale: 0.5)
+				HighlightedGridView(game: game, scale: 0.5)
 			}
 			WordView(words: game.placedWords, style: .paragraph)
 				.padding()

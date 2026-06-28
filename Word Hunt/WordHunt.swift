@@ -9,12 +9,12 @@ import SwiftUI
 
 @main
 struct WordHunt: App {
-	@State var game = Game(board: GameBoard())
+//	@State var game = Game(board: GameBoard())
     
     var body: some Scene {
         WindowGroup {
 			GeometryReader { geometry in
-				BoardView(game: $game)
+				GameChooser()
 					.environment(\.sceneFrame, geometry.frame(in: .global))
 			}
 			.ignoresSafeArea()

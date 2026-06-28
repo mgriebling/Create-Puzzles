@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		472CE12F291858D90074891E /* WordHunt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE12E291858D90074891E /* WordHunt.swift */; };
-		472CE131291858D90074891E /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE130291858D90074891E /* BoardView.swift */; };
+		472CE131291858D90074891E /* GameChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE130291858D90074891E /* GameChooser.swift */; };
 		472CE133291858DB0074891E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE132291858DB0074891E /* Assets.xcassets */; };
 		472CE137291858DB0074891E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE136291858DB0074891E /* Preview Assets.xcassets */; };
 		472CE13E291BE6380074891E /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE13D291BE6380074891E /* GameBoard.swift */; };
@@ -30,12 +30,16 @@
 		478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */; };
 		47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C079E6291FD1FC003D0248 /* HighlightView.swift */; };
 		47E0ABE52FF069CB009D7BB0 /* GameList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0ABE42FF069CB009D7BB0 /* GameList.swift */; };
+		47E0ABEB2FF15B36009D7BB0 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0ABEA2FF15B36009D7BB0 /* Timer.swift */; };
+		47E0AC262FF16FF3009D7BB0 /* ElapsedTimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */; };
+		47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */; };
+		47E0AC2A2FF17361009D7BB0 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC292FF17361009D7BB0 /* BoardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		472CE12B291858D90074891E /* Word Hunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Hunt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		472CE12E291858D90074891E /* WordHunt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordHunt.swift; sourceTree = "<group>"; };
-		472CE130291858D90074891E /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		472CE130291858D90074891E /* GameChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameChooser.swift; sourceTree = "<group>"; };
 		472CE132291858DB0074891E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		472CE134291858DB0074891E /* WordHunt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordHunt.entitlements; sourceTree = "<group>"; };
 		472CE136291858DB0074891E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -57,6 +61,10 @@
 		478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGridView.swift; sourceTree = "<group>"; };
 		47C079E6291FD1FC003D0248 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
 		47E0ABE42FF069CB009D7BB0 /* GameList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameList.swift; sourceTree = "<group>"; };
+		47E0ABEA2FF15B36009D7BB0 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTimeTracker.swift; sourceTree = "<group>"; };
+		47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTime.swift; sourceTree = "<group>"; };
+		47E0AC292FF17361009D7BB0 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -97,7 +105,8 @@
 			children = (
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
 				47E0ABE42FF069CB009D7BB0 /* GameList.swift */,
-				472CE130291858D90074891E /* BoardView.swift */,
+				472CE130291858D90074891E /* GameChooser.swift */,
+				47E0AC292FF17361009D7BB0 /* BoardView.swift */,
 				476F03ED2FEDD6B10041F2B8 /* HightlightedGridView.swift */,
 				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
 				478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */,
@@ -106,6 +115,8 @@
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
 				47578B052FE885B90072FFED /* Alphabets.swift */,
+				47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */,
+				47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */,
 				47800D132FE9CD9C009537EC /* WordList.swift */,
 				47800D152FE9D2FE009537EC /* WordsEditor.swift */,
 				47800D1D2FEAA9E5009537EC /* WordLists.swift */,
@@ -118,6 +129,7 @@
 				472CE132291858DB0074891E /* Assets.xcassets */,
 				472CE135291858DB0074891E /* Preview Content */,
 				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
+				47E0ABEA2FF15B36009D7BB0 /* Timer.swift */,
 			);
 			path = "Word Hunt";
 			sourceTree = "<group>";
@@ -209,9 +221,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47E0AC262FF16FF3009D7BB0 /* ElapsedTimeTracker.swift in Sources */,
+				47E0ABEB2FF15B36009D7BB0 /* Timer.swift in Sources */,
 				476F03EC2FEDD2DE0041F2B8 /* GameSummary.swift in Sources */,
 				47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */,
-				472CE131291858D90074891E /* BoardView.swift in Sources */,
+				472CE131291858D90074891E /* GameChooser.swift in Sources */,
 				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
 				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
@@ -220,6 +234,7 @@
 				476F03EE2FEDD6B10041F2B8 /* HightlightedGridView.swift in Sources */,
 				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
 				47800D222FEAD186009537EC /* StringList.swift in Sources */,
+				47E0AC2A2FF17361009D7BB0 /* BoardView.swift in Sources */,
 				47800D142FE9CD9C009537EC /* WordList.swift in Sources */,
 				478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */,
 				478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */,
@@ -228,6 +243,7 @@
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
 				4771F1762FEF208B00A98387 /* SampleWordLists.swift in Sources */,
+				47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */,
 				47800D1E2FEAA9E5009537EC /* WordLists.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,7 +395,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
@@ -422,7 +438,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.6;

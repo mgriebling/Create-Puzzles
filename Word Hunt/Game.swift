@@ -9,6 +9,7 @@ import SwiftUI
 
 @Observable class Game: Equatable, Identifiable, Codable {
 	var board: GameBoard
+	var timer: Timer
 	
 	// Convenience attributes
 	var activeWord: String 		  { board.selectedWord }
@@ -16,10 +17,12 @@ import SwiftUI
 	var placedWords: [PlacedWord] { board.wordPlacements }
 	var size: Int		   		  { board.size }
 	var name: String			  { board.words.name }
-	var time: Duration = .seconds(0)
 	
 	// Initializer
-	init(board: GameBoard) { self.board = board }
+	init(board: GameBoard) {
+		self.board = board
+		self.timer = Timer()
+	}
 	
 	func copy() -> Game { Game(board: self.board) }
 

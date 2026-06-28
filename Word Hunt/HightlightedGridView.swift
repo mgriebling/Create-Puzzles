@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HighlightedGridView: View {
-	@Binding var game: Game
+	let game: Game
 	var scale: CGFloat = 1.0
 	var noDrag: Bool = true
 	
@@ -35,5 +35,5 @@ struct HighlightedGridView: View {
 #Preview {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 12, words: SampleWordLists.all[0]))
-	BoardView(game: $game)
+	HighlightedGridView(game: game)
 }
