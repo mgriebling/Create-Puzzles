@@ -11,15 +11,15 @@ struct LetterGridView: View {
 	let game: Game
 	var noDrag: Bool = true
 	var scale: CGFloat = 1
+	var isLandscape: Bool = false
 	
+	@Environment(\.sceneFrame) var sceneFrame
 	@State private var isDragging: Bool = false
 	@State private var start: (row: Int, col: Int) = (0, 0)
 	@State private var dragDirection: Direction?
-	@State private var contentHeight: CGFloat = 0
+	@State private var contentHeight: CGFloat = .zero
 	
 	var body: some View {
-		let cellSize = cellSize(with: game.size) * scale
-		let fontSize = scale < 1 ? cellSize * 1.4 : cellSize * 1.1
 		Grid {
 			ForEach(0..<game.board.size, id: \.self) { row in
 				GridRow {
@@ -27,23 +27,23 @@ struct LetterGridView: View {
 						let highlighted = game.charIsHighlighted(row, col: col)
 						let backColor = highlighted ? Color.accentColor : .clear
 						Text(game.board[row, col].letter)
-							.font(.system(size: fontSize, weight: .bold))
+							.flexibleSystemFont().bold()
 							.aspectRatio(1, contentMode: .fit)
 							.frame(width: cellSize, height: cellSize)
 							.gesture(dragGesture(col, row), isEnabled: !noDrag)
-							.background(backColor)
+							.background(backColor, ignoresSafeAreaEdges: [])
 					}
 				}
 			}
 		}
 		.onGeometryChange(for: CGSize.self) { $0.size }
-			action: { self.contentHeight = $0.height }
+			action: { contentHeight = $0.height }
 		.presentationDetents([.height(contentHeight)])
 	}
 	
-	private func cellSize(with cells: Int) -> CGFloat {
-		let size = CGFloat(cells)
-		return ((-0.0239 * size + 1.2211) * size - 21.607) * size + 144.82
+	private var cellSize: CGFloat {
+		let scale = isLandscape ? 0.5 : 0.7
+		return sceneFrame.width * scale / CGFloat(game.size)
 	}
 	
 	private func dragGesture(_ col: Int, _ row: Int) -> some Gesture {
@@ -120,7 +120,7 @@ struct LetterGridView: View {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 12))
+	@State var game = Game(board: GameBoard(size: 20))
 	NavigationStack {
 		LetterGridView(game: game)
 	}

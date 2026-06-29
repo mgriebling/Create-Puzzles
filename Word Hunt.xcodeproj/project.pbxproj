@@ -33,7 +33,7 @@
 		47E0ABEB2FF15B36009D7BB0 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0ABEA2FF15B36009D7BB0 /* Timer.swift */; };
 		47E0AC262FF16FF3009D7BB0 /* ElapsedTimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */; };
 		47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */; };
-		47E0AC2A2FF17361009D7BB0 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC292FF17361009D7BB0 /* BoardView.swift */; };
+		47E0AC2A2FF17361009D7BB0 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC292FF17361009D7BB0 /* GameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,7 +64,7 @@
 		47E0ABEA2FF15B36009D7BB0 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTimeTracker.swift; sourceTree = "<group>"; };
 		47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTime.swift; sourceTree = "<group>"; };
-		47E0AC292FF17361009D7BB0 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		47E0AC292FF17361009D7BB0 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -106,7 +106,7 @@
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
 				47E0ABE42FF069CB009D7BB0 /* GameList.swift */,
 				472CE130291858D90074891E /* GameChooser.swift */,
-				47E0AC292FF17361009D7BB0 /* BoardView.swift */,
+				47E0AC292FF17361009D7BB0 /* GameView.swift */,
 				476F03ED2FEDD6B10041F2B8 /* HightlightedGridView.swift */,
 				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
 				478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */,
@@ -176,7 +176,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 2650;
+				LastUpgradeCheck = 2660;
 				TargetAttributes = {
 					472CE12A291858D90074891E = {
 						CreatedOnToolsVersion = 14.1;
@@ -234,7 +234,7 @@
 				476F03EE2FEDD6B10041F2B8 /* HightlightedGridView.swift in Sources */,
 				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
 				47800D222FEAD186009537EC /* StringList.swift in Sources */,
-				47E0AC2A2FF17361009D7BB0 /* BoardView.swift in Sources */,
+				47E0AC2A2FF17361009D7BB0 /* GameView.swift in Sources */,
 				47800D142FE9CD9C009537EC /* WordList.swift in Sources */,
 				478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */,
 				478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */,

@@ -11,12 +11,13 @@ struct HighlightedGridView: View {
 	let game: Game
 	var scale: CGFloat = 1.0
 	var noDrag: Bool = true
-	
+	var isLandscape: Bool = false
+
 	@State private var actualSize: CGSize = .zero
 	
 	var body: some View {
 		ZStack {
-			LetterGridView(game: game, noDrag: noDrag, scale: scale)
+			LetterGridView(game: game, noDrag: noDrag, scale: scale, isLandscape: isLandscape)
 				.onGeometryChange(for: CGSize.self) { $0.size }
 					action: { self.actualSize = $0 }
 			
@@ -24,8 +25,8 @@ struct HighlightedGridView: View {
 			ForEach(game.board.wordPlacements.indices, id: \.self) { index in
 				let word = game.board.wordPlacements[index]
 				if game.wordIsHighlighted(index) {
-					HighlightView(word: word, size: actualSize, board: game.board,
-					scale: scale)
+					HighlightView(word: word, size: actualSize,
+								  board: game.board, scale: scale)
 				}
 			}
 		}

@@ -10,23 +10,30 @@ import SwiftUI
 
 struct GameChooser: View {
 	@State private var selection: Game? = nil
+	@State private var columnVisibility: NavigationSplitViewVisibility = .all
 	
 	var body: some View {
-		NavigationSplitView(columnVisibility: .constant(.all)) {
+		NavigationSplitView(columnVisibility: $columnVisibility) {
 			GameList(selection: $selection)
 		} detail: {
 			if let game = selection {
-				BoardView(game: game)
+				GameView(game: game)
+					.padding(.bottom)
+					.onTapGesture {
+						// Tap in detail to hide puzzles list selector
+						guard columnVisibility == .all else { return }
+						columnVisibility = .detailOnly
+					}
 			} else {
-				Text("Choose a game!")
+				Text("Choose a puzzle on the left!")
+					.flexibleSystemFont(maximum: 30).bold()
 			}
 		}
+		.navigationSplitViewStyle(.balanced)
     }
 }
 
 #Preview {
-	NavigationStack {
-		GameChooser()
-	}
+	GameChooser()
 }
 

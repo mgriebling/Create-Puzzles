@@ -28,6 +28,8 @@ struct GameList: View {
 				games.remove(atOffsets: offsets)
 			}
 		}
+		.navigationTitle("Puzzles")
+		.navigationBarTitleDisplayMode(.inline)
 		.listStyle(.plain)
 		.onAppear {
 			addSampleGames()
@@ -62,7 +64,7 @@ struct GameList: View {
 	private func addSampleGames() {
 		if games.isEmpty {
 			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: 14, words: SampleWordLists.all[i]))
+				let game = Game(board: GameBoard(size: 20, words: SampleWordLists.all[i]))
 				games.append(game)
 			}
 		}

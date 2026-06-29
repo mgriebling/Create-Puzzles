@@ -10,30 +10,31 @@ import SwiftUI
 struct WordView: View {
 	let words: [PlacedWord]
 	var style: TextStyle = .columns
-	var disappear: Bool = false   // disappear highlighted text
+	var columns: Int = -1
 	
 	@Environment(\.horizontalSizeClass) var size
 	
 	var body: some View {
-		let fontSize: CGFloat = size == .compact ? 15 : 32
+		let fontSize: CGFloat = size == .compact ? 15 : 18
 		if style == .columns {
 			columnText(fontSize: fontSize)
-			//.padding(.leading, size == .compact ? 35 : 75)
 		} else {
 			concatenatedText
-				.font(.system(size: fontSize-3))
+				.flexibleSystemFont(maximum: fontSize)
 		}
 	}
 	
 	private func columnText(fontSize: CGFloat) -> some View {
-		let columns = Array(repeating: GridItem(.flexible(), alignment: .leading), count: size == .compact ? 3 : 5)
+		let columnCount = columns != -1 ? columns : size == .compact ? 3 : 6
+		let columns = Array(repeating: GridItem(.flexible(), alignment: .leading),
+							count: columnCount)
 		return LazyVGrid(columns: columns, alignment: .trailing) {
 			ForEach(words.indices, id: \.self) { index in
 				let word = words[index]
 				let textColor = word.highlighted ? Color(.gray) : .primary
 				Text(word.word.capitalized)
 					.foregroundColor(textColor)
-					.font(.system(size: fontSize, weight: .bold))
+					.flexibleSystemFont(maximum: fontSize)
 					.strikethrough(word.highlighted)
 			}
 		}
@@ -53,7 +54,8 @@ struct WordView: View {
 				.strikethrough(word.highlighted)
 			
 			// 2. Add a comma and space if it is not the last item
-			let separator = index < words.count - 1 ? Text(", ") : Text("")
+			let separator = index < words.count - 1 ?
+				Text(", ").foregroundColor(textColor) : Text("")
 			
 			// 3. Concatenate to the running result
 			return result + wordText + separator
