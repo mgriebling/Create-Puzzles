@@ -29,7 +29,7 @@ struct GameChooser: View {
 					.flexibleSystemFont(maximum: 30).bold()
 			}
 		}
-		.navigationSplitViewStyle(.balanced)
+		.navigationSplitViewStyle(.prominentDetail)
     }
 }
 

@@ -67,6 +67,8 @@ struct LetterGridView: View {
 			.onEnded { value in
 				if game.isWordMatch() {
 					game.removeActiveWord()
+					game.save(to: game.name)
+					print("Saving game to: \(game.name)")
 					// play(sound: "ding-47489.mp3")
 				}
 				game.clearWord()

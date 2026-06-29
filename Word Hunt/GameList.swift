@@ -11,6 +11,7 @@ struct GameList: View {
 	// MARK: Data shared with me
 	@Binding var selection: Game?
 	
+	@Environment(\.scenePhase) private var scenePhase
 	@State private var games: [Game] = []
 	
 	// MARK: Data Owned by me
@@ -27,12 +28,24 @@ struct GameList: View {
 			.onDelete { offsets in
 				games.remove(atOffsets: offsets)
 			}
+			.onMove { source, destination in
+				games.move(fromOffsets: source, toOffset: destination)
+			}
 		}
 		.navigationTitle("Puzzles")
 		.navigationBarTitleDisplayMode(.inline)
 		.listStyle(.plain)
 		.onAppear {
+			games = Game.loadGames()  // read back any saved games
 			addSampleGames()
+		}
+		.onDisappear {
+			Game.save(games: games)
+		}
+		.onChange(of: scenePhase) { oldPhase, newPhase in
+			if newPhase == .background {
+				Game.save(games: games)
+			}
 		}
 		.onChange(of: games) {
 			if let selection, !games.contains(selection) {
