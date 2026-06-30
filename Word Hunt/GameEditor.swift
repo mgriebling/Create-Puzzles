@@ -75,7 +75,9 @@ struct GameEditor: View {
 				}
 			}
 			.navigationTitle(Text("Game Editor"))
+			#if os(iOS)
 			.navigationBarTitleDisplayMode(.inline)
+			#endif
 		}
     }
 	
@@ -139,11 +141,11 @@ struct GameEditor: View {
 	@ViewBuilder
 	private func showLoading() -> some View {
 		if isLoading {
-			Color(.systemBackground).opacity(0.5)
+			Color(.black).opacity(0.5)
 				.ignoresSafeArea()
 			ProgressView("Performing layout...")
 				.padding(20)
-				.background(Color(.systemBackground))
+				.background(Color(.black))
 				.cornerRadius(10)
 				.shadow(radius: 10)
 				.offset(CGSize(width: 0, height: -100))

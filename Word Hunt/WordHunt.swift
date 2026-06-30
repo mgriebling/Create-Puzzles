@@ -9,8 +9,6 @@ import SwiftUI
 
 @main
 struct WordHunt: App {
-//	@State var game = Game(board: GameBoard())
-    
     var body: some Scene {
         WindowGroup {
 			GeometryReader { geometry in
@@ -23,5 +21,5 @@ struct WordHunt: App {
 }
 
 extension EnvironmentValues {
-	@Entry var sceneFrame: CGRect = UIScreen.main.bounds
+	@Entry var sceneFrame: CGRect = .zero
 }

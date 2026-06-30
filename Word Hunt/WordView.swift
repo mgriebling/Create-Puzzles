@@ -18,9 +18,11 @@ struct WordView: View {
 		let fontSize: CGFloat = size == .compact ? 15 : 18
 		if style == .columns {
 			columnText(fontSize: fontSize)
+				.font(.system(size: fontSize))
 		} else {
 			concatenatedText
-				.flexibleSystemFont(maximum: fontSize)
+				.font(Font.system(size: fontSize))
+				// .flexibleSystemFont(maximum: fontSize)
 		}
 	}
 	
@@ -34,7 +36,7 @@ struct WordView: View {
 				let textColor = word.highlighted ? Color(.gray) : .primary
 				Text(word.word.capitalized)
 					.foregroundColor(textColor)
-					.flexibleSystemFont(maximum: fontSize)
+					// .flexibleSystemFont(maximum: fontSize)
 					.strikethrough(word.highlighted)
 			}
 		}

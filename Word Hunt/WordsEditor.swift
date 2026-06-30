@@ -75,7 +75,9 @@ struct WordsEditor: View {
 				}
 			}
 			.navigationTitle("Word List Editor")
+			#if os(iOS)
 			.navigationBarTitleDisplayMode(.inline)
+			#endif
 			.onAppear {
 				lwords = words
 				selectedLanguage = lwords.language

@@ -12,17 +12,18 @@ struct GameSummary: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			Text("\(game.board.words.name) Puzzle")
-				.flexibleSystemFont(maximum: 30).bold()
+			Text("\(game.board.words.name) Puzzle").font(.title2).bold()
+				// .flexibleSystemFont(maximum: 30).bold()
 			Text("Size: \(game.size)⨉\(game.size)")
 			Text("Matched: ^[\(game.matched) word](inflect: true)")
 			Text("Total: ^[\(game.words.count) word](inflect: true)")
-			Text("Time: \(.seconds(game.timer.elapsedTime), format: .time(pattern: .minuteSecond))")
+			ElapsedTime(text: "Time: ", timer: game.timer)
+//			Text("Time: \(.seconds(game.timer.elapsedTime), format: .time(pattern: .hourMinuteSecond))")
 			Text("Difficulty: \(game.size - GameBoard.minimumSize)")
 			Text("Language: \(game.board.words.language.description)")
 			WordView(words: game.placedWords, style: .paragraph)
 		}
-		.flexibleSystemFont(maximum: 20)
+		//.flexibleSystemFont(maximum: 20)
 	}
 }
 

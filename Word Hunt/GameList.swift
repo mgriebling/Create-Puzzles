@@ -33,7 +33,9 @@ struct GameList: View {
 			}
 		}
 		.navigationTitle("Puzzles")
+		#if os(iOS)
 		.navigationBarTitleDisplayMode(.inline)
+		#endif
 		.listStyle(.plain)
 		.onAppear {
 			games = Game.loadGames()  // read back any saved games
@@ -54,7 +56,9 @@ struct GameList: View {
 		}
 		.toolbar {
 			addButton
+			#if os(iOS)
 			EditButton() // editing the List of games
+			#endif
 		}
     }
 	

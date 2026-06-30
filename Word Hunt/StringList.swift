@@ -67,7 +67,9 @@ struct StringList: View {
 				Button("Cancel") { dismiss() }
 			}
 			ToolbarItem(placement: .automatic) { addButton }
+			#if os(iOS)
 			ToolbarItem(placement: .automatic) { EditButton() }
+			#endif
 			ToolbarItem(placement: .confirmationAction) {
 				Button("Done") { done() }
 			}

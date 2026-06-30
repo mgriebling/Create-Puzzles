@@ -48,7 +48,7 @@ struct WordLists: View {
 		.listStyle(.plain)
 		.toolbar {
 			addButton
-			#if !os(macos)
+			#if os(iOS)
 			EditButton()
 			#endif
 		}

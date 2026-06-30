@@ -27,7 +27,7 @@ struct LetterGridView: View {
 						let highlighted = game.charIsHighlighted(row, col: col)
 						let backColor = highlighted ? Color.accentColor : .clear
 						Text(game.board[row, col].letter)
-							.flexibleSystemFont().bold()
+							// .flexibleSystemFont().bold()
 							.aspectRatio(1, contentMode: .fit)
 							.frame(width: cellSize, height: cellSize)
 							.gesture(dragGesture(col, row), isEnabled: !noDrag)
@@ -43,6 +43,7 @@ struct LetterGridView: View {
 	
 	private var cellSize: CGFloat {
 		let scale = isLandscape ? 0.5 : 0.7
+		print(sceneFrame.width)
 		return sceneFrame.width * scale / CGFloat(game.size)
 	}
 	

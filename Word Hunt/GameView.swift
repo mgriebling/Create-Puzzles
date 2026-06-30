@@ -42,28 +42,34 @@ struct GameView: View {
 		.onAppear {
 			checkOrientation()
 		}
+		#if os(iOS)
 		.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
 			checkOrientation()
 		}
+		#endif
 		.toolbar {
-			ToolbarItem(placement: .topBarLeading) {
+			ToolbarItem(placement: .navigation) {
 				Text("Matched: ^[\(game.matched) word](inflect: true)")
 					.fixedSize(horizontal: true, vertical: false)
 			}
 			ToolbarItem {
-				ElapsedTime(timer: game.timer)
-					.monospaced().lineLimit(1)
+				ElapsedTime(text: "", timer: game.timer)
+					.lineLimit(1)
 			}
 		}
 		.navigationTitle(game.name)
+		#if os(iOS)
 		.navigationBarTitleDisplayMode(.inline)
+		#endif
 		.background(Color(.yellow.opacity(0.15)), ignoresSafeAreaEdges: .all)
 	}
 	
 	private func checkOrientation() {
+		#if os(iOS)
 		if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
 			isLandscape = windowScene.interfaceOrientation.isLandscape
 		}
+		#endif
 	}
 }
 

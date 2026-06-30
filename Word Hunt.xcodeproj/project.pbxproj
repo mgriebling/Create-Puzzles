@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670A72FF40AE300A09C13 /* AutoGridWidth.swift */; };
+		471670AA2FF4454000A09C13 /* CellGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670A92FF4454000A09C13 /* CellGridView.swift */; };
+		471670AC2FF4493700A09C13 /* CapsuleHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670AB2FF4493700A09C13 /* CapsuleHighlight.swift */; };
 		472CE12F291858D90074891E /* WordHunt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE12E291858D90074891E /* WordHunt.swift */; };
 		472CE131291858D90074891E /* GameChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE130291858D90074891E /* GameChooser.swift */; };
 		472CE133291858DB0074891E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE132291858DB0074891E /* Assets.xcassets */; };
@@ -37,6 +40,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		471670A72FF40AE300A09C13 /* AutoGridWidth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGridWidth.swift; sourceTree = "<group>"; };
+		471670A92FF4454000A09C13 /* CellGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellGridView.swift; sourceTree = "<group>"; };
+		471670AB2FF4493700A09C13 /* CapsuleHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleHighlight.swift; sourceTree = "<group>"; };
 		472CE12B291858D90074891E /* Word Hunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Hunt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		472CE12E291858D90074891E /* WordHunt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordHunt.swift; sourceTree = "<group>"; };
 		472CE130291858D90074891E /* GameChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameChooser.swift; sourceTree = "<group>"; };
@@ -130,6 +136,9 @@
 				472CE135291858DB0074891E /* Preview Content */,
 				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 				47E0ABEA2FF15B36009D7BB0 /* Timer.swift */,
+				471670A72FF40AE300A09C13 /* AutoGridWidth.swift */,
+				471670A92FF4454000A09C13 /* CellGridView.swift */,
+				471670AB2FF4493700A09C13 /* CapsuleHighlight.swift */,
 			);
 			path = "Word Hunt";
 			sourceTree = "<group>";
@@ -227,6 +236,7 @@
 				47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */,
 				472CE131291858D90074891E /* GameChooser.swift in Sources */,
 				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
+				471670AA2FF4454000A09C13 /* CellGridView.swift in Sources */,
 				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
@@ -239,6 +249,8 @@
 				478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */,
 				478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */,
 				476F03E62FED4F3A0041F2B8 /* Extensions.swift in Sources */,
+				471670AC2FF4493700A09C13 /* CapsuleHighlight.swift in Sources */,
+				471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */,
 				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
@@ -398,8 +410,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.WordHunt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -441,8 +453,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.c-inspirations.WordHunt";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

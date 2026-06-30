@@ -13,13 +13,13 @@ struct HighlightedGridView: View {
 	var noDrag: Bool = true
 	var isLandscape: Bool = false
 
-	@State private var actualSize: CGSize = .zero
+	@State private var actualSize: CGSize = CGSize(width: 200, height: 200)
 	
 	var body: some View {
 		ZStack {
 			LetterGridView(game: game, noDrag: noDrag, scale: scale, isLandscape: isLandscape)
 				.onGeometryChange(for: CGSize.self) { $0.size }
-					action: { self.actualSize = $0 }
+				action: { self.actualSize = $0; print($0) }
 			
 			// Display the highlighted words
 			ForEach(game.board.wordPlacements.indices, id: \.self) { index in
