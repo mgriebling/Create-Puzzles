@@ -8,22 +8,12 @@
 
 import SwiftUI
 
-struct CellIndex: Equatable {
-	let row: Int
-	let col: Int
-}
-
-struct Word : Identifiable {
-	let id = UUID()
-	let word: String // Stores standard dictionary version
-	let start: CellIndex
-	let end: CellIndex
-	let color: Color
-}
-
-struct WordSearchGameView: View {
+struct HighlightedGridView: View {
 	// 5x5 Game Board Matrix
 	let game: Game
+	var scale: CGFloat = 1.0
+	var noDrag: Bool = true
+	var isLandscape: Bool = false
 
 	// Active Interaction States
 	@State private var grid: [[String]] =  []
@@ -36,23 +26,7 @@ struct WordSearchGameView: View {
 	@State private var numCols = 0
 	
 	// Permanent History State: Stores fully validated words and paths
-	@State private var foundWords: [Word] = []
-	
-	enum SelectionDirection {
-		case none, horizontal, vertical, diagonalUp, diagonalDown
-	}
-
-	// Helper to evaluate if the current selection or its reverse forms a valid word
-	private var detectedWord: String? {
-		if validWordBank.contains(activeWordString.capitalized) {
-			return activeWordString
-		}
-		let reversed = String(activeWordString.reversed())
-		if validWordBank.contains(reversed.capitalized) {
-			return reversed
-		}
-		return nil
-	}
+	@State private var foundWords: [PlacedWord] = []
 
 	var body: some View {
 		VStack(spacing: 20) {
@@ -114,7 +88,7 @@ struct WordSearchGameView: View {
 						let endPoint = centerOfCell(row: path.end.row, col: path.end.col, cellSize: cellSize, spacing: spacing)
 						
 						Capsule()
-							.fill(path.color.opacity(0.35))
+							.fill(Color.indigo.opacity(0.35))
 							.frame(width: cellSize, height: distance(from: startPoint, to: endPoint) + cellSize)
 							.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
 							.position(midPoint(from: startPoint, to: endPoint))
@@ -136,11 +110,12 @@ struct WordSearchGameView: View {
 				.gesture(
 					DragGesture(minimumDistance: 5, coordinateSpace: .named("GridSpace"))
 						.onChanged { value in
-							processDrag(location: value.location, startLocation: value.startLocation, cellSize: cellSize, spacing: spacing, numRows: numRows, numCols: numCols)
+							processDrag(location: value.location, startLocation: value.startLocation, cellSize: cellSize, spacing: spacing)
 						}
 						.onEnded { _ in
 							evaluateAndSaveWord()
-						}
+						},
+					isEnabled: !noDrag
 				)
 			}
 			.aspectRatio(1, contentMode: .fit)
@@ -151,11 +126,11 @@ struct WordSearchGameView: View {
 				HStack(spacing: 10) {
 					ForEach(foundWords) { item in
 						Text(item.word)
-							.font(.caption)
+							.flexibleSystemFont(maximum: 30)
 							.bold()
 							.padding(.horizontal, 12)
 							.padding(.vertical, 6)
-							.background(item.color.opacity(0.2))
+							.background(Color.indigo.opacity(0.3))
 							.cornerRadius(15)
 					}
 				}
@@ -166,7 +141,7 @@ struct WordSearchGameView: View {
 	
 	// MARK: - Word Evaluation Mechanics
 	
-	private func processDrag(location: CGPoint, startLocation: CGPoint, cellSize: CGFloat, spacing: CGFloat, numRows: Int, numCols: Int) {
+	private func processDrag(location: CGPoint, startLocation: CGPoint, cellSize: CGFloat, spacing: CGFloat) {
 		let step = cellSize + spacing
 		
 		let startCol = Int(floor(startLocation.x / step))
@@ -224,6 +199,14 @@ struct WordSearchGameView: View {
 		activeWordString = tempWord
 	}
 	
+	// Helper to evaluate if the current selection forms a valid word
+	private var detectedWord: String? {
+		if validWordBank.contains(activeWordString.capitalized) {
+			return activeWordString
+		}
+		return nil
+	}
+	
 	private func evaluateAndSaveWord() {
 		// Use computed property to evaluate forward vs reverse match
 		if let targetWord = detectedWord {
@@ -232,13 +215,12 @@ struct WordSearchGameView: View {
 			print("Found: \(target)")
 			if !foundWords.contains(where: { $0.word == target }) {
 				if let start = dragStartCell, let end = dragCurrentCell {
-					let randomColor: Color = [.blue, .green, .purple, .pink, .indigo].randomElement() ?? .blue
-					
-					let finalizedPath = Word (
-						word: targetWord,
+//					let randomColor: Color = [.blue, .green, .purple, .pink, .indigo].randomElement() ?? .blue
+//					
+					let finalizedPath = PlacedWord (
+						word: target,
 						start: start,
-						end: end,
-						color: randomColor
+						end: end
 					)
 					
 					withAnimation(.spring()) {
@@ -256,6 +238,10 @@ struct WordSearchGameView: View {
 			selectionDirection = .none
 			activeWordString = ""
 		}
+	}
+	
+	enum SelectionDirection {
+		case none, horizontal, vertical, diagonalUp, diagonalDown
 	}
 	
 	// MARK: - Geometry Math Helpers
@@ -288,6 +274,6 @@ extension Int {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 12, words: SampleWordLists.all[0]))
-	WordSearchGameView(game: game)
+	@State var game = Game(board: GameBoard(size: 16, words: SampleWordLists.all[0]))
+	HighlightedGridView(game: game, noDrag: false)
 }
