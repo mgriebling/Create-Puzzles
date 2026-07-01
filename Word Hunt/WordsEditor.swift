@@ -59,9 +59,7 @@ struct WordsEditor: View {
 						}
 				}
 				.onChange(of: lwords) { oldValue, newValue in
-					wordList = lwords.words.enumerated().map { id, word in
-						PlacedWord(word: word, id: id, direction: .right)
-					}
+					wordList = lwords.words.map { PlacedWord(word: $0) }
 				}
 			}
 			.toolbar {
@@ -81,9 +79,7 @@ struct WordsEditor: View {
 			.onAppear {
 				lwords = words
 				selectedLanguage = lwords.language
-				wordList = lwords.words.enumerated().map { id, word in
-					PlacedWord(word: word, id: id)
-				}
+				wordList = lwords.words.map { PlacedWord(word: $0) }
 			}
 		}
     }

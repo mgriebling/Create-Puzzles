@@ -8,20 +8,41 @@
 import Foundation
 import NaturalLanguage
 
-public struct PlacedWord: Codable, Identifiable, Hashable {
-	var word: String
+struct CellIndex: Equatable, Codable, Hashable {
+	let row: Int
+	let col: Int
+	
+	init() { self.init(row: 0, col: 0) }
+	
+	init(row: Int, col: Int) {
+		self.row = row
+		self.col = col
+	}
+}
+
+struct PlacedWord: Codable, Identifiable, Hashable {
+	let id: UUID
+	let word: String
+	let start: CellIndex
+	let end: CellIndex
 	let direction: Direction
 	var highlighted: Bool
-	public let id: Int
 	
-	init(word:String, id: Int, direction: Direction = .right, highlighted: Bool = false) {
+	init(word:String, start:CellIndex = CellIndex(), end:CellIndex = CellIndex(),
+		 direction: Direction = .right, highlighted:Bool = false) {
 		self.word = word.lowercased()
-		self.id = id
+		self.start = start
+		self.end = end
 		self.highlighted = highlighted
 		self.direction = direction
-//		if let word = getSystemRandomWord() {
-//			print("Random word: \(word)")
-//		}
+		self.id = UUID()
+	}
+	
+	init(word:String, start:CellIndex = CellIndex(), direction:Direction, highlighted:Bool = false) {
+		let len = max(0, word.count - 1)
+		let end = CellIndex(row: start.row + (len * direction.deltaRow),
+							col: start.col + (len * direction.deltaCol))
+		self.init(word: word, start: start, end: end, direction: direction, highlighted: highlighted)
 	}
 	
 	func getSystemRandomWord() -> String? {

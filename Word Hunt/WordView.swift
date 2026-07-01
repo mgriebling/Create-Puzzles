@@ -36,7 +36,6 @@ struct WordView: View {
 				let textColor = word.highlighted ? Color(.gray) : .primary
 				Text(word.word.capitalized)
 					.foregroundColor(textColor)
-					// .flexibleSystemFont(maximum: fontSize)
 					.strikethrough(word.highlighted)
 			}
 		}
@@ -72,7 +71,7 @@ struct WordView: View {
 #Preview {
 	let words: [PlacedWord] =
 		SampleWordLists.all[1].words.enumerated().map { index, word in
-			PlacedWord(word: word, id: index, highlighted: Bool.random())
+			PlacedWord(word: word, highlighted: Bool.random())
 		}
 	WordView(words: words, style: .columns).padding(.bottom)
 	WordView(words: words, style: .paragraph)

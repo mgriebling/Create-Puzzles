@@ -11,30 +11,28 @@ struct GameView: View {
 	let game: Game
 	
 	@State private var isLandscape: Bool = false
+	// @State private var activeWord: String = ""
 	
 	var body: some View {
 		Group {
 			if isLandscape {
 				HStack(alignment: .center, spacing: 0) {
-					Spacer()
 					VStack(alignment: .center) {
-						Text("Words").fontWeight(.heavy)
-						WordView(words: game.board.wordPlacements, columns: 3)
+						Text("Words").font(.title2).fontWeight(.heavy)
+						WordView(words: game.board.wordPlacements, columns: 4)
 						Spacer()
 					}
-					HighlightedGridView(game: game, noDrag: false, isLandscape: isLandscape)
+					.layoutPriority(-1)
 					Spacer()
+					HighlightedGridView(game: game, noDrag: false, isLandscape: isLandscape)
 				}
 				.padding()
 			} else {
 				VStack {
 					HighlightedGridView(game: game, noDrag: false, isLandscape: isLandscape)
-					Spacer()
-					ScrollView {
-						Text("Words").fontWeight(.heavy)
-						WordView(words: game.board.wordPlacements)
-							.padding(.leading, 40)
-					}
+					Text("Words").font(.title2).fontWeight(.heavy)
+					WordView(words: game.board.wordPlacements)
+						.padding(.leading, 40)
 				}
 			}
 		}
@@ -48,19 +46,21 @@ struct GameView: View {
 		}
 		#endif
 		.toolbar {
-			ToolbarItem(placement: .navigation) {
-				Text("Matched: ^[\(game.matched) word](inflect: true)")
+			ToolbarItem(placement: .topBarLeading) {
+				Text("Matched: ^[\(game.matched) of \(game.placedWords.count) word](inflect: true)")
 					.fixedSize(horizontal: true, vertical: false)
 			}
-			ToolbarItem {
+			ToolbarItem(placement: .principal) {
+				Text("Selected: " + (game.board.selectedWord.isEmpty ? "..." : game.board.selectedWord))
+					.fixedSize(horizontal: true, vertical: false)
+			}
+			ToolbarItem(placement:.topBarTrailing) {
 				ElapsedTime(text: "", timer: game.timer)
 					.lineLimit(1)
+					.fontDesign(.monospaced)
 			}
 		}
 		.navigationTitle(game.name)
-		#if os(iOS)
-		.navigationBarTitleDisplayMode(.inline)
-		#endif
 		.background(Color(.yellow.opacity(0.15)), ignoresSafeAreaEdges: .all)
 	}
 	

@@ -8,8 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670A72FF40AE300A09C13 /* AutoGridWidth.swift */; };
-		471670AA2FF4454000A09C13 /* CellGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670A92FF4454000A09C13 /* CellGridView.swift */; };
-		471670AC2FF4493700A09C13 /* CapsuleHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670AB2FF4493700A09C13 /* CapsuleHighlight.swift */; };
+		471670AC2FF4493700A09C13 /* HighlightedGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670AB2FF4493700A09C13 /* HighlightedGridView.swift */; };
 		472CE12F291858D90074891E /* WordHunt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE12E291858D90074891E /* WordHunt.swift */; };
 		472CE131291858D90074891E /* GameChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE130291858D90074891E /* GameChooser.swift */; };
 		472CE133291858DB0074891E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE132291858DB0074891E /* Assets.xcassets */; };
@@ -19,7 +18,6 @@
 		47578B062FE885B90072FFED /* Alphabets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47578B052FE885B90072FFED /* Alphabets.swift */; };
 		476F03E62FED4F3A0041F2B8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476F03E52FED4F3A0041F2B8 /* Extensions.swift */; };
 		476F03EC2FEDD2DE0041F2B8 /* GameSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */; };
-		476F03EE2FEDD6B10041F2B8 /* HightlightedGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476F03ED2FEDD6B10041F2B8 /* HightlightedGridView.swift */; };
 		4771F1762FEF208B00A98387 /* SampleWordLists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771F1752FEF208B00A98387 /* SampleWordLists.swift */; };
 		47800D142FE9CD9C009537EC /* WordList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D132FE9CD9C009537EC /* WordList.swift */; };
 		47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D152FE9D2FE009537EC /* WordsEditor.swift */; };
@@ -30,8 +28,6 @@
 		47820B8329298242009B16A1 /* Subsonic in Frameworks */ = {isa = PBXBuildFile; productRef = 47820B8229298242009B16A1 /* Subsonic */; };
 		478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF1342FEC13A3001F4018 /* FileImportButton.swift */; };
 		478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13A2FEC2E6E001F4018 /* GameEditor.swift */; };
-		478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */; };
-		47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C079E6291FD1FC003D0248 /* HighlightView.swift */; };
 		47E0ABE52FF069CB009D7BB0 /* GameList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0ABE42FF069CB009D7BB0 /* GameList.swift */; };
 		47E0ABEB2FF15B36009D7BB0 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0ABEA2FF15B36009D7BB0 /* Timer.swift */; };
 		47E0AC262FF16FF3009D7BB0 /* ElapsedTimeTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */; };
@@ -41,8 +37,7 @@
 
 /* Begin PBXFileReference section */
 		471670A72FF40AE300A09C13 /* AutoGridWidth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGridWidth.swift; sourceTree = "<group>"; };
-		471670A92FF4454000A09C13 /* CellGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellGridView.swift; sourceTree = "<group>"; };
-		471670AB2FF4493700A09C13 /* CapsuleHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleHighlight.swift; sourceTree = "<group>"; };
+		471670AB2FF4493700A09C13 /* HighlightedGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightedGridView.swift; sourceTree = "<group>"; };
 		472CE12B291858D90074891E /* Word Hunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Hunt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		472CE12E291858D90074891E /* WordHunt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordHunt.swift; sourceTree = "<group>"; };
 		472CE130291858D90074891E /* GameChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameChooser.swift; sourceTree = "<group>"; };
@@ -54,7 +49,6 @@
 		47578B052FE885B90072FFED /* Alphabets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alphabets.swift; sourceTree = "<group>"; };
 		476F03E52FED4F3A0041F2B8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSummary.swift; sourceTree = "<group>"; };
-		476F03ED2FEDD6B10041F2B8 /* HightlightedGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HightlightedGridView.swift; sourceTree = "<group>"; };
 		4771F1752FEF208B00A98387 /* SampleWordLists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleWordLists.swift; sourceTree = "<group>"; };
 		47800D132FE9CD9C009537EC /* WordList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordList.swift; sourceTree = "<group>"; };
 		47800D152FE9D2FE009537EC /* WordsEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsEditor.swift; sourceTree = "<group>"; };
@@ -64,8 +58,6 @@
 		47800D212FEAD186009537EC /* StringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringList.swift; sourceTree = "<group>"; };
 		478BF1342FEC13A3001F4018 /* FileImportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportButton.swift; sourceTree = "<group>"; };
 		478BF13A2FEC2E6E001F4018 /* GameEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditor.swift; sourceTree = "<group>"; };
-		478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGridView.swift; sourceTree = "<group>"; };
-		47C079E6291FD1FC003D0248 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
 		47E0ABE42FF069CB009D7BB0 /* GameList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameList.swift; sourceTree = "<group>"; };
 		47E0ABEA2FF15B36009D7BB0 /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTimeTracker.swift; sourceTree = "<group>"; };
@@ -112,17 +104,16 @@
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
 				47E0ABE42FF069CB009D7BB0 /* GameList.swift */,
 				472CE130291858D90074891E /* GameChooser.swift */,
+				471670AB2FF4493700A09C13 /* HighlightedGridView.swift */,
 				47E0AC292FF17361009D7BB0 /* GameView.swift */,
-				476F03ED2FEDD6B10041F2B8 /* HightlightedGridView.swift */,
 				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
-				478BF13C2FEC6DFB001F4018 /* LetterGridView.swift */,
 				47800D1B2FEA9789009537EC /* WordView.swift */,
-				47C079E6291FD1FC003D0248 /* HighlightView.swift */,
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
 				47578B052FE885B90072FFED /* Alphabets.swift */,
 				47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */,
 				47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */,
+				47E0ABEA2FF15B36009D7BB0 /* Timer.swift */,
 				47800D132FE9CD9C009537EC /* WordList.swift */,
 				47800D152FE9D2FE009537EC /* WordsEditor.swift */,
 				47800D1D2FEAA9E5009537EC /* WordLists.swift */,
@@ -131,14 +122,11 @@
 				478BF1342FEC13A3001F4018 /* FileImportButton.swift */,
 				476F03E52FED4F3A0041F2B8 /* Extensions.swift */,
 				472CE12E291858D90074891E /* WordHunt.swift */,
+				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 				472CE134291858DB0074891E /* WordHunt.entitlements */,
 				472CE132291858DB0074891E /* Assets.xcassets */,
 				472CE135291858DB0074891E /* Preview Content */,
-				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
-				47E0ABEA2FF15B36009D7BB0 /* Timer.swift */,
 				471670A72FF40AE300A09C13 /* AutoGridWidth.swift */,
-				471670A92FF4454000A09C13 /* CellGridView.swift */,
-				471670AB2FF4493700A09C13 /* CapsuleHighlight.swift */,
 			);
 			path = "Word Hunt";
 			sourceTree = "<group>";
@@ -236,20 +224,16 @@
 				47800D162FE9D2FE009537EC /* WordsEditor.swift in Sources */,
 				472CE131291858D90074891E /* GameChooser.swift in Sources */,
 				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
-				471670AA2FF4454000A09C13 /* CellGridView.swift in Sources */,
 				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
 				47E0ABE52FF069CB009D7BB0 /* GameList.swift in Sources */,
-				476F03EE2FEDD6B10041F2B8 /* HightlightedGridView.swift in Sources */,
-				47C079E7291FD1FC003D0248 /* HighlightView.swift in Sources */,
 				47800D222FEAD186009537EC /* StringList.swift in Sources */,
 				47E0AC2A2FF17361009D7BB0 /* GameView.swift in Sources */,
 				47800D142FE9CD9C009537EC /* WordList.swift in Sources */,
 				478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */,
-				478BF13D2FEC6DFB001F4018 /* LetterGridView.swift in Sources */,
 				476F03E62FED4F3A0041F2B8 /* Extensions.swift in Sources */,
-				471670AC2FF4493700A09C13 /* CapsuleHighlight.swift in Sources */,
+				471670AC2FF4493700A09C13 /* HighlightedGridView.swift in Sources */,
 				471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */,
 				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,

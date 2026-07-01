@@ -33,9 +33,9 @@ struct GameList: View {
 			}
 		}
 		.navigationTitle("Puzzles")
-		#if os(iOS)
-		.navigationBarTitleDisplayMode(.inline)
-		#endif
+//		#if os(iOS)
+//		.navigationBarTitleDisplayMode(.inline)
+//		#endif
 		.listStyle(.plain)
 		.onAppear {
 			games = Game.loadGames()  // read back any saved games

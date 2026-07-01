@@ -45,7 +45,15 @@ struct GameBoard : Codable, Equatable, Hashable {
     private(set) var board = [Cell]()
     
     // active word selection
-    private(set) var selectedWord = ""
+	private var _selectedWord: String = ""
+	var selectedWord: String {
+		set {
+			_selectedWord = newValue
+		}
+		get {
+			_selectedWord
+		}
+	}
     private var selectedMoves = [Int]()
 	
 	// active set of words
@@ -163,8 +171,8 @@ struct GameBoard : Codable, Equatable, Hashable {
 		}
 		
 		// add word to the word database
-		let index = indexOf(row, column:col)
-		wordPlacements.append(PlacedWord(word: word, id: index, direction: direction))
+		let start = CellIndex(row: row, col: col)
+		wordPlacements.append(PlacedWord(word: word, start: start, direction: direction))
 	}
 	
 	// Check if the word fits at the given coordinates
@@ -230,17 +238,13 @@ struct GameBoard : Codable, Equatable, Hashable {
 		}
 		return unplaced
 	}
-	
-	mutating func addLetter(_ row: Int, column: Int) {
-		addLetter(indexOf(row, column: column))
-	}
     
-    mutating func addLetter(_ index: Int) {
-		if selectedMoves.contains(index) { return }
-        let letter = board[index].letter
-        selectedWord.append(letter)
-        selectedMoves.append(index)
-    }
+//	mutating func addLetter(_ letter: String) {
+//	//	if selectedMoves.contains(index) { return }
+//    //    let letter = board[index].letter
+//        selectedWord.append(letter)
+//    //    selectedMoves.append(index)
+//    }
 	
 	mutating func highlightWord(_ index: Int) {
 		wordPlacements[index].highlighted = true

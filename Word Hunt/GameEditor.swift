@@ -53,12 +53,12 @@ struct GameEditor: View {
 						}
 					}
 				}
-				Section(header: wordListTitle) {
-					ZStack {
-						LetterGridView(game: lgame)
-						showLoading()
-					}
-				}
+//				Section(header: wordListTitle) {
+//					ZStack {
+//						LetterGridView(game: lgame)
+//						showLoading()
+//					}
+//				}
 			}
 			.onAppear(perform: setUpGame)
 			.toolbar {

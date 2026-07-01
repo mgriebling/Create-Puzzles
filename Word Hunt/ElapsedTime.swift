@@ -12,31 +12,21 @@ struct ElapsedTime: View {
 	let text: String
 	let timer: Timer
     
-    var format: SystemFormatStyle.DateOffset {
-		.offset(to: timer.startTime! - timer.elapsedTime,
-				allowedFields: [.minute, .second])
-    }
+	let format: Duration.TimeFormatStyle = .time(pattern: .hourMinuteSecond)
     
     var body: some View {
 		HStack {
 			Text(text)
-			if timer.startTime != nil {
+			if let start = timer.startTime {
+				let offset = start - timer.elapsedTime
 				if let endTime = timer.endTime {
-					Text(endTime, format: format)
+					Text(.seconds(offset.timeIntervalSince(endTime)), format: format)
 				} else {
-					Text(TimeDataSource<Date>.currentDate, format: format)
+					Text(.durationOffset(to: offset), format: format)
 				}
 			} else {
-				// Text(timer.elapsedTime, format: )
-				Text(.seconds(timer.elapsedTime), format: .time(pattern: .hourMinuteSecond))
-				// Text(
-				// Text("0:00:00")
-				// Image(systemName: "pause")
+				Text(.seconds(timer.elapsedTime), format: format)
 			}
 		}
     }
 }
-//
-//#Preview {
-//    ElapsedTime()
-//}
