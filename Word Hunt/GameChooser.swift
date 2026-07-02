@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Mike Griebling on 2022-11-06.
 //

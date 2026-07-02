@@ -1,6 +1,6 @@
 //
 //  Alphabets.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Google AI on 21.06.2026.
 //

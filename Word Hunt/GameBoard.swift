@@ -1,6 +1,6 @@
 //
 //  Board.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Mike Griebling on 2022-11-09.
 //
@@ -64,7 +64,7 @@ struct GameBoard : Codable, Equatable, Hashable {
 	private(set) var missingWords = [String]()
 	
 	init(size: Int = Self.minimumSize, words: WordList = WordList()) {
-		let size = max(size, Self.minimumSize)	// ensures size >= minimumSize
+		// let size = max(size, Self.minimumSize)	// ensures size >= minimumSize
 		self.size = size
 		self.words = words
 		wordPlacements = []

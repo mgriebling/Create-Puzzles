@@ -1,6 +1,6 @@
 //
 //  Words.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Michael Griebling on 22.06.2026.
 //

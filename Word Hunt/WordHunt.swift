@@ -1,6 +1,6 @@
 //
 //  WordHunt.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Mike Griebling on 2022-11-06.
 //
@@ -11,15 +11,12 @@ import SwiftUI
 struct WordHunt: App {
     var body: some Scene {
         WindowGroup {
-			GeometryReader { geometry in
-				GameChooser()
-					.environment(\.sceneFrame, geometry.frame(in: .global))
-			}
-			.ignoresSafeArea()
+			GameChooser()
         }
+		#if os(macOS)
+		Settings {
+			SettingsView()
+		}
+		#endif
     }
-}
-
-extension EnvironmentValues {
-	@Entry var sceneFrame: CGRect = .zero
 }

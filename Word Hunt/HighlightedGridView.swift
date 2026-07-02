@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Subsonic
 
 struct HighlightedGridView: View {
 	// Row x Col Game Board Matrix
@@ -14,15 +15,22 @@ struct HighlightedGridView: View {
 	var scale: CGFloat = 1.0
 	var noDrag: Bool = true
 	var isLandscape: Bool = false
+	
+	@AppStorage("highlight") private var highlight: HighLight = .fill
+	@AppStorage("selectionColor") private var selectionColor: Int = Color.orange.toInt!
+	@AppStorage("selectionOKColor") private var selectionOKColor: Int = Color.green.toInt!
+	@AppStorage("highlightColor") private var highlightColor: Int = Color.accentColor.toInt!
+	@AppStorage("soundsOn") private var soundsOn: Bool = false
 
 	// Active Interaction States
-	@State private var grid: [[String]] =  []
+	@State private var grid: [[String]] = [[" "]]
 	@State private var validWordBank: Set<String> = []
 	@State private var dragStartCell: CellIndex?
 	@State private var dragCurrentCell: CellIndex?
 	@State private var selectionDirection: SelectionDirection = .none
-	@State private var numRows = 0
-	@State private var numCols = 0
+	@State private var numRows = 1
+	@State private var numCols = 1
+	@State private var done: Bool = false
 	
 	// Permanent History State: Stores fully validated words and paths
 	@State private var foundWords: [PlacedWord] = []
@@ -30,12 +38,29 @@ struct HighlightedGridView: View {
 	var body: some View {
 		VStack(spacing: 20) {
 			GeometryReader { geometry in
-				let spacing: CGFloat = 2
+				let spacing: CGFloat = 0
 				let totalWidth = geometry.size.width
 				let cellSize = (totalWidth - (spacing * CGFloat(numCols - 1))) / CGFloat(numCols)
+				let fill = highlight == .fill || highlight == .both
+				let lineWidth = highlight == .outline || highlight == .both ? 2.0 : 0.0
 				
 				ZStack(alignment: .topLeading) {
-					// 1. Core Background Grid
+					// Floating selected name
+					let frameWidth = game.activeWord.count / 2 + 1
+					Text(game.activeWord)
+						.font(.system(size: cellSize * 0.7, weight: .bold))
+						.lineLimit(1)
+						.fixedSize(horizontal: true, vertical: false)
+						.frame(width: cellSize * CGFloat(frameWidth), height: cellSize)
+						.padding(10)
+						.background(Color(.systemGray2))
+						.cornerRadius(8)
+						.offset(x: cellSize*CGFloat(numCols-frameWidth-1)/2, y: -cellSize*2)
+						.zIndex(10)
+						.opacity(game.activeWord.isEmpty ? 0.0 : 1.0)
+						.shadow(color: .primary, radius: 5, x: 4, y: 4)
+					
+					// 1. Text Grid
 					VStack(spacing: spacing) {
 						ForEach(0..<numRows, id: \.self) { row in
 							HStack(spacing: spacing) {
@@ -43,39 +68,43 @@ struct HighlightedGridView: View {
 									Text(grid[row][col])
 										.font(.system(size: cellSize * 0.7, weight: .bold))
 										.frame(width: cellSize, height: cellSize)
-										.cornerRadius(8)
 								}
 							}
 						}
 					}
 					.coordinateSpace(name: "GridSpace")
-					
-					// 2. Persistent Layer: Displays correctly guessed historical words
-					ForEach(game.placedWords) { word in
-						let startPoint = centerOfCell(row: word.start.row, col: word.start.col, cellSize: cellSize, spacing: spacing)
-						let endPoint = centerOfCell(row: word.end.row, col: word.end.col, cellSize: cellSize, spacing: spacing)
+					.background {
+						// 2. Persistent Layer: Displays correctly guessed historical word
+						ForEach(game.placedWords) { word in
+							let startPoint = centerOfCell(row: word.start.row, col: word.start.col, cellSize: cellSize, spacing: spacing)
+							let endPoint = centerOfCell(row: word.end.row, col: word.end.col, cellSize: cellSize, spacing: spacing)
+							let color = Color(highlightColor)
+							if word.highlighted {
+								Capsule()
+									.fill(fill ? color.opacity(0.5) : .clear)
+									.stroke(color.opacity(0.8), lineWidth: lineWidth)
+									.frame(width: cellSize, height: distance(from: startPoint, to: endPoint) + cellSize)
+									.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
+									.position(midPoint(from: startPoint, to: endPoint))
+							}
+						}
 						
-						if word.highlighted {
+						// 3. Active Layer: Current continuous user gesture drag highlight
+						if let start = dragStartCell, let end = dragCurrentCell, selectionDirection != .none {
+							let startPoint = centerOfCell(row: start.row, col: start.col, cellSize: cellSize, spacing: spacing)
+							let endPoint = centerOfCell(row: end.row, col: end.col, cellSize: cellSize, spacing: spacing)
+							let selColor = Color(selectionColor)
+							let selColorOK = Color(selectionOKColor)
+							let color = detectedWord != nil ? selColorOK : selColor
 							Capsule()
-								.fill(Color.indigo.opacity(0.3))
+								.fill(fill ? color.opacity(0.6) : .clear)
+								.stroke(color, lineWidth: lineWidth)
 								.frame(width: cellSize, height: distance(from: startPoint, to: endPoint) + cellSize)
 								.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
 								.position(midPoint(from: startPoint, to: endPoint))
+								.allowsHitTesting(false)
 						}
-					}
-					
-					// 3. Active Layer: Current continuous user gesture drag highlight
-					if let start = dragStartCell, let end = dragCurrentCell, selectionDirection != .none {
-						let startPoint = centerOfCell(row: start.row, col: start.col, cellSize: cellSize, spacing: spacing)
-						let endPoint = centerOfCell(row: end.row, col: end.col, cellSize: cellSize, spacing: spacing)
-						
-						Capsule()
-							.fill(detectedWord != nil ? Color.green.opacity(0.4) : Color.orange.opacity(0.4))
-							.frame(width: cellSize, height: distance(from: startPoint, to: endPoint) + cellSize)
-							.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
-							.position(midPoint(from: startPoint, to: endPoint))
-							.allowsHitTesting(false)
-					}
+					 }
 				}
 				.gesture(
 					DragGesture(minimumDistance: 5, coordinateSpace: .named("GridSpace"))
@@ -179,16 +208,21 @@ struct HighlightedGridView: View {
 		if let targetWord = detectedWord {
 			// Check to avoid duplicates
 			let target = targetWord.capitalized
-			print("Found: \(target)")
-
 			if let start = dragStartCell, let end = dragCurrentCell {
 				let finalizedPath = PlacedWord (
 					word: target, start: start, end: end
 				)
+				if soundsOn {
+					play(sound: "success.mp3", volume: 0.2)
+				}
 				foundWords.append(finalizedPath)
 				game.removeActiveWord()
 				game.save(to: game.name)
-				print("SUCCESS: Found Word (\(target))")
+				print("SUCCESS: Found Word \(target)")
+			}
+		} else {
+			if soundsOn {
+				play(sound: "oops.mp3", volume: 0.2)
 			}
 		}
 		game.clearWord()

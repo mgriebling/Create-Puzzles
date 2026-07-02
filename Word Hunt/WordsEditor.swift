@@ -1,6 +1,6 @@
 //
 //  WordsEditor.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Michael Griebling on 22.06.2026.
 //
@@ -62,16 +62,7 @@ struct WordsEditor: View {
 					wordList = lwords.words.map { PlacedWord(word: $0) }
 				}
 			}
-			.toolbar {
-				ToolbarItem(placement: .cancellationAction) {
-					Button("Cancel") { dismiss() }
-						.tint(Color(.systemRed))
-				}
-				ToolbarItem(placement: .confirmationAction) {
-					Button("Done") { done(); onDone?() }
-						.tint(Color(.systemGreen))
-				}
-			}
+
 			.navigationTitle("Word List Editor")
 			#if os(iOS)
 			.navigationBarTitleDisplayMode(.inline)

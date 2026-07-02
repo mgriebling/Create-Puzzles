@@ -1,6 +1,6 @@
 //
 //  StringList.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Michael Griebling on 23.06.2026.
 //

@@ -11,7 +11,7 @@ struct GameView: View {
 	let game: Game
 	
 	@State private var isLandscape: Bool = false
-	// @State private var activeWord: String = ""
+	@State private var showSettings = false
 	
 	var body: some View {
 		Group {
@@ -19,7 +19,9 @@ struct GameView: View {
 				HStack(alignment: .center, spacing: 0) {
 					VStack(alignment: .center) {
 						Text("Words").font(.title2).fontWeight(.heavy)
-						WordView(words: game.board.wordPlacements, columns: 4)
+						ScrollView {
+							WordView(words: game.board.wordPlacements, columns: 3)
+						}
 						Spacer()
 					}
 					.layoutPriority(-1)
@@ -30,9 +32,12 @@ struct GameView: View {
 			} else {
 				VStack {
 					HighlightedGridView(game: game, noDrag: false, isLandscape: isLandscape)
-					Text("Words").font(.title2).fontWeight(.heavy)
-					WordView(words: game.board.wordPlacements)
-						.padding(.leading, 40)
+					Text("Words (\(game.matched) of \(game.placedWords.count))").font(.title2).fontWeight(.heavy)
+					ScrollView(.vertical) {
+						WordView(words: game.board.wordPlacements)
+							.padding(.leading, 40)
+					}
+					.layoutPriority(-1)
 				}
 			}
 		}
@@ -46,18 +51,24 @@ struct GameView: View {
 		}
 		#endif
 		.toolbar {
-			ToolbarItem(placement: .topBarLeading) {
-				Text("Matched: ^[\(game.matched) of \(game.placedWords.count) word](inflect: true)")
-					.fixedSize(horizontal: true, vertical: false)
-			}
-			ToolbarItem(placement: .principal) {
-				Text("Selected: " + (game.board.selectedWord.isEmpty ? "..." : game.board.selectedWord))
-					.fixedSize(horizontal: true, vertical: false)
-			}
-			ToolbarItem(placement:.topBarTrailing) {
+			ToolbarItem(placement: .navigationBarLeading) {
 				ElapsedTime(text: "", timer: game.timer)
 					.lineLimit(1)
+					.fixedSize(horizontal: true, vertical: false)
 					.fontDesign(.monospaced)
+			}
+			ToolbarItem(placement: .navigationBarTrailing) {
+				Button(action: {
+					self.showSettings.toggle()
+				}) {
+					Image(systemName: "gearshape")
+				}
+				.sheet(isPresented: $showSettings) {
+					NavigationStack {
+						SettingsView()
+							.navigationTitle("Settings")
+					}
+				}
 			}
 		}
 		.navigationTitle(game.name)

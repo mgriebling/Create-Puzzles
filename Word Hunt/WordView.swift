@@ -1,6 +1,6 @@
 //
 //  WordView.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Michael Griebling on 23.06.2026.
 //
@@ -22,7 +22,6 @@ struct WordView: View {
 		} else {
 			concatenatedText
 				.font(Font.system(size: fontSize))
-				// .flexibleSystemFont(maximum: fontSize)
 		}
 	}
 	

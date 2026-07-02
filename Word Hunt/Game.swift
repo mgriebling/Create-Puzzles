@@ -1,6 +1,6 @@
 //
 //  Game.swift
-//  Create Puzzles
+//  Word Hunt
 //
 //  Created by Mike Griebling on 2022-11-09.
 //
@@ -56,9 +56,9 @@ import SwiftUI
 			
 			// 6. Write the raw Data to disk
 			try jsonData.write(to: fileURL, options: .atomic)
-			print("Successfully saved JSON file to: \(fileURL.path)")
+//			print("Successfully saved JSON file to: \(fileURL.path)")
 		} catch {
-			print("Failed to write JSON file: \(error.localizedDescription)")
+//			print("Failed to write JSON file: \(error.localizedDescription)")
 		}
 	}
 	
@@ -79,13 +79,13 @@ import SwiftUI
 			var games = [Game]()
 			for url in gameURLs {
 				if let game = load(from: url) {
-					print("Loading game from \(url.path)")
+//					print("Loading game from \(url.path)")
 					games.append(game)
 				}
 			}
 			return games
 		} catch {
-			print("Error reading directory: \(error)")
+//			print("Error reading directory: \(error)")
 			return []
 		}
 	}
