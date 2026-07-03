@@ -26,16 +26,21 @@ struct GameList: View {
 				}
 			}
 			.onDelete { offsets in
+				for offset in offsets.reversed() {
+					games[offset].delete() // remove the external file
+				}
 				games.remove(atOffsets: offsets)
 			}
 			.onMove { source, destination in
 				games.move(fromOffsets: source, toOffset: destination)
 			}
 		}
-		.navigationTitle("Puzzles")
+		.navigationTitle("Puzzle")
 		.listStyle(.plain)
 		.onAppear {
-			games = Game.loadGames()  // read back any saved games
+			if games.isEmpty {
+				games = Game.loadGames()  // read back any saved games
+			}
 			addSampleGames()
 		}
 		.onDisappear {
@@ -46,7 +51,7 @@ struct GameList: View {
 				Game.save(games: games)
 			}
 		}
-		.onChange(of: games) {
+		.onChange(of: selection) {
 			if let selection, !games.contains(selection) {
 				self.selection = nil
 			}
@@ -78,7 +83,7 @@ struct GameList: View {
 	private func addSampleGames() {
 		if games.isEmpty {
 			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: 20, words: SampleWordLists.all[i]))
+				let game = Game(board: GameBoard(size: 14, words: SampleWordLists.all[i]))
 				games.append(game)
 			}
 		}

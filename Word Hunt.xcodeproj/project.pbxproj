@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		47079FFC2FF5AF9200F88A40 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47079FFB2FF5AF9200F88A40 /* SettingsView.swift */; };
 		47079FFE2FF5B83400F88A40 /* EditToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47079FFD2FF5B83400F88A40 /* EditToolbar.swift */; };
+		4707A0102FF7F2B300F88A40 /* PhaseAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707A00F2FF7F2B300F88A40 /* PhaseAnimator.swift */; };
 		471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670A72FF40AE300A09C13 /* AutoGridWidth.swift */; };
-		471670AC2FF4493700A09C13 /* HighlightedGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670AB2FF4493700A09C13 /* HighlightedGridView.swift */; };
+		471670AC2FF4493700A09C13 /* LetterGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670AB2FF4493700A09C13 /* LetterGridView.swift */; };
 		472CE12F291858D90074891E /* WordHunt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE12E291858D90074891E /* WordHunt.swift */; };
 		472CE131291858D90074891E /* GameChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE130291858D90074891E /* GameChooser.swift */; };
 		472CE133291858DB0074891E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE132291858DB0074891E /* Assets.xcassets */; };
@@ -40,8 +41,9 @@
 /* Begin PBXFileReference section */
 		47079FFB2FF5AF9200F88A40 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		47079FFD2FF5B83400F88A40 /* EditToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditToolbar.swift; sourceTree = "<group>"; };
+		4707A00F2FF7F2B300F88A40 /* PhaseAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhaseAnimator.swift; sourceTree = "<group>"; };
 		471670A72FF40AE300A09C13 /* AutoGridWidth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGridWidth.swift; sourceTree = "<group>"; };
-		471670AB2FF4493700A09C13 /* HighlightedGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightedGridView.swift; sourceTree = "<group>"; };
+		471670AB2FF4493700A09C13 /* LetterGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGridView.swift; sourceTree = "<group>"; };
 		472CE12B291858D90074891E /* Word Hunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Hunt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		472CE12E291858D90074891E /* WordHunt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordHunt.swift; sourceTree = "<group>"; };
 		472CE130291858D90074891E /* GameChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameChooser.swift; sourceTree = "<group>"; };
@@ -109,7 +111,7 @@
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
 				47E0ABE42FF069CB009D7BB0 /* GameList.swift */,
 				472CE130291858D90074891E /* GameChooser.swift */,
-				471670AB2FF4493700A09C13 /* HighlightedGridView.swift */,
+				471670AB2FF4493700A09C13 /* LetterGridView.swift */,
 				47E0AC292FF17361009D7BB0 /* GameView.swift */,
 				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
 				47800D1B2FEA9789009537EC /* WordView.swift */,
@@ -133,6 +135,7 @@
 				472CE132291858DB0074891E /* Assets.xcassets */,
 				472CE135291858DB0074891E /* Preview Content */,
 				471670A72FF40AE300A09C13 /* AutoGridWidth.swift */,
+				4707A00F2FF7F2B300F88A40 /* PhaseAnimator.swift */,
 			);
 			path = "Word Hunt";
 			sourceTree = "<group>";
@@ -240,10 +243,11 @@
 				47800D142FE9CD9C009537EC /* WordList.swift in Sources */,
 				478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */,
 				476F03E62FED4F3A0041F2B8 /* Extensions.swift in Sources */,
-				471670AC2FF4493700A09C13 /* HighlightedGridView.swift in Sources */,
+				471670AC2FF4493700A09C13 /* LetterGridView.swift in Sources */,
 				471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */,
 				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
 				47079FFC2FF5AF9200F88A40 /* SettingsView.swift in Sources */,
+				4707A0102FF7F2B300F88A40 /* PhaseAnimator.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
 				4771F1762FEF208B00A98387 /* SampleWordLists.swift in Sources */,

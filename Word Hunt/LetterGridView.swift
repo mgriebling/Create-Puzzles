@@ -9,18 +9,18 @@
 import SwiftUI
 import Subsonic
 
-struct HighlightedGridView: View {
+struct LetterGridView: View {
 	// Row x Col Game Board Matrix
 	let game: Game
-	var scale: CGFloat = 1.0
-	var noDrag: Bool = true
-	var isLandscape: Bool = false
+	var allowDrag: Bool = false
+	var showWordSelection: Bool = true
 	
 	@AppStorage("highlight") private var highlight: HighLight = .fill
 	@AppStorage("selectionColor") private var selectionColor: Int = Color.orange.toInt!
 	@AppStorage("selectionOKColor") private var selectionOKColor: Int = Color.green.toInt!
 	@AppStorage("highlightColor") private var highlightColor: Int = Color.accentColor.toInt!
 	@AppStorage("soundsOn") private var soundsOn: Bool = false
+	@AppStorage("soundVolume") private var soundVolume = 0.2
 
 	// Active Interaction States
 	@State private var grid: [[String]] = [[" "]]
@@ -46,19 +46,21 @@ struct HighlightedGridView: View {
 				
 				ZStack(alignment: .topLeading) {
 					// Floating selected name
-					let frameWidth = game.activeWord.count / 2 + 1
-					Text(game.activeWord)
-						.font(.system(size: cellSize * 0.7, weight: .bold))
-						.lineLimit(1)
-						.fixedSize(horizontal: true, vertical: false)
-						.frame(width: cellSize * CGFloat(frameWidth), height: cellSize)
-						.padding(10)
-						.background(Color(.systemGray2))
-						.cornerRadius(8)
-						.offset(x: cellSize*CGFloat(numCols-frameWidth-1)/2, y: -cellSize*2)
-						.zIndex(10)
-						.opacity(game.activeWord.isEmpty ? 0.0 : 1.0)
-						.shadow(color: .primary, radius: 5, x: 4, y: 4)
+					if showWordSelection {
+						let frameWidth = game.activeWord.count / 2 + 1
+						Text(game.activeWord)
+							.font(.system(size: cellSize * 0.7, weight: .bold))
+							.lineLimit(1)
+							.fixedSize(horizontal: true, vertical: false)
+							.frame(width: cellSize * CGFloat(frameWidth), height: cellSize)
+							.padding(10)
+							.background(Color(.systemGray2))
+							.cornerRadius(8)
+							.offset(x: cellSize*CGFloat(numCols-frameWidth-1)/2, y: -cellSize*2)
+							.zIndex(10)
+							.opacity(game.activeWord.isEmpty ? 0.0 : 1.0)
+							.shadow(color: .primary, radius: 3, x: 3, y: 3)
+					}
 					
 					// 1. Text Grid
 					VStack(spacing: spacing) {
@@ -114,7 +116,7 @@ struct HighlightedGridView: View {
 						.onEnded { _ in
 							evaluateAndSaveWord()
 						},
-					isEnabled: !noDrag
+					isEnabled: allowDrag
 				)
 			}
 			.onAppear {
@@ -213,7 +215,7 @@ struct HighlightedGridView: View {
 					word: target, start: start, end: end
 				)
 				if soundsOn {
-					play(sound: "success.mp3", volume: 0.2)
+					play(sound: "success.mp3", volume: soundVolume)
 				}
 				foundWords.append(finalizedPath)
 				game.removeActiveWord()
@@ -222,7 +224,7 @@ struct HighlightedGridView: View {
 			}
 		} else {
 			if soundsOn {
-				play(sound: "oops.mp3", volume: 0.2)
+				play(sound: "oops.mp3", volume: soundVolume)
 			}
 		}
 		game.clearWord()
@@ -272,5 +274,5 @@ extension Int {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 16, words: SampleWordLists.all[0]))
 	@Previewable @State var activeWord = ""
-	HighlightedGridView(game: game, noDrag: false)
+	LetterGridView(game: game, allowDrag: false)
 }

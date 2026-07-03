@@ -26,12 +26,12 @@ struct GameView: View {
 					}
 					.layoutPriority(-1)
 					Spacer()
-					HighlightedGridView(game: game, noDrag: false, isLandscape: isLandscape)
+					LetterGridView(game: game, allowDrag: true)
 				}
 				.padding()
 			} else {
 				VStack {
-					HighlightedGridView(game: game, noDrag: false, isLandscape: isLandscape)
+					LetterGridView(game: game, allowDrag: true)
 					Text("Words (\(game.matched) of \(game.placedWords.count))").font(.title2).fontWeight(.heavy)
 					ScrollView(.vertical) {
 						WordView(words: game.board.wordPlacements)
@@ -51,7 +51,7 @@ struct GameView: View {
 		}
 		#endif
 		.toolbar {
-			ToolbarItem(placement: .navigationBarLeading) {
+			ToolbarItem(placement: .automatic) {
 				ElapsedTime(text: "", timer: game.timer)
 					.lineLimit(1)
 					.fixedSize(horizontal: true, vertical: false)

@@ -29,12 +29,16 @@ struct ElapsedTimeTracker: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onAppear {
+				print("Start \(game.name) timer...")
 				game.timer.start()
             }
             .onDisappear {
+				print("Pause \(game.name) timer...")
 				game.timer.pause()
             }
             .onChange(of: game) { oldGame, newGame in
+				print("Pause \(oldGame.name) timer...")
+				print("Start \(newGame.name) timer...")
 				oldGame.timer.pause()
 				newGame.timer.start()
             }

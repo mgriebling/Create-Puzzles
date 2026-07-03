@@ -6,27 +6,19 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct Cell: Codable, Identifiable, Equatable, Hashable {
     let letter: String
-    let id: Int
-	static var nextId: Int = 0
+    let id: UUID
     
-	init(letter: String? = nil, index: Int) {
-		if let letter {
-			self.letter = letter
-		} else {
-			self.letter = Cell.randomCharacter
-		}
-        self.id = index
+	init(letter: String) {
+		self.letter = letter
+        self.id = UUID()
     }
 	
-	// Initializes with blanks
-	init() {
-		self.letter = " "
-		self.id = Cell.nextId
-		Cell.nextId += 1
-	}
+	// Initializes with random character
+	init() { self.init(letter: Cell.randomCharacter) }
 	
 	static let alphabet = Array(Alphabets.englishAlphabet)
 	static var randomCharacter: String {
@@ -34,13 +26,8 @@ struct Cell: Codable, Identifiable, Equatable, Hashable {
 	}
 }
 
-struct GameBoard : Codable, Equatable, Hashable {
-	// MARK: Board size Range
-	static let maximumSize: Int = 20
-	static let minimumSize: Int = 10
-	static let range = Double(minimumSize)...Double(maximumSize)
-	
-	let size: Int
+struct GameBoard: Codable, Equatable, Hashable {
+	var size: Int
     
     private(set) var board = [Cell]()
     
@@ -63,7 +50,7 @@ struct GameBoard : Codable, Equatable, Hashable {
     private(set) var wordPlacements = [PlacedWord]()
 	private(set) var missingWords = [String]()
 	
-	init(size: Int = Self.minimumSize, words: WordList = WordList()) {
+	init(size: Int, words: WordList = WordList()) {
 		// let size = max(size, Self.minimumSize)	// ensures size >= minimumSize
 		self.size = size
 		self.words = words
@@ -80,7 +67,7 @@ struct GameBoard : Codable, Equatable, Hashable {
 			// fill gaps with random letters
 			for i in 0..<size*size {
 				if board[i].letter == " " {
-					board[i] = Cell(index: i)
+					board[i] = Cell()
 				}
 			}
 		}
@@ -90,9 +77,9 @@ struct GameBoard : Codable, Equatable, Hashable {
 		// fill with random characters
 		let arraySize = size * size
 		let ultraFastArray = [Cell](unsafeUninitializedCapacity: arraySize) { buffer, initializedCount in
-			buffer.initialize(repeating: Cell())
+			buffer.initialize(repeating: Cell(letter: " "))
 			for i in 0..<arraySize {
-				buffer[i] = Cell(index: i)  // fill with random letters
+				buffer[i] = Cell()  // fill with random letters
 			}
 			// You must manually specify how many items were initialized
 			initializedCount = arraySize
@@ -123,12 +110,12 @@ struct GameBoard : Codable, Equatable, Hashable {
 		wordPlacements = bestPlacementWords.sorted(by: { $0.word < $1.word } )
 
 		let newSet = Set(wordPlacements.map(\.word))
-		missingWords = words.filter { !newSet.contains($0) }.sorted(by: <)
+		missingWords = words.filter { !newSet.contains($0.lowercased()) }.sorted(by: <)
 	}
 	
-	private mutating func clearBoard() {
+	mutating func clearBoard() {
 		// place blanks everywhere
-		board = Array(repeating: Cell(), count: size*size)
+		board = Array(repeating: Cell(letter: " "), count: size*size)
 	}
 	
 	// Checks placement validity and scores the quality of the overlap
@@ -167,12 +154,12 @@ struct GameBoard : Codable, Equatable, Hashable {
 			let newRow = row + (i * direction.deltaRow)
 			let newCol = col + (i * direction.deltaCol)
 			let index = indexOf(newRow, column:newCol)
-			board[index] = Cell(letter: String(letters[i]), index: index)
+			board[index] = Cell(letter: String(letters[i]))
 		}
 		
 		// add word to the word database
 		let start = CellIndex(row: row, col: col)
-		wordPlacements.append(PlacedWord(word: word, start: start, direction: direction))
+		wordPlacements.append(PlacedWord(word: word.lowercased(), start: start, direction: direction))
 	}
 	
 	// Check if the word fits at the given coordinates
@@ -238,13 +225,6 @@ struct GameBoard : Codable, Equatable, Hashable {
 		}
 		return unplaced
 	}
-    
-//	mutating func addLetter(_ letter: String) {
-//	//	if selectedMoves.contains(index) { return }
-//    //    let letter = board[index].letter
-//        selectedWord.append(letter)
-//    //    selectedMoves.append(index)
-//    }
 	
 	mutating func highlightWord(_ index: Int) {
 		wordPlacements[index].highlighted = true
@@ -260,13 +240,13 @@ struct GameBoard : Codable, Equatable, Hashable {
         selectedMoves = []
     }
 	
-	func charIsHighlighted(_ row: Int, column: Int) -> Bool {
-		charIsHighlighted(indexOf(row, column: column))
-	}
-    
-	func charIsHighlighted(_ index: Int) -> Bool {
-		selectedMoves.contains(index)
-	}
+//	func charIsHighlighted(_ row: Int, column: Int) -> Bool {
+//		charIsHighlighted(indexOf(row, column: column))
+//	}
+//    
+//	func charIsHighlighted(_ index: Int) -> Bool {
+//		selectedMoves.contains(index)
+//	}
  
     func indexOf(_ row: Int, column: Int) -> Int {
 		let row = max(0, min(row, size-1))

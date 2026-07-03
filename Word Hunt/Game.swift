@@ -11,21 +11,37 @@ import SwiftUI
 	var board: GameBoard
 	var timer: Timer
 	
-	// Convenience attributes
+	// MARK: Convenience attributes
 	var activeWord: String 		  { board.selectedWord }
 	var words: [String] 		  { board.wordPlacements.map(\.word) }
 	var placedWords: [PlacedWord] { board.wordPlacements }
 	var size: Int		   		  { board.size }
 	var name: String			  { board.words.name }
+	var level: Int 				  { placedWords.count * size * 10 /
+									(board.words.words.count * 20) }
+	var matched: Int 			  { placedWords.filter(\.highlighted).count }
+	// var score: Double { (100.0 * Double(matched)) / Double(words.count) }
 	
-	// Initializer
+	// MARK: Initializer
 	init(board: GameBoard) {
 		self.board = board
 		self.timer = Timer()
 	}
-
-	var matched: Int { placedWords.filter(\.highlighted).count }
-	var score: Double { (100.0 * Double(matched)) / Double(words.count) }
+	
+	// MARK: Required for manual Codable compliance, warning issued otherwise
+	required init(from decoder: any Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		self.board = try container.decode(GameBoard.self, forKey: .board)
+		self.timer = try container.decode(Timer.self, forKey: .timer)
+	}
+	
+	func encode(to encoder: any Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(board, forKey: .board)
+		try container.encode(timer, forKey: .timer)
+	}
+	
+	enum CodingKeys: String, CodingKey { case board, timer }
 
     func removeActiveWord() {
 		if let index = words.firstIndex(of: activeWord.lowercased()) {
@@ -56,9 +72,8 @@ import SwiftUI
 			
 			// 6. Write the raw Data to disk
 			try jsonData.write(to: fileURL, options: .atomic)
-//			print("Successfully saved JSON file to: \(fileURL.path)")
 		} catch {
-//			print("Failed to write JSON file: \(error.localizedDescription)")
+			print("Failed to write JSON file: \(error.localizedDescription)")
 		}
 	}
 	
@@ -72,20 +87,20 @@ import SwiftUI
 		guard let documentsURL = Self.documentDirectory else { return [] }
 		let fileManager = FileManager.default
 		do {
-			let contents = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+			let contents = try fileManager.contentsOfDirectory(at: documentsURL,
+					includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
 			
 			// Filter for files with "json" extension (case-insensitive)
 			let gameURLs = contents.filter { $0.pathExtension.lowercased() == "json" }
 			var games = [Game]()
 			for url in gameURLs {
 				if let game = load(from: url) {
-//					print("Loading game from \(url.path)")
 					games.append(game)
 				}
 			}
 			return games
 		} catch {
-//			print("Error reading directory: \(error)")
+			print("Error reading directory: \(error)")
 			return []
 		}
 	}
@@ -93,9 +108,25 @@ import SwiftUI
 	static func load(from file: URL) -> Game? {
 		if let rawData = try? Data(contentsOf: file) {
 			let decoder = JSONDecoder()
-			return try? decoder.decode(Game.self, from: rawData)
+			if let game = try? decoder.decode(Game.self, from: rawData) {
+				print("Loaded game: \(game.name)")
+				return game
+			} else {
+				// remove corrupted file
+				try? FileManager.default.removeItem(at: file)
+			}
 		}
 		return nil
+	}
+	
+	func delete() {
+		// 2. Get the URL for the user's Documents directory
+		guard let documentsDirectory = Self.documentDirectory else { return }
+		
+		// 3. Append the desired filename to the directory path
+		let fileURL = documentsDirectory.appendingPathComponent("\(self.name).json")
+		
+		try? FileManager.default.removeItem(at: fileURL)
 	}
 	
 	func isWordMatch() -> Bool {
@@ -113,19 +144,14 @@ import SwiftUI
 	
 	func copy() -> Game { Game(board: self.board) }
     func clearWord() { board.clearWord() }
-	// func addLetter(_ letter: String) { board.addLetter(letter) }
 	func wordIsHighlighted(_ index: Int) -> Bool { board.ishighlighted(index) }
-	
-	func charIsHighlighted(_ row: Int, col: Int) -> Bool {
-		board.charIsHighlighted(row, column: col)
-	}
 }
 
 extension Game: Identifiable { }  // auto-generated
 
 extension Game: Equatable {
 	static func == (lhs: Game, rhs: Game) -> Bool {
-		lhs.board == rhs.board && lhs.size == rhs.size
+		lhs.id == rhs.id
 	}
 }
 

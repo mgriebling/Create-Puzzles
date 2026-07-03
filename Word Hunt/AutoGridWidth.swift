@@ -16,7 +16,7 @@ struct GridWidthPreferenceKey: PreferenceKey {
 
 struct AutoGridWidth: View {
 	let words = ["Apple", "Banana", "Pomegranate", "Kiwi", "Watermelon", "Fig", "Orange", "Blueberry", "Date"]
-	let columnCount = 3
+	let columnCount = 2
 	
 	@State private var columnWidths: [Int: CGFloat] = [:]
 	
@@ -27,20 +27,19 @@ struct AutoGridWidth: View {
 		}
 		
 		ScrollView {
-			LazyVGrid(columns: columns, alignment: .leading, spacing: 16) {
+			LazyVGrid(columns: columns, alignment: .leading, spacing: 0) {
 				ForEach(Array(words.enumerated()), id: \.offset) { index, word in
 					let columnIndex = index % columnCount
 					
 					Text(word)
-						.padding(.horizontal, 8)
+						.padding(.horizontal, 4)
 						//.padding(.vertical, 4)
-						.background(Color.blue.opacity(0.5))
-						//.cornerRadius(4)
+						// .background(Color.blue.opacity(0.5))
+						.cornerRadius(8)
 						// Measure text layout safely without layout loops
 						.background(
 							Text(word)
-								//.font(.body) // Must match your source text font
-								.padding(.horizontal, 8) // Include paddings in calculation
+								.padding(.horizontal, 4) // Include paddings in calculation
 								.fixedSize(horizontal: true, vertical: false)
 								.hidden()
 								.background(
@@ -53,7 +52,6 @@ struct AutoGridWidth: View {
 									}
 								)
 						)
-						.font(.title)
 				}
 			}
 			.padding()
@@ -69,4 +67,5 @@ struct AutoGridWidth: View {
 
 #Preview {
     AutoGridWidth()
+		.flexibleSystemFont(maximum: 20)
 }

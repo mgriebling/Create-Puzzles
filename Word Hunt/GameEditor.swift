@@ -15,51 +15,49 @@ struct GameEditor: View {
 	
 	// MARK: Data (Function) In
 	@Environment(\.dismiss) var dismiss
+	@AppStorage("gridDefaultSize") private var gridDefaultSize: Double = 4.0
+	@AppStorage("userName") private var userName = "Anonymous"
 	
 	// MARK: Internal State
-	@State private var lgame = Game(board: GameBoard()) // dummy board
-	@State private var selectedWordList = WordList()    // empty list
-	@State private var wordLists = [WordList]()
-	@State private var placedWords = [PlacedWord]()
-	@State private var size = GameBoard.range.lowerBound
-	@State private var isLoading: Bool = false
+	@State private var lgame = Game(board: GameBoard(size: 14)) // dummy board
+	@State private var selectedWordList = WordList()    // active word list
+	@State private var wordLists = [WordList]()			// all the word lists
 	@State private var showWordList: Bool = true
 	@State private var showEmptyAlert: Bool = false
 	
 	var body: some View {
 		NavigationStack {
 			Form {
-				Section(header: Text("\(selectedWordList.name) Game")) {
-					Text("\(Int(size)) Rows/Columns").bold()
-					Slider(value: $size, in: GameBoard.range, step: 1) {
+				let size = Int(gridDefaultSize)
+				Section(header: Text("\(selectedWordList.name) Game (\(size) Rows/Columns)")) {
+					let range = SettingsView.maxRange
+					Slider(value: $gridDefaultSize, in: range, step: 1) {
 						Text("Rows/Columns:")
 					} minimumValueLabel: {
-						Text("\(GameBoard.minimumSize)")
+						Text("\(Int(range.lowerBound))")
 					} maximumValueLabel: {
-						Text("\(GameBoard.maximumSize)")
+						Text("\(Int(range.upperBound))")
 					}
-					.onChange(of: size) { withAnimation { updateGame() } }
+					.onChange(of: gridDefaultSize) { withAnimation { updateGame() } }
+				}
 					
-					Picker(wordHeader, selection: $selectedWordList) {
+				Section(wordHeader, isExpanded: $showWordList) {
+					Picker("Word List Selection:", selection: $selectedWordList) {
 						ForEach(wordLists, id:\.self) { Text($0.name) }
 					}
 					.onChange(of: selectedWordList, updateWords)
-					
-					if showWordList && !placedWords.isEmpty {
-						WordView(words: placedWords).onTapGesture(perform: toggleWordList)
-					} else {
-						if !placedWords.isEmpty {
-							Button("Show Word List", action: toggleWordList)
-						}
-					}
+								
+					WordView(words: lgame.placedWords, style: .paragraph)
+						.padding(.top, -15)
 				}
-//				Section(header: wordListTitle) {
-//					ZStack {
-//						LetterGridView(game: lgame)
-//						showLoading()
-//					}
-//				}
+				.onTapGesture(perform: toggleWordList)
+
+				Section(header: wordListTitle) {
+					LetterGridView(game: lgame).id(UUID())
+						.padding(.top, -30)
+				}
 			}
+			.listSectionSpacing(0)
 			.onAppear(perform: setUpGame)
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
@@ -84,7 +82,7 @@ struct GameEditor: View {
 	func updateWords() {
 		print("Updating words for \(selectedWordList.name)")
 		withAnimation {
-			placedWords = lgame.placeWords(words: selectedWordList.words)
+			// placedWords = lgame.placeWords(words: selectedWordList.words)
 			showWordList = true
 			updateGame()
 		}
@@ -93,23 +91,19 @@ struct GameEditor: View {
 	func setUpGame() {
 		if let game {
 			lgame = game.copy()
-			size = Double(game.board.size)
+			gridDefaultSize = Double(game.board.size)
 			if wordLists.isEmpty {
 				wordLists = SampleWordLists.all
 			}
-			if !wordLists.contains(game.board.words) {
+			if !game.board.words.words.isEmpty, !wordLists.contains(game.board.words) {
 				wordLists.insert(game.board.words, at: 0)
 			}
-			selectedWordList = game.board.words
+			selectedWordList = game.board.words.words.isEmpty ? wordLists.first! : game.board.words
 			updateGame()
 		}
 	}
 	
-	func toggleWordList() {
-		withAnimation {
-			showWordList.toggle()
-		}
-	}
+	func toggleWordList() { withAnimation { showWordList.toggle() }	}
 	
 	func done() {
 		if lgame.board.words.words.isEmpty {
@@ -122,48 +116,42 @@ struct GameEditor: View {
 	}
 	
 	var wordHeader: String {
-		"Word List " + (showWordList && !placedWords.isEmpty ? "(Tap list to hide)" : "")
+		"Word List " + (showWordList && !lgame.placedWords.isEmpty ? "(Tap to hide)" : "(Tap to show)")
 	}
 	
 	private var wordListTitle: some View {
 		VStack(alignment: .leading, spacing: 0) {
 			HStack {
 				Text("Game Board Layout")
-				Button("New Layout") { withAnimation { updateGame() } }
+				Button("Update") { withAnimation { updateGame() } }
 			}
 			let missing = lgame.board.missingWords
 			if !missing.isEmpty {
 				Text("Missing \(missing.count): \(missing.joined(separator: ", "))")
+					.lineLimit(1)
+					.font(.caption)
 			}
 		}
 	}
 	
-	@ViewBuilder
-	private func showLoading() -> some View {
-		if isLoading {
-			Color(.black).opacity(0.5)
-				.ignoresSafeArea()
-			ProgressView("Performing layout...")
-				.padding(20)
-				.background(Color(.black))
-				.cornerRadius(10)
-				.shadow(radius: 10)
-				.offset(CGSize(width: 0, height: -100))
-				.controlSize(.large)
-		}
-	}
+//	@ViewBuilder
+//	private func showLoading() -> some View {
+//		if isLoading {
+//			Color(.black).opacity(0.5)
+//				.ignoresSafeArea()
+//			ProgressView("Performing layout...")
+//				.tint(.primary)
+//				.padding(20)
+//				.background(Color(.black))
+//				.cornerRadius(10)
+//				.shadow(radius: 10)
+//				.offset(CGSize(width: 0, height: -100))
+//				.controlSize(.large)
+//		}
+//	}
 	
 	func updateGame() {
-		isLoading = true
-
-		Task.detached {
-			let updatedGame = await Game(board: GameBoard(size: Int(size), words: selectedWordList))
-			await MainActor.run {
-				self.lgame = updatedGame
-				isLoading = false
-			}
-		}
-		
+		lgame = Game(board: GameBoard(size: Int(gridDefaultSize), words: selectedWordList))
 	}
 }
 
