@@ -17,60 +17,16 @@ struct MainAppView: View {
 			}
 			
 			// Tab 3: Settings Ecosystem
-			Tab("Settings", systemImage: "gear", value: .settings) {
-				SettingsView()
-			}
+//			Tab("Settings", systemImage: "gear", value: .settings) {
+//				SettingsView()
+//			}
 
 		}
 		.tabViewStyle(.sidebarAdaptable)
 	}
 	
 	enum Tabs: Int, CaseIterable {
-		case wordHunt, wordLists, settings
-	}
-}
-
-// MARK: - Home Tab Layout
-struct GameTabView: View {
-	@State private var games: [Game] = []
-	@State private var selection: Game?
-	@State private var columnVisibility: NavigationSplitViewVisibility = .all
-	
-	var body: some View {
-		NavigationSplitView(columnVisibility: $columnVisibility) {
-			GameList(selection: $selection)
-		} detail: {
-			if let game = selection {
-				GameView(game: game)
-					.id(UUID())
-					.padding(.bottom)
-					.onTapGesture {
-						// Tap in detail to hide puzzles list selector
-						guard columnVisibility == .all else { return }
-						columnVisibility = .detailOnly
-					}
-			} else {
-				Text("Choose a puzzle on the left!")
-					.flexibleSystemFont(maximum: 30).bold()
-			}
-		}
-		.onAppear {
-			if games.isEmpty {
-				games = Game.loadGames()  // read back any saved games
-			}
-			addSampleGames()
-		}
-		.navigationTitle("Puzzles")
-		.navigationSplitViewStyle(.prominentDetail)
-	}
-	
-	private func addSampleGames() {
-		if games.isEmpty {
-			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: 14, words: SampleWordLists.all[i]))
-				games.append(game)
-			}
-		}
+		case wordHunt, wordLists // , settings
 	}
 }
 

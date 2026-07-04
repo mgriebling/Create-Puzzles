@@ -10,6 +10,8 @@ import SwiftUI
 struct GameView: View {
 	let game: Game
 	
+	@AppStorage(.settings) private var settings
+	
 	@State private var isLandscape: Bool = false
 	@State private var showSettings = false
 	
@@ -26,12 +28,12 @@ struct GameView: View {
 					}
 					.layoutPriority(-1)
 					Spacer()
-					LetterGridView(game: game, allowDrag: true)
+					LetterGridView(game: game, allowDrag: true, settings: settings)
 				}
 				.padding()
 			} else {
 				VStack {
-					LetterGridView(game: game, allowDrag: true)
+					LetterGridView(game: game, allowDrag: true, settings: settings)
 					Text("Words").font(.title3)
 					ScrollView(.vertical) {
 						WordView(words: game.board.wordPlacements)
@@ -63,19 +65,17 @@ struct GameView: View {
 					.lineLimit(1)
 					.fixedSize(horizontal: true, vertical: false)
 			}
-//			ToolbarItem(placement: .navigationBarTrailing) {
-//				Button(action: {
-//					self.showSettings.toggle()
-//				}) {
-//					Image(systemName: "gearshape")
-//				}
-//				.sheet(isPresented: $showSettings) {
-//					NavigationStack {
-//						SettingsView()
-//							.navigationTitle("Settings")
-//					}
-//				}
-//			}
+			ToolbarItem(placement: .navigationBarTrailing) {
+				Button(action: {
+					self.showSettings.toggle()
+				}) {
+					Image(systemName: "gearshape")
+				}
+				.sheet(isPresented: $showSettings) {
+					SettingsView()
+						.navigationTitle("Settings")
+				}
+			}
 		}
 		.navigationTitle(game.name)
 		.navigationBarTitleDisplayMode(.inline)

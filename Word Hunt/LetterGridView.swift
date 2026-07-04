@@ -14,8 +14,7 @@ struct LetterGridView: View {
 	let game: Game
 	var allowDrag: Bool = false
 	var showWordSelection: Bool = true
-	
-	@AppStorage("settings") private var settings = Settings()
+	let settings: Settings
 
 	// Active Interaction States
 	@State private var grid: [[String]] = [[" "]]
@@ -42,7 +41,7 @@ struct LetterGridView: View {
 				ZStack(alignment: .topLeading) {
 					// Floating selected name
 					if showWordSelection {
-						let frameWidth = game.activeWord.count / 2 + 1
+						let frameWidth = game.activeWord.count / 4 + 1
 						Text(game.activeWord)
 							.font(.system(size: 25, weight: .bold))
 							.lineLimit(1)
@@ -51,7 +50,7 @@ struct LetterGridView: View {
 							.padding(10)
 							.background(Color(.systemGray2))
 							.cornerRadius(8)
-							.offset(x: cellSize*CGFloat(numCols-frameWidth-1)/2, y: -cellSize*2)
+							.offset(x: cellSize*CGFloat(numCols-frameWidth-1)/2, y: -cellSize/2)
 							.zIndex(10)
 							.opacity(game.activeWord.isEmpty ? 0.0 : 1.0)
 					}
@@ -267,5 +266,5 @@ extension Int {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 16, words: SampleWordLists.all[0]))
 	@Previewable @State var activeWord = ""
-	LetterGridView(game: game, allowDrag: true)
+	LetterGridView(game: game, allowDrag: true, settings: Settings())
 }

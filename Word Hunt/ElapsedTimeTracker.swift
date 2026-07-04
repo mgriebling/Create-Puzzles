@@ -18,7 +18,7 @@ struct ElapsedTimeTracker: ViewModifier {
     @Environment(\.modelContext) var modelContext
     @Environment(\.scenePhase) var scenePhase
     let game: Game
-    
+	
     var modelContextWillSavePublisher: NotificationCenter.Publisher {
         NotificationCenter.default.publisher(
             for: ModelContext.willSave,

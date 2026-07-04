@@ -16,7 +16,7 @@ struct GameEditor: View {
 	// MARK: Data (Function) In
 	@Environment(\.dismiss) var dismiss
 	
-	@AppStorage("settings") private var settings = Settings()
+	@AppStorage(.settings) private var settings
 	
 	// MARK: Internal State
 	@State private var lgame = Game(board: GameBoard(size: 14)) // dummy board
@@ -53,7 +53,7 @@ struct GameEditor: View {
 				.onTapGesture(perform: toggleWordList)
 
 				Section(header: wordListTitle) {
-					LetterGridView(game: lgame).id(UUID())
+					LetterGridView(game: lgame, settings: settings).id(UUID())
 						.padding(.top, -30)
 				}
 			}
