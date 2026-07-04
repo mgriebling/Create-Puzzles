@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WordsEditor: View {
-	@Binding var words: WordList
+	@Binding var words: WordList?
 	var onDone: (() -> Void)?
 	
 	// MARK: Data (Function) In
@@ -68,7 +68,7 @@ struct WordsEditor: View {
 			.navigationBarTitleDisplayMode(.inline)
 			#endif
 			.onAppear {
-				lwords = words
+				lwords = words!
 				selectedLanguage = lwords.language
 				wordList = lwords.words.map { PlacedWord(word: $0) }
 			}
@@ -83,6 +83,6 @@ struct WordsEditor: View {
 }
 
 #Preview {
-	@Previewable @State var words = SampleWordLists.all.randomElement()!
+	@Previewable @State var words = SampleWordLists.all.randomElement()
 	WordsEditor(words: $words)
 }

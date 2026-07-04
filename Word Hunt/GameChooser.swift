@@ -17,6 +17,7 @@ struct GameChooser: View {
 		} detail: {
 			if let game = selection {
 				GameView(game: game)
+					.id(UUID())
 					.padding(.bottom)
 					.onTapGesture {
 						// Tap in detail to hide puzzles list selector

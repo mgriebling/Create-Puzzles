@@ -18,7 +18,7 @@ struct GameView: View {
 			if isLandscape {
 				HStack(alignment: .center, spacing: 0) {
 					VStack(alignment: .center) {
-						Text("Words").font(.title2).fontWeight(.heavy)
+						Text("Words").font(.title3)
 						ScrollView {
 							WordView(words: game.board.wordPlacements, columns: 3)
 						}
@@ -32,7 +32,7 @@ struct GameView: View {
 			} else {
 				VStack {
 					LetterGridView(game: game, allowDrag: true)
-					Text("Words (\(game.matched) of \(game.placedWords.count))").font(.title2).fontWeight(.heavy)
+					Text("Words").font(.title3)
 					ScrollView(.vertical) {
 						WordView(words: game.board.wordPlacements)
 							.padding(.leading, 40)
@@ -57,21 +57,28 @@ struct GameView: View {
 					.fixedSize(horizontal: true, vertical: false)
 					.fontDesign(.monospaced)
 			}
-			ToolbarItem(placement: .navigationBarTrailing) {
-				Button(action: {
-					self.showSettings.toggle()
-				}) {
-					Image(systemName: "gearshape")
-				}
-				.sheet(isPresented: $showSettings) {
-					NavigationStack {
-						SettingsView()
-							.navigationTitle("Settings")
-					}
-				}
+			ToolbarItem(placement: .navigation) {
+				let text = (isLandscape ? "Matched: " : "") + "\(game.matched) of \(game.placedWords.count)"
+				Text(text)
+					.lineLimit(1)
+					.fixedSize(horizontal: true, vertical: false)
 			}
+//			ToolbarItem(placement: .navigationBarTrailing) {
+//				Button(action: {
+//					self.showSettings.toggle()
+//				}) {
+//					Image(systemName: "gearshape")
+//				}
+//				.sheet(isPresented: $showSettings) {
+//					NavigationStack {
+//						SettingsView()
+//							.navigationTitle("Settings")
+//					}
+//				}
+//			}
 		}
 		.navigationTitle(game.name)
+		.navigationBarTitleDisplayMode(.inline)
 		.background(Color(.yellow.opacity(0.15)), ignoresSafeAreaEdges: .all)
 	}
 	

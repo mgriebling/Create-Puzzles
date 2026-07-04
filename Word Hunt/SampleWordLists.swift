@@ -93,17 +93,17 @@ struct SampleWordLists {
 						 "Yarrow", "Zinnia"]),
 
 		WordList(name: "Letter Codes",
-				 words:	["alpha", "bravo", "charlie", "delta", "echo", "foxtrot",
-						 "golf", "hotel", "india", "juliet", "kilo", "lima", "mike",
-						 "november", "oscar", "papa", "quebec", "romeo", "sierra",
-						 "tango", "uniform", "victor", "whiskey", "xray", "yankee",
-						 "zulu"]),
+				 words:	["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot",
+						 "Golf", "Hotel", "India", "Juliet", "Kilo", "Lima", "Mike",
+						 "November", "Oscar", "Papa", "Quebec", "Romeo", "Sierra",
+						 "Tango", "Uniform", "Victor", "Whiskey", "Xray", "Yankee",
+						 "Zulu"]),
 
 		WordList(name: "Numbers",
-				 words: ["one", "two", "three", "four", "five", "six", "seven",
-						 "eight", "nine", "ten", "eleven", "twelve", "thirteen",
-						 "fifteen", "twenty", "thirty", "forty", "fifty", "sixty",
-						 "hundred", "thousand", "million", "billion", "trillion"])
+				 words: ["One", "Two", "Three", "Four", "Five", "Six", "Seven",
+						 "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen",
+						 "Fifteen", "Twenty", "Thirty", "Forty", "Fifty", "Sixty",
+						 "Hundred", "Thousand", "Million", "Billion", "Trillion"])
 	]}
 	
 }

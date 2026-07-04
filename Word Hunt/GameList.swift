@@ -35,7 +35,8 @@ struct GameList: View {
 				games.move(fromOffsets: source, toOffset: destination)
 			}
 		}
-		.navigationTitle("Puzzle")
+		.navigationTitle(Text("Games"))
+		.navigationBarTitleDisplayMode(.inline)
 		.listStyle(.plain)
 		.onAppear {
 			if games.isEmpty {
@@ -58,15 +59,14 @@ struct GameList: View {
 		}
 		.toolbar {
 			addButton
-			#if os(iOS)
-			EditButton() // editing the List of games
-			#endif
+			// addChoice
 		}
     }
 	
 	var addButton: some View {
 		Button("Add Game", systemImage: "plus") {
-			gameToEdit = Game(board: GameBoard(size: 14, words: WordList(name: "Unnamed", words: ["Word1", "Word2"])))
+			gameToEdit = Game(board: GameBoard(size: 14,
+				words: WordList(name: "Unnamed", words: ["Word1", "Word2"])))
 			showGameEditor.toggle()
 		}
 		.sheet(isPresented: $showGameEditor) {
@@ -83,7 +83,8 @@ struct GameList: View {
 	private func addSampleGames() {
 		if games.isEmpty {
 			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: 14, words: SampleWordLists.all[i]))
+				let game = Game(board: GameBoard(size: 14,
+										words: SampleWordLists.all[i]))
 				games.append(game)
 			}
 		}

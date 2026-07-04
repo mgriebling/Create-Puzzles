@@ -8,16 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
-	static let maxRange = 4.0...20.0
 	
-	@AppStorage("gridDefaultSize") private var gridDefaultSize: Double = 4.0
-	@AppStorage("userName") private var userName = "Anonymous"
-	@AppStorage("highlight") private var highlight: HighLight = .fill
-	@AppStorage("selectionColor") private var selectionColor: Int = Color.orange.toInt!
-	@AppStorage("selectionOKColor") private var selectionOKColor: Int = Color.green.toInt!
-	@AppStorage("highlightColor") private var highlightColor: Int = Color.accentColor.toInt!
-	@AppStorage("soundsOn") private var soundsOn: Bool = false
-	@AppStorage("soundVolume") private var soundVolume = 0.2
+	@AppStorage("settings") private var settings = Settings()
 	
 	// Word for the demo grid to show selection/hightling
 	static let words = WordList(words: ["Test", "High", "Push", "Unit"])
@@ -26,34 +18,35 @@ struct SettingsView: View {
 	@State private var editColor2 = Color.accentColor
 	@State private var editColor3 = Color.green
 	@State private var game = Game(board: GameBoard(size: 4, words: words))
+	@State private var localSettings = Settings()
 	
     var body: some View {
 		Form {
 			Section("Word List Creator Default Name") {
-				TextField("Enter your name", text: $userName)
+				TextField("Enter your name", text: $localSettings.userName)
 			}
 			
-			Section("Word Grid Default Size: \(Int(gridDefaultSize))") {
-				Slider(value: $gridDefaultSize, in: Self.maxRange, step: 1) {
+			Section("Word Grid Default Size: \(Int(localSettings.gridDefaultSize))") {
+				Slider(value: $localSettings.gridDefaultSize, in: Settings.maxRange, step: 1) {
 					Text("Word Grid Minimum")
 				} minimumValueLabel: {
-					Text("\(Int(Self.maxRange.lowerBound))")
+					Text("\(Int(Settings.maxRange.lowerBound))")
 				} maximumValueLabel: {
-					Text("\(Int(Self.maxRange.upperBound))")
+					Text("\(Int(Settings.maxRange.upperBound))")
 				}
 			}
 			
 			Section("Sound Effects") {
-				Toggle("Enable", isOn: $soundsOn)
-					.onChange(of: soundsOn) {
-						if soundsOn {
-							play(sound: "success.mp3", volume: soundVolume)
+				Toggle("Enable", isOn: $localSettings.soundsOn)
+					.onChange(of: localSettings.soundsOn) {
+						if localSettings.soundsOn {
+							play(sound: "success.mp3", volume: localSettings.soundVolume)
 						}
 					}
 				HStack {
 					Text("Volume:")
-					Text("\(Int(soundVolume * 100))%")
-					Slider(value: $soundVolume, in: 0.0...1.0) {
+					Text("\(Int(localSettings.soundVolume * 100))%")
+					Slider(value: $localSettings.soundVolume, in: 0.0...1.0) {
 						Text("Sound Volume")
 					} minimumValueLabel: {
 						Text("Min")
@@ -61,16 +54,16 @@ struct SettingsView: View {
 						Text("Max")
 					} onEditingChanged: { editing in
 						if !editing {
-							play(sound: "success.mp3", volume: soundVolume)
+							play(sound: "success.mp3", volume: localSettings.soundVolume)
 						}
 					}
 				}
-				.opacity(soundsOn ? 1.0 : 0.5)
-				.disabled(!soundsOn)
+				.opacity(localSettings.soundsOn ? 1.0 : 0.5)
+				.disabled(!localSettings.soundsOn)
 			}
 			
 			Section("Highlight & Word Selection") {
-				Picker("Selection", selection: $highlight) {
+				Picker("Selection", selection: $localSettings.highlight) {
 					ForEach(HighLight.allCases) { mode in
 						Text(mode.rawValue.capitalized)
 					}
@@ -88,33 +81,15 @@ struct SettingsView: View {
 					Spacer()
 				}
 				
-				ColorPicker("Selection Color", selection: $editColor)
-					.onAppear {
-						editColor = Color(selectionColor)
-					}
-					.onChange(of: editColor) {
-						selectionColor = editColor.toInt!
-						print(selectionColor)
-					}
+				ColorPicker("Selection Color", selection: $localSettings.selectionColor, supportsOpacity: false)
 				
-				ColorPicker("Selection OK Color", selection: $editColor3)
-					.onAppear {
-						editColor3 = Color(selectionColor)
-					}
-					.onChange(of: editColor3) {
-						selectionColor = editColor3.toInt!
-						print(selectionColor)
-					}
+				ColorPicker("Selection OK Color", selection: $localSettings.selectionOKColor, supportsOpacity: false)
 				
-				ColorPicker("Highlight Color", selection: $editColor2)
-					.onAppear {
-						editColor2 = Color(highlightColor)
-					}
-					.onChange(of: editColor2) {
-						highlightColor = editColor2.toInt!
-						print(highlightColor)
-					}
+				ColorPicker("Highlight Color", selection: $localSettings.highlightColor, supportsOpacity: false)
 			}
+		}
+		.onAppear {
+			localSettings = settings
 		}
 		#if os(macOS)
 		.padding()
@@ -128,12 +103,6 @@ struct SettingsView: View {
 		}
 		#endif
     }
-}
-
-enum HighLight: String, CaseIterable, Identifiable {
-	case outline, fill, both
-	
-	var id: Self { self }
 }
 
 #Preview {

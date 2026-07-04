@@ -15,12 +15,7 @@ struct LetterGridView: View {
 	var allowDrag: Bool = false
 	var showWordSelection: Bool = true
 	
-	@AppStorage("highlight") private var highlight: HighLight = .fill
-	@AppStorage("selectionColor") private var selectionColor: Int = Color.orange.toInt!
-	@AppStorage("selectionOKColor") private var selectionOKColor: Int = Color.green.toInt!
-	@AppStorage("highlightColor") private var highlightColor: Int = Color.accentColor.toInt!
-	@AppStorage("soundsOn") private var soundsOn: Bool = false
-	@AppStorage("soundVolume") private var soundVolume = 0.2
+	@AppStorage("settings") private var settings = Settings()
 
 	// Active Interaction States
 	@State private var grid: [[String]] = [[" "]]
@@ -41,25 +36,24 @@ struct LetterGridView: View {
 				let spacing: CGFloat = 0
 				let totalWidth = geometry.size.width
 				let cellSize = (totalWidth - (spacing * CGFloat(numCols - 1))) / CGFloat(numCols)
-				let fill = highlight == .fill || highlight == .both
-				let lineWidth = highlight == .outline || highlight == .both ? 2.0 : 0.0
+				let fill = Set([.fill, .both]).contains(settings.highlight)
+				let lineWidth = Set([.outline, .both]).contains(settings.highlight) ? 3.0 : 0.0
 				
 				ZStack(alignment: .topLeading) {
 					// Floating selected name
 					if showWordSelection {
 						let frameWidth = game.activeWord.count / 2 + 1
 						Text(game.activeWord)
-							.font(.system(size: cellSize * 0.7, weight: .bold))
+							.font(.system(size: 25, weight: .bold))
 							.lineLimit(1)
 							.fixedSize(horizontal: true, vertical: false)
-							.frame(width: cellSize * CGFloat(frameWidth), height: cellSize)
+							.frame(width: cellSize * CGFloat(frameWidth), height: cellSize/2)
 							.padding(10)
 							.background(Color(.systemGray2))
 							.cornerRadius(8)
 							.offset(x: cellSize*CGFloat(numCols-frameWidth-1)/2, y: -cellSize*2)
 							.zIndex(10)
 							.opacity(game.activeWord.isEmpty ? 0.0 : 1.0)
-							.shadow(color: .primary, radius: 3, x: 3, y: 3)
 					}
 					
 					// 1. Text Grid
@@ -80,7 +74,7 @@ struct LetterGridView: View {
 						ForEach(game.placedWords) { word in
 							let startPoint = centerOfCell(row: word.start.row, col: word.start.col, cellSize: cellSize, spacing: spacing)
 							let endPoint = centerOfCell(row: word.end.row, col: word.end.col, cellSize: cellSize, spacing: spacing)
-							let color = Color(highlightColor)
+							let color = settings.highlightColor
 							if word.highlighted {
 								Capsule()
 									.fill(fill ? color.opacity(0.5) : .clear)
@@ -95,8 +89,8 @@ struct LetterGridView: View {
 						if let start = dragStartCell, let end = dragCurrentCell, selectionDirection != .none {
 							let startPoint = centerOfCell(row: start.row, col: start.col, cellSize: cellSize, spacing: spacing)
 							let endPoint = centerOfCell(row: end.row, col: end.col, cellSize: cellSize, spacing: spacing)
-							let selColor = Color(selectionColor)
-							let selColorOK = Color(selectionOKColor)
+							let selColor = settings.selectionColor
+							let selColorOK = settings.selectionOKColor
 							let color = detectedWord != nil ? selColorOK : selColor
 							Capsule()
 								.fill(fill ? color.opacity(0.6) : .clear)
@@ -198,7 +192,6 @@ struct LetterGridView: View {
 	
 	// Helper to evaluate if the current selection forms a valid word
 	private var detectedWord: String? {
-		// if game.isWordMatch() {
 		if validWordBank.contains(game.board.selectedWord.capitalized) {
 			return game.board.selectedWord
 		}
@@ -214,8 +207,8 @@ struct LetterGridView: View {
 				let finalizedPath = PlacedWord (
 					word: target, start: start, end: end
 				)
-				if soundsOn {
-					play(sound: "success.mp3", volume: soundVolume)
+				if settings.soundsOn {
+					play(sound: "success.mp3", volume: settings.soundVolume)
 				}
 				foundWords.append(finalizedPath)
 				game.removeActiveWord()
@@ -223,8 +216,8 @@ struct LetterGridView: View {
 				print("SUCCESS: Found Word \(target)")
 			}
 		} else {
-			if soundsOn {
-				play(sound: "oops.mp3", volume: soundVolume)
+			if settings.soundsOn {
+				play(sound: "oops.mp3", volume: settings.soundVolume)
 			}
 		}
 		game.clearWord()
@@ -274,5 +267,5 @@ extension Int {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 16, words: SampleWordLists.all[0]))
 	@Previewable @State var activeWord = ""
-	LetterGridView(game: game, allowDrag: false)
+	LetterGridView(game: game, allowDrag: true)
 }

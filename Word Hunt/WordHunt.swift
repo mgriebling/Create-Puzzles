@@ -11,7 +11,7 @@ import SwiftUI
 struct WordHunt: App {
     var body: some Scene {
         WindowGroup {
-			GameChooser()
+			MainAppView()
         }
 		#if os(macOS)
 		Settings {
@@ -20,3 +20,4 @@ struct WordHunt: App {
 		#endif
     }
 }
+

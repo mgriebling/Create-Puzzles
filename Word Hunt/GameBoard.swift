@@ -239,14 +239,6 @@ struct GameBoard: Codable, Equatable, Hashable {
         selectedWord = ""
         selectedMoves = []
     }
-	
-//	func charIsHighlighted(_ row: Int, column: Int) -> Bool {
-//		charIsHighlighted(indexOf(row, column: column))
-//	}
-//    
-//	func charIsHighlighted(_ index: Int) -> Bool {
-//		selectedMoves.contains(index)
-//	}
  
     func indexOf(_ row: Int, column: Int) -> Int {
 		let row = max(0, min(row, size-1))

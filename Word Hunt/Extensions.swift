@@ -17,7 +17,8 @@ extension View {
 
 extension Color {
 	/// Converts a SwiftUI Color to a standard 24-bit RGB
-	var toInt: Int? {
+	/// Note: Opacity is ignored
+	var toInt: Int {
 		// Resolve the color components in a standard sRGB space
 		let resolved = self.resolve(in: .init())
 		

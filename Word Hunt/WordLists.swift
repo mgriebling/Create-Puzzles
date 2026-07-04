@@ -12,7 +12,7 @@ struct WordLists: View {
 	@Binding var selection: WordList?
 	
 	@State private var wordLists = [WordList]()
-	@State private var wordListToEdit = WordList()
+	@State private var wordListToEdit: WordList? = WordList()
 	@State private var showWordListEditor: Bool = false
 	@State private var originalWordList: WordList? = nil
 	
@@ -78,7 +78,7 @@ struct WordLists: View {
 	
 	var addButton: some View {
 		Button("Add Word List", systemImage: "plus") {
-			wordListToEdit = WordList(name: "Untitled", words: ["word1", "word2", "word3"])
+			wordListToEdit = WordList(name: "Untitled", words: ["Word1", "Word2", "Word3"])
 			showWordListEditor.toggle()
 		}
 		.sheet(isPresented: $showWordListEditor) {
@@ -86,11 +86,11 @@ struct WordLists: View {
 				if let list = originalWordList,
 				   let index = wordLists.firstIndex(of: list) {
 					// word list already exists
-					wordLists[index] = wordListToEdit
+					wordLists[index] = wordListToEdit!
 					originalWordList = nil
 				} else {
 					// add new word list
-					wordLists.insert(wordListToEdit, at: 0)
+					wordLists.insert(wordListToEdit!, at: 0)
 				}
 			}
 		}

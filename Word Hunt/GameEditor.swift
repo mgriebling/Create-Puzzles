@@ -15,8 +15,8 @@ struct GameEditor: View {
 	
 	// MARK: Data (Function) In
 	@Environment(\.dismiss) var dismiss
-	@AppStorage("gridDefaultSize") private var gridDefaultSize: Double = 4.0
-	@AppStorage("userName") private var userName = "Anonymous"
+	
+	@AppStorage("settings") private var settings = Settings()
 	
 	// MARK: Internal State
 	@State private var lgame = Game(board: GameBoard(size: 14)) // dummy board
@@ -28,17 +28,17 @@ struct GameEditor: View {
 	var body: some View {
 		NavigationStack {
 			Form {
-				let size = Int(gridDefaultSize)
+				let size = Int(settings.gridDefaultSize)
 				Section(header: Text("\(selectedWordList.name) Game (\(size) Rows/Columns)")) {
-					let range = SettingsView.maxRange
-					Slider(value: $gridDefaultSize, in: range, step: 1) {
+					let range = Settings.maxRange
+					Slider(value: $settings.gridDefaultSize, in: range, step: 1) {
 						Text("Rows/Columns:")
 					} minimumValueLabel: {
 						Text("\(Int(range.lowerBound))")
 					} maximumValueLabel: {
 						Text("\(Int(range.upperBound))")
 					}
-					.onChange(of: gridDefaultSize) { withAnimation { updateGame() } }
+					.onChange(of: settings.gridDefaultSize) { withAnimation { updateGame() } }
 				}
 					
 				Section(wordHeader, isExpanded: $showWordList) {
@@ -91,7 +91,7 @@ struct GameEditor: View {
 	func setUpGame() {
 		if let game {
 			lgame = game.copy()
-			gridDefaultSize = Double(game.board.size)
+			settings.gridDefaultSize = Double(game.board.size)
 			if wordLists.isEmpty {
 				wordLists = SampleWordLists.all
 			}
@@ -151,7 +151,7 @@ struct GameEditor: View {
 //	}
 	
 	func updateGame() {
-		lgame = Game(board: GameBoard(size: Int(gridDefaultSize), words: selectedWordList))
+		lgame = Game(board: GameBoard(size: Int(settings.gridDefaultSize), words: selectedWordList))
 	}
 }
 
