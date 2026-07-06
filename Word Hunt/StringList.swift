@@ -23,82 +23,136 @@ struct StringList: View {
 	
 	// MARK: Data (Function) In
 	@Environment(\.dismiss) var dismiss
+	@Environment(\.colorScheme) var colorScheme
 	
 	@State private var lstrings = [ListItem]()
-	@State private var selectedItem: ListItem?
-	@State private var editString: String = ""
+	@State private var selectedItems = Set<UUID>()
+	@State private var editMode: EditMode = .inactive
 	
 	var body: some View {
-		List(selection: $selectedItem) {
+		let isDark = colorScheme == .dark
+		
+		List(selection: $selectedItems) {
 			ForEach(lstrings) { item in
 				let index = lstrings.firstIndex(where: { $0.id == item.id })!
 				HStack {
-					Text("\(index+1))").frame(width: 40)
+					Text("\(index+1))").frame(width: 50)
 					TextField("Edit Word", text: $lstrings[index].title)
+						.textEditorStyle(.plain)
 						.autocorrectionDisabled(true)
 						.onSubmit {
-							let edited = lstrings[index].title.lowercased()
+							let edited = lstrings[index].title.capitalized
 								.filter { $0.isLetter }
 							withAnimation {
 								lstrings[index].title = edited
 							}
 						}
-						.padding(.leading, 70)
-						.frame(width: 200, height: 40)
+						.padding(5)
+						.frame(minWidth: 200)
 						.textFieldStyle(.plain)
-						.background(.blue.opacity(0.2), in: RoundedRectangle(cornerRadius: 12))
+						.background(isDark ? Color(.darkGray) : Color(.lightGray), in: RoundedRectangle(cornerRadius: 12))
 				}
-				.padding(.top, -20)
-				.font(.title3).bold()
-			}
-			.onDelete { indexSet in
-				indexSet.forEach { item in
-					lstrings.remove(at: item)
-				}
+				.listRowBackground(
+					RoundedRectangle(cornerRadius: 12, style: .continuous)
+						.fill(selectedItems.contains(item.id) ? .blue.opacity(0.4) : .clear)
+					)
+				.flexibleSystemFont(maximum: 25)
 			}
 		}
+		.environment(\.editMode, $editMode)
 		.onAppear {
 			lstrings = strings.map { ListItem($0) }
 		}
-		.navigationTitle("\(title) Words")
+		.navigationTitle("\(title) Word List")
 		.listStyle(.plain)
-		.toolbar {
-			ToolbarItem(placement: .cancellationAction) {
+		.navigationBarItems(
+			leading:  cancelEditButton,
+			trailing: addDelButton
+		)
+	}
+	
+	private var cancelEditButton: some View {
+		HStack {
+			if editMode == .inactive {
 				Button("Cancel") { dismiss() }
 			}
-			ToolbarItem(placement: .automatic) { addButton }
-			#if os(iOS)
-			ToolbarItem(placement: .automatic) { EditButton() }
-			#endif
-			ToolbarItem(placement: .confirmationAction) {
+			editButton
+		}
+	}
+	
+	private var editButton: some View {
+		Button(action: {
+			self.editMode.toggle()
+			self.selectedItems = Set<UUID>()
+		}) {
+			Text(self.editMode.title)
+		}
+	}
+	
+	@ViewBuilder
+	private var addDelButton: some View {
+		if editMode == .inactive {
+			HStack {
+				Button(action: addItem) {
+					Image(systemName: "plus")
+				}
 				Button("Done") { done() }
+			}
+		} else {
+			Button(action: deleteItems) {
+				Image(systemName: "trash")
 			}
 		}
 	}
+
+	private func deleteItems() {
+		withAnimation {
+			for id in selectedItems {
+				if let index = lstrings.lastIndex(where: { $0.id == id }) {
+					lstrings.remove(at: index)
+				}
+			}
+			selectedItems = Set<UUID>()
+		}
+	}
 		
+	fileprivate func addItem() {
+		// Add a unique name
+		let strings = lstrings.map(\.title)
+		var postFix: Int = 1
+		let itemName: String
+		if let _ = strings.firstIndex(of: "untitled") {
+			while strings.contains("untitled\(postFix)") {
+				postFix += 1
+			}
+			itemName = "untitled\(postFix)"
+		} else {
+			itemName = "untitled"
+		}
+		withAnimation {
+			lstrings.insert(ListItem(itemName), at: 0)
+		}
+	}
+	
 	var addButton: some View {
 		Button("Add Word", systemImage: "plus") {
-			// Add a unique name
-			let strings = lstrings.map(\.title)
-			var postFix: Int = 1
-			let itemName: String
-			if let _ = strings.firstIndex(of: "untitled") {
-				while strings.contains("untitled\(postFix)") {
-					postFix += 1
-				}
-				itemName = "untitled\(postFix)"
-			} else {
-				itemName = "untitled"
-			}
-			withAnimation {
-				lstrings.insert(ListItem(itemName), at: 0)
-			}
+			addItem()
 		}
 	}
 	
 	func done() {
-		strings = lstrings.map(\.title)
+		strings = lstrings.map(\.title.capitalized)
 		dismiss()
+	}
+}
+
+extension EditMode {
+	var title: String {
+		self == .active ? "Done" : "Edit"
+	}
+
+	mutating func toggle() {
+		self = self == .active ? .inactive : .active
 	}
 }
 

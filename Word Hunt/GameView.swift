@@ -26,20 +26,20 @@ struct GameView: View {
 						}
 						Spacer()
 					}
-					.layoutPriority(-1)
 					Spacer()
 					LetterGridView(game: game, allowDrag: true, settings: settings)
+						.layoutPriority(10)
 				}
 				.padding()
 			} else {
 				VStack {
 					LetterGridView(game: game, allowDrag: true, settings: settings)
+						.layoutPriority(10)
 					Text("Words").font(.title3)
 					ScrollView(.vertical) {
 						WordView(words: game.board.wordPlacements)
 							.padding(.leading, 40)
 					}
-					.layoutPriority(-1)
 				}
 			}
 		}

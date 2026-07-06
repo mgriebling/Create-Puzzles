@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftData
+// import SwiftData
 
 extension View {
     func trackElapsedTime(in game: Game) -> some View {
@@ -15,30 +15,27 @@ extension View {
 }
 
 struct ElapsedTimeTracker: ViewModifier {
-    @Environment(\.modelContext) var modelContext
+    // @Environment(\.modelContext) var modelContext
     @Environment(\.scenePhase) var scenePhase
+	
     let game: Game
 	
-    var modelContextWillSavePublisher: NotificationCenter.Publisher {
-        NotificationCenter.default.publisher(
-            for: ModelContext.willSave,
-            object: modelContext
-        )
-    }
+//    var modelContextWillSavePublisher: NotificationCenter.Publisher {
+//        NotificationCenter.default.publisher(
+//            for: ModelContext.willSave,
+//            object: modelContext
+//        )
+//    }
     
     func body(content: Content) -> some View {
         content
             .onAppear {
-				print("Start \(game.name) timer...")
 				game.timer.start()
             }
             .onDisappear {
-				print("Pause \(game.name) timer...")
 				game.timer.pause()
             }
             .onChange(of: game) { oldGame, newGame in
-				print("Pause \(oldGame.name) timer...")
-				print("Start \(newGame.name) timer...")
 				oldGame.timer.pause()
 				newGame.timer.start()
             }
@@ -49,10 +46,10 @@ struct ElapsedTimeTracker: ViewModifier {
 					default: break
                 }
             }
-            .onReceive(modelContextWillSavePublisher) { _ in
-				game.timer.update()
-				print("updated elapsed time to \(game.timer.elapsedTime)")
-            }
+//            .onReceive(modelContextWillSavePublisher) { _ in
+//				game.timer.update()
+//				print("updated elapsed time to \(game.timer.elapsedTime)")
+//            }
     }
 }
 

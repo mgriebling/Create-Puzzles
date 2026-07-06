@@ -67,6 +67,7 @@ struct WordsEditor: View {
 			#if os(iOS)
 			.navigationBarTitleDisplayMode(.inline)
 			#endif
+			.toolbar { EditToolbar { done() } }
 			.onAppear {
 				lwords = words!
 				selectedLanguage = lwords.language

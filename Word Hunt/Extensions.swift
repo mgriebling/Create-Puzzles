@@ -15,6 +15,10 @@ extension View {
 	}
 }
 
+extension Int {
+	func signum() -> Int { (self > 0) ? 1 : ((self < 0) ? -1 : 0) }
+}
+
 //extension Color {
 //	/// Converts a SwiftUI Color to a standard 24-bit RGB
 //	/// Note: Opacity is ignored

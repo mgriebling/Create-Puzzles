@@ -44,21 +44,6 @@ struct PlacedWord: Codable, Identifiable, Hashable {
 							col: start.col + (len * direction.deltaCol))
 		self.init(word: word, start: start, end: end, direction: direction, highlighted: highlighted)
 	}
-	
-	func getSystemRandomWord() -> String? {
-		let path = "/usr/share/dict/words"
-		guard let content = try? String(contentsOfFile: path, encoding: .utf8) else {
-			return nil
-		}
-		
-		// Split the large text file into an array of words
-		let allWords = content.components(separatedBy: "\n")
-		if let word = allWords.randomElement() {
-			print("Random system word: \(word)")
-			return word
-		}
-		return nil
-	}
 }
 
 public enum Direction: Int, Codable, CaseIterable {
@@ -124,12 +109,56 @@ public struct WordList: Codable, Hashable {
 	public var date: Date
 	public var words: [String]
 	
+	init() {
+		self.init(name: "Empty", language: .english,
+				  author: "Unknown", date: Date(), words: [])
+	}
+	
 	init(name: String = "Empty", language: Language = .english,
-		 author: String = "Unknown", date: Date = Date(), words: [String] = []) {
+		 author: String = "Unknown", date: Date = Date(), words: [String]) {
 		self.name = name
 		self.language = language
 		self.author = author
 		self.date = date
 		self.words = words
+	}
+	
+	/// Get word list with random words of a certain size (i.e., wordRange)
+	init(name: String = "Empty", language: Language = .english,
+		 author: String = "Unknown", date: Date = Date(),
+		 wordRange: CountableClosedRange<Int>, totalWords: Int) {
+		print("Creating word list")
+		self.name = name
+		self.language = language
+		self.author = author
+		self.date = date
+		self.words = Self.generateWords(with: wordRange, total: totalWords)
+	}
+	
+	static func loadSystemWords() -> [String] {
+		// macOS includes a comprehensive default English word file at this path
+		if let wordFilePath = Bundle.main.path(forResource: "web2", ofType: nil) {
+			print("Found word file")
+			if let content = try? String(contentsOfFile: wordFilePath, encoding: .utf8) {
+				print("Successfully loaded word file")
+				return content.components(separatedBy: .newlines)
+			}
+		}
+		return ["error", "fallback", "words"]
+	}
+
+	static let largeWordBank = loadSystemWords()
+	
+	static private func generateWords(with size: CountableClosedRange<Int>, total: Int) -> [String] {
+		print("Generating words...")
+		var words: [String] = []
+		while words.count < total {
+			if let word = largeWordBank.randomElement() {
+				if size.contains(word.count) {
+					words.append(word)
+				}
+			}
+		}
+		return words.sorted()
 	}
 }

@@ -35,12 +35,13 @@ struct GameList: View {
 				games.move(fromOffsets: source, toOffset: destination)
 			}
 		}
-		.navigationTitle(Text("Games"))
+		.navigationTitle(Text("Puzzles"))
 		.navigationBarTitleDisplayMode(.inline)
 		.listStyle(.plain)
 		.onAppear {
 			if games.isEmpty {
 				games = Game.loadGames()  // read back any saved games
+				// games.forEach { $0.delete() }
 			}
 			addSampleGames()
 		}
@@ -83,7 +84,7 @@ struct GameList: View {
 	private func addSampleGames() {
 		if games.isEmpty {
 			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: 14,
+				let game = Game(board: GameBoard(size: 14 + i*2,
 										words: SampleWordLists.all[i]))
 				games.append(game)
 			}

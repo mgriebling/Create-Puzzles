@@ -54,9 +54,9 @@ struct SettingsView: View {
 						Slider(value: $internalSettings.soundVolume, in: 0.0...1.0) {
 							Text("Sound Volume")
 						} minimumValueLabel: {
-							Text("Min")
+							Image(systemName: "speaker")
 						} maximumValueLabel: {
-							Text("Max")
+							Image(systemName: "speaker.wave.3")
 						} onEditingChanged: { editing in
 							if !editing {
 								play(sound: "success.mp3", volume: internalSettings.soundVolume)
@@ -100,6 +100,7 @@ struct SettingsView: View {
 			.frame(width: 300, height: 300)
 #else
 			.navigationBarTitle("Settings")
+			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
 				EditToolbar {
 					settings = internalSettings

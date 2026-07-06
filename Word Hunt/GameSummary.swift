@@ -20,6 +20,18 @@ struct GameSummary: View {
 			Text("Language: \(game.board.words.language.description)")
 			WordView(words: game.placedWords, style: .paragraph)
 		}
+		.overlay {
+			let winner = game.matched == game.words.count
+			Text("WINNER!")
+				.font(.system(size: winner ? 50 : 20, weight: .heavy, design: .rounded))
+				.padding(20)
+				.foregroundStyle(Color.yellow)
+				.background(Color(.gray).opacity(0.7))
+				.cornerRadius(40)
+				.rotationEffect(winner ? .degrees(0) : .degrees(360))
+				.opacity(winner ? 1 : 0)
+				.animation(.easeIn(duration: 1), value: winner)
+		}
 	}
 }
 
@@ -28,8 +40,11 @@ struct GameSummary: View {
 	@State var game = Game(board: GameBoard(size: 20, words: SampleWordLists.all[0]))
 	GameSummary(game: game)
 		.onAppear {
-			game.board.highlightWord(0)
-			game.board.highlightWord(5)
-			game.board.highlightWord(10)
+			for i in game.board.wordPlacements.indices {
+				game.board.highlightWord(i)
+			}
+//			game.board.highlightWord(0)
+//			game.board.highlightWord(5)
+//			game.board.highlightWord(10)
 		}
 }

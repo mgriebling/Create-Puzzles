@@ -15,6 +15,8 @@ struct LetterGridView: View {
 	var allowDrag: Bool = false
 	var showWordSelection: Bool = true
 	let settings: Settings
+	
+	@Environment(\.colorScheme) var colorScheme: ColorScheme
 
 	// Active Interaction States
 	@State private var grid: [[String]] = [[" "]]
@@ -35,24 +37,27 @@ struct LetterGridView: View {
 				let spacing: CGFloat = 0
 				let totalWidth = geometry.size.width
 				let cellSize = (totalWidth - (spacing * CGFloat(numCols - 1))) / CGFloat(numCols)
-				let fill = Set([.fill, .both]).contains(settings.highlight)
-				let lineWidth = Set([.outline, .both]).contains(settings.highlight) ? 3.0 : 0.0
+				let fontSize = cellSize * 0.7
+				let fill = true // Set([.fill, .both]).contains(settings.highlight)
+				let lineWidth = Set([.outline, .both]).contains(settings.highlight) ? 4.0 : 0.0
 				
 				ZStack(alignment: .topLeading) {
 					// Floating selected name
 					if showWordSelection {
-						let frameWidth = game.activeWord.count / 4 + 1
+						let frameWidth = game.activeWord.count/2 + 1
+						let center = CGFloat(numCols-frameWidth-1)/2
 						Text(game.activeWord)
-							.font(.system(size: 25, weight: .bold))
+							.font(.system(size: fontSize, weight: .bold))
 							.lineLimit(1)
 							.fixedSize(horizontal: true, vertical: false)
-							.frame(width: cellSize * CGFloat(frameWidth), height: cellSize/2)
+							.frame(width: cellSize * CGFloat(frameWidth), height: fontSize)
 							.padding(10)
 							.background(Color(.systemGray2))
-							.cornerRadius(8)
-							.offset(x: cellSize*CGFloat(numCols-frameWidth-1)/2, y: -cellSize/2)
+							.cornerRadius(15)
+							.offset(x: cellSize * center, y: -fontSize)
 							.zIndex(10)
 							.opacity(game.activeWord.isEmpty ? 0.0 : 1.0)
+							.animation(.none, value: frameWidth)
 					}
 					
 					// 1. Text Grid
@@ -74,10 +79,12 @@ struct LetterGridView: View {
 							let startPoint = centerOfCell(row: word.start.row, col: word.start.col, cellSize: cellSize, spacing: spacing)
 							let endPoint = centerOfCell(row: word.end.row, col: word.end.col, cellSize: cellSize, spacing: spacing)
 							let color = settings.highlightColor
+							let isDark = colorScheme == .dark
 							if word.highlighted {
 								Capsule()
-									.fill(fill ? color.opacity(0.5) : .clear)
-									.stroke(color.opacity(0.8), lineWidth: lineWidth)
+									.fill(fill ? color : .clear)
+									.stroke(.foreground, lineWidth: lineWidth)
+									.brightness(isDark ? -0.6 : 0.5)
 									.frame(width: cellSize, height: distance(from: startPoint, to: endPoint) + cellSize)
 									.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
 									.position(midPoint(from: startPoint, to: endPoint))
@@ -123,9 +130,12 @@ struct LetterGridView: View {
 						grid[row][col] = game.board[row, col].letter
 					}
 				}
+//				for i in 0..<game.placedWords.count {
+//					game.board.highlightWord(i)
+//				}
 			}
 			.aspectRatio(1, contentMode: .fit)
-			.padding()
+			//.padding()
 		}
 	}
 	
@@ -253,12 +263,6 @@ struct LetterGridView: View {
 	
 	private func midPoint(from: CGPoint, to: CGPoint) -> CGPoint {
 		CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
-	}
-}
-
-extension Int {
-	func signum() -> Int {
-		return (self > 0) ? 1 : ((self < 0) ? -1 : 0)
 	}
 }
 

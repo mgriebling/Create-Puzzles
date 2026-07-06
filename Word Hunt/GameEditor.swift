@@ -19,11 +19,12 @@ struct GameEditor: View {
 	@AppStorage(.settings) private var settings
 	
 	// MARK: Internal State
-	@State private var lgame = Game(board: GameBoard(size: 14)) // dummy board
+	@State private var lgame = Game(board: GameBoard(size: 4)) // dummy board
 	@State private var selectedWordList = WordList()    // active word list
 	@State private var wordLists = [WordList]()			// all the word lists
 	@State private var showWordList: Bool = true
 	@State private var showEmptyAlert: Bool = false
+	@State private var gameID: UUID = UUID()			// forces letter grid updates
 	
 	var body: some View {
 		NavigationStack {
@@ -38,7 +39,10 @@ struct GameEditor: View {
 					} maximumValueLabel: {
 						Text("\(Int(range.upperBound))")
 					}
-					.onChange(of: settings.gridDefaultSize) { withAnimation { updateGame() } }
+					.onChange(of: settings.gridDefaultSize) {
+						print("Updating grid size & game")
+						withAnimation { updateGame() }
+					}
 				}
 					
 				Section(wordHeader, isExpanded: $showWordList) {
@@ -53,7 +57,8 @@ struct GameEditor: View {
 				.onTapGesture(perform: toggleWordList)
 
 				Section(header: wordListTitle) {
-					LetterGridView(game: lgame, settings: settings).id(UUID())
+					LetterGridView(game: lgame, settings: settings)
+						.id(gameID)
 						.padding(.top, -30)
 				}
 			}
@@ -82,8 +87,8 @@ struct GameEditor: View {
 	func updateWords() {
 		print("Updating words for \(selectedWordList.name)")
 		withAnimation {
-			// placedWords = lgame.placeWords(words: selectedWordList.words)
 			showWordList = true
+			print("Selected word list: \(selectedWordList.words)")
 			updateGame()
 		}
 	}
@@ -151,7 +156,11 @@ struct GameEditor: View {
 //	}
 	
 	func updateGame() {
+		print("Grid size: \(settings.gridDefaultSize)")
+		print("Updating game with \(selectedWordList.words.count) words")
 		lgame = Game(board: GameBoard(size: Int(settings.gridDefaultSize), words: selectedWordList))
+		gameID = UUID()
+		print("Finished game update")
 	}
 }
 
