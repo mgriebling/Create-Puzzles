@@ -3,26 +3,38 @@ import SwiftUI
 struct MainAppView: View {
 	// Track the currently active tab
 	@State private var selectedTab = Tabs.wordHunt
+	@State private var game: Game?
+	@State private var words: WordList?
+	@State private var wordLists: [WordList] = []
 	
 	var body: some View {
-		TabView(selection: $selectedTab) {
-			// Tab 1: Home Ecosystem
-			Tab("Word Hunt Puzzles", systemImage: "rectangle.and.text.magnifyingglass", value: .wordHunt) {
-				GameChooser()
-			}
-			
-			// Tab 2: Settings Ecosystem
-			Tab("Edit Word Lists", systemImage: "long.text.page.and.pencil.fill", value: .wordLists) {
-				WordListsChooser()
+		if selectedTab == .wordHunt {
+			GameChooser(selectedTab: $selectedTab.animation(), selection: $game)
+		} else {
+			WordListsChooser(selectedTab: $selectedTab.animation(), selection: $words)
+		}
+	}
+}
+
+struct TabTitle: View {
+	@Binding var selectedTab: Tabs
+	
+	var body: some View {
+		HStack {
+			ForEach(Tabs.allCases) { tab in
+				Button(action: {
+					selectedTab = tab
+				}) {
+					Image(systemName: tab.image)
+				}
 			}
 		}
-		.tabViewStyle(.tabBarOnly)  //.sidebarAdaptable)
 	}
 }
 
 enum Tabs: Int, CaseIterable, Identifiable {
 
-	case wordHunt, wordLists // , settings
+	case wordHunt, wordLists
 	
 	var id: Int { rawValue }
 	
@@ -41,9 +53,6 @@ enum Tabs: Int, CaseIterable, Identifiable {
 	}
 	
 }
-
-// MARK: - Settings Tab Layout
-
 
 // MARK: - Preview
 #Preview {

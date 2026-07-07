@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct Settings {
-	static let maxRange = 4.0...20.0
+	static let maxGridRange = 4.0...20.0
 	
 	var gridDefaultSize: Double
 	var userName: String

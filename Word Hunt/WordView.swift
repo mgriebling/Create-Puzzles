@@ -36,6 +36,7 @@ struct WordView: View {
 				Text(word.word.capitalized)
 					.foregroundColor(textColor)
 					.strikethrough(word.highlighted)
+					.lineLimit(1)
 			}
 		}
 	}

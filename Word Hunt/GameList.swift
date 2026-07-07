@@ -35,13 +35,12 @@ struct GameList: View {
 				games.move(fromOffsets: source, toOffset: destination)
 			}
 		}
-		.navigationTitle(Text("Puzzles"))
-		.navigationBarTitleDisplayMode(.inline)
+		//.navigationTitle(Text("Puzzles"))
+		//.navigationBarTitleDisplayMode(.inline)
 		.listStyle(.plain)
 		.onAppear {
 			if games.isEmpty {
 				games = Game.loadGames()  // read back any saved games
-				// games.forEach { $0.delete() }
 			}
 			addSampleGames()
 		}

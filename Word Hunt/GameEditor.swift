@@ -31,7 +31,7 @@ struct GameEditor: View {
 			Form {
 				let size = Int(settings.gridDefaultSize)
 				Section(header: Text("\(selectedWordList.name) Game (\(size) Rows/Columns)")) {
-					let range = Settings.maxRange
+					let range = Settings.maxGridRange
 					Slider(value: $settings.gridDefaultSize, in: range, step: 1) {
 						Text("Rows/Columns:")
 					} minimumValueLabel: {
@@ -57,12 +57,9 @@ struct GameEditor: View {
 				.onTapGesture(perform: toggleWordList)
 
 				Section(header: wordListTitle) {
-					LetterGridView(game: lgame, settings: settings)
-						.id(gameID)
-						.padding(.top, -30)
+					LetterGridView(game: lgame, settings: settings).id(gameID)
 				}
 			}
-			.listSectionSpacing(0)
 			.onAppear(perform: setUpGame)
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
@@ -138,22 +135,6 @@ struct GameEditor: View {
 			}
 		}
 	}
-	
-//	@ViewBuilder
-//	private func showLoading() -> some View {
-//		if isLoading {
-//			Color(.black).opacity(0.5)
-//				.ignoresSafeArea()
-//			ProgressView("Performing layout...")
-//				.tint(.primary)
-//				.padding(20)
-//				.background(Color(.black))
-//				.cornerRadius(10)
-//				.shadow(radius: 10)
-//				.offset(CGSize(width: 0, height: -100))
-//				.controlSize(.large)
-//		}
-//	}
 	
 	func updateGame() {
 		print("Grid size: \(settings.gridDefaultSize)")

@@ -28,12 +28,12 @@ struct SettingsView: View {
 				}
 				
 				Section("Word Grid Default Size: \(Int(internalSettings.gridDefaultSize))") {
-					Slider(value: $internalSettings.gridDefaultSize, in: Settings.maxRange, step: 1) {
+					Slider(value: $internalSettings.gridDefaultSize, in: Settings.maxGridRange, step: 1) {
 						Text("Word Grid Minimum")
 					} minimumValueLabel: {
-						Text("\(Int(Settings.maxRange.lowerBound))")
+						Text("\(Int(Settings.maxGridRange.lowerBound))")
 					} maximumValueLabel: {
-						Text("\(Int(Settings.maxRange.upperBound))")
+						Text("\(Int(Settings.maxGridRange.upperBound))")
 					}
 				}
 				

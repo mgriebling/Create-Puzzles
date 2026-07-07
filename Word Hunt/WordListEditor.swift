@@ -41,7 +41,7 @@ struct WordListEditor: View {
 				}
 			}
 			.navigationTitle("Word Lists")
-			.onChange(of: wordLists) {
+			.onChange(of: selection) {
 				if let selection, !wordLists.contains(selection) {
 					self.selection = nil
 				}
@@ -56,7 +56,7 @@ struct WordListEditor: View {
 			.onAppear {
 				if wordLists.isEmpty {
 					wordLists = SampleWordLists.all
-					selection = wordLists[Int.random(in: 0..<wordLists.count)]
+					//selection = wordLists[Int.random(in: 0..<wordLists.count)]
 				}
 			}
 		}
@@ -98,19 +98,19 @@ struct WordListEditor: View {
 			wordListToEdit = WordList(name: name, wordRange: 3...7, totalWords: 50)
 			showWordListEditor.toggle()
 		}
-		.sheet(isPresented: $showWordListEditor) {
-			WordsEditor(words: $wordListToEdit) {
-				if let list = originalWordList,
-				   let index = wordLists.firstIndex(of: list) {
-					// word list already exists
-					wordLists[index] = wordListToEdit!
-					originalWordList = nil
-				} else {
-					// add new word list
-					wordLists.insert(wordListToEdit!, at: 0)
-				}
-			}
-		}
+//		.sheet(isPresented: $showWordListEditor) {
+//			WordsEditor(words: $wordListToEdit) {
+//				if let list = originalWordList,
+//				   let index = wordLists.firstIndex(of: list) {
+//					// word list already exists
+//					wordLists[index] = wordListToEdit!
+//					originalWordList = nil
+//				} else {
+//					// add new word list
+//					wordLists.insert(wordListToEdit!, at: 0)
+//				}
+//			}
+//		}
 	}
 }
 

@@ -27,6 +27,7 @@ struct LetterGridView: View {
 	@State private var numRows = 1
 	@State private var numCols = 1
 	@State private var done: Bool = false
+	@State private var width: CGFloat = 0
 	
 	// Permanent History State: Stores fully validated words and paths
 	@State private var foundWords: [PlacedWord] = []
@@ -38,8 +39,8 @@ struct LetterGridView: View {
 				let totalWidth = geometry.size.width
 				let cellSize = (totalWidth - (spacing * CGFloat(numCols - 1))) / CGFloat(numCols)
 				let fontSize = cellSize * 0.7
-				let fill = true // Set([.fill, .both]).contains(settings.highlight)
-				let lineWidth = Set([.outline, .both]).contains(settings.highlight) ? 4.0 : 0.0
+				let fill = Set([.fill, .both]).contains(settings.highlight)
+				let lineWidth = Set([.outline, .both]).contains(settings.highlight) ? 3.0 : 0.0
 				
 				ZStack(alignment: .topLeading) {
 					// Floating selected name
@@ -71,6 +72,9 @@ struct LetterGridView: View {
 								}
 							}
 						}
+					}
+					.onAppear {
+						self.width = geometry.size.width * 0.8
 					}
 					.coordinateSpace(name: "GridSpace")
 					.background {
@@ -116,7 +120,7 @@ struct LetterGridView: View {
 						.onEnded { _ in
 							evaluateAndSaveWord()
 						},
-					isEnabled: allowDrag
+					isEnabled: allowDrag && !game.isOver
 				)
 			}
 			.onAppear {
@@ -130,12 +134,16 @@ struct LetterGridView: View {
 						grid[row][col] = game.board[row, col].letter
 					}
 				}
-//				for i in 0..<game.placedWords.count {
+//				for i in 0..<game.placedWords.count-1 {
 //					game.board.highlightWord(i)
 //				}
+//				game.board.highlightWord(game.placedWords.count-1)
 			}
 			.aspectRatio(1, contentMode: .fit)
-			//.padding()
+			// .padding(.top, 10)
+		}
+		.overlay {
+			WinnerView(game: game, width: width)
 		}
 	}
 	
@@ -216,10 +224,14 @@ struct LetterGridView: View {
 				let finalizedPath = PlacedWord (
 					word: target, start: start, end: end
 				)
-				if settings.soundsOn {
-					play(sound: "success.mp3", volume: settings.soundVolume)
-				}
 				foundWords.append(finalizedPath)
+				if settings.soundsOn {
+					if game.isOver {
+						play(sound: "victory-chime.mp3", volume: settings.soundVolume)
+					} else {
+						play(sound: "success.mp3", volume: settings.soundVolume)
+					}
+				}
 				game.removeActiveWord()
 				game.save(to: game.name)
 				print("SUCCESS: Found Word \(target)")

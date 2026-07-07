@@ -30,18 +30,24 @@ struct ElapsedTimeTracker: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onAppear {
-				game.timer.start()
+				if game.isOver {
+					game.timer.pause()
+				} else {
+					game.timer.start()
+				}
             }
             .onDisappear {
 				game.timer.pause()
             }
             .onChange(of: game) { oldGame, newGame in
 				oldGame.timer.pause()
-				newGame.timer.start()
+				if !newGame.isOver {
+					newGame.timer.start()
+				}
             }
             .onChange(of: scenePhase) {
                 switch scenePhase {
-					case .active: game.timer.start()
+					case .active: if !game.isOver { game.timer.start() }
 					case .background: game.timer.pause()
 					default: break
                 }

@@ -14,9 +14,9 @@
 		4707A0592FF9A51B00F88A40 /* AppStorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707A0582FF9A51B00F88A40 /* AppStorageKeys.swift */; };
 		4707A05F2FF9A5ED00F88A40 /* Color+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707A05E2FF9A5ED00F88A40 /* Color+String.swift */; };
 		4707DAE02FFA881100B4764F /* WordListsChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4707DADF2FFA881100B4764F /* WordListsChooser.swift */; };
-		471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670A72FF40AE300A09C13 /* AutoGridWidth.swift */; };
 		471670AC2FF4493700A09C13 /* LetterGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471670AB2FF4493700A09C13 /* LetterGridView.swift */; };
 		471E2A1F2FFC375F00A1ADBD /* web2 in Resources */ = {isa = PBXBuildFile; fileRef = 471E2A1E2FFC375F00A1ADBD /* web2 */; };
+		471E2A232FFC4C4A00A1ADBD /* WinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */; };
 		472CE12F291858D90074891E /* WordHunt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE12E291858D90074891E /* WordHunt.swift */; };
 		472CE131291858D90074891E /* GameChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472CE130291858D90074891E /* GameChooser.swift */; };
 		472CE133291858DB0074891E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 472CE132291858DB0074891E /* Assets.xcassets */; };
@@ -51,9 +51,9 @@
 		4707A0582FF9A51B00F88A40 /* AppStorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageKeys.swift; sourceTree = "<group>"; };
 		4707A05E2FF9A5ED00F88A40 /* Color+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+String.swift"; sourceTree = "<group>"; };
 		4707DADF2FFA881100B4764F /* WordListsChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListsChooser.swift; sourceTree = "<group>"; };
-		471670A72FF40AE300A09C13 /* AutoGridWidth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoGridWidth.swift; sourceTree = "<group>"; };
 		471670AB2FF4493700A09C13 /* LetterGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterGridView.swift; sourceTree = "<group>"; };
 		471E2A1E2FFC375F00A1ADBD /* web2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = web2; sourceTree = "<group>"; };
+		471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinnerView.swift; sourceTree = "<group>"; };
 		472CE12B291858D90074891E /* Word Hunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Word Hunt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		472CE12E291858D90074891E /* WordHunt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordHunt.swift; sourceTree = "<group>"; };
 		472CE130291858D90074891E /* GameChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameChooser.swift; sourceTree = "<group>"; };
@@ -117,10 +117,10 @@
 		472CE12D291858D90074891E /* Word Hunt */ = {
 			isa = PBXGroup;
 			children = (
-				471E2A1E2FFC375F00A1ADBD /* web2 */,
 				4707A05E2FF9A5ED00F88A40 /* Color+String.swift */,
 				472CE12E291858D90074891E /* WordHunt.swift */,
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
+				471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */,
 				4707A0112FF84B8400F88A40 /* MainAppView.swift */,
 				4707DADF2FFA881100B4764F /* WordListsChooser.swift */,
 				47E0ABE42FF069CB009D7BB0 /* GameList.swift */,
@@ -148,9 +148,9 @@
 				476F03E52FED4F3A0041F2B8 /* Extensions.swift */,
 				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 				472CE134291858DB0074891E /* WordHunt.entitlements */,
+				471E2A1E2FFC375F00A1ADBD /* web2 */,
 				472CE132291858DB0074891E /* Assets.xcassets */,
 				472CE135291858DB0074891E /* Preview Content */,
-				471670A72FF40AE300A09C13 /* AutoGridWidth.swift */,
 			);
 			path = "Word Hunt";
 			sourceTree = "<group>";
@@ -251,6 +251,7 @@
 				472CE131291858D90074891E /* GameChooser.swift in Sources */,
 				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
 				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
+				471E2A232FFC4C4A00A1ADBD /* WinnerView.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
 				47E0ABE52FF069CB009D7BB0 /* GameList.swift in Sources */,
@@ -261,7 +262,6 @@
 				476F03E62FED4F3A0041F2B8 /* Extensions.swift in Sources */,
 				471670AC2FF4493700A09C13 /* LetterGridView.swift in Sources */,
 				4707A0592FF9A51B00F88A40 /* AppStorageKeys.swift in Sources */,
-				471670A82FF40AE300A09C13 /* AutoGridWidth.swift in Sources */,
 				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
 				47079FFC2FF5AF9200F88A40 /* SettingsView.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,

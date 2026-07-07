@@ -32,51 +32,47 @@ struct StringList: View {
 	var body: some View {
 		let isDark = colorScheme == .dark
 		
-		List(selection: $selectedItems) {
-			ForEach(lstrings) { item in
-				let index = lstrings.firstIndex(where: { $0.id == item.id })!
-				HStack {
-					Text("\(index+1))").frame(width: 50)
-					TextField("Edit Word", text: $lstrings[index].title)
-						.textEditorStyle(.plain)
-						.autocorrectionDisabled(true)
-						.onSubmit {
-							let edited = lstrings[index].title.capitalized
-								.filter { $0.isLetter }
-							withAnimation {
-								lstrings[index].title = edited
+		NavigationStack {
+			List(selection: $selectedItems) {
+				ForEach(lstrings) { item in
+					let index = lstrings.firstIndex(where: { $0.id == item.id })!
+					HStack {
+						Text("\(index+1))").frame(width: 50)
+						TextField("Edit Word", text: $lstrings[index].title)
+							.textEditorStyle(.plain)
+							.autocorrectionDisabled(true)
+							.onSubmit {
+								let edited = lstrings[index].title.capitalized
+									.filter { $0.isLetter }
+								withAnimation {
+									lstrings[index].title = edited
+									strings[index] = edited
+								}
 							}
-						}
-						.padding(5)
-						.frame(minWidth: 200)
-						.textFieldStyle(.plain)
-						.background(isDark ? Color(.darkGray) : Color(.lightGray), in: RoundedRectangle(cornerRadius: 12))
-				}
-				.listRowBackground(
-					RoundedRectangle(cornerRadius: 12, style: .continuous)
-						.fill(selectedItems.contains(item.id) ? .blue.opacity(0.4) : .clear)
+							.padding(5)
+							.frame(minWidth: 200)
+							.textFieldStyle(.plain)
+							.background(isDark ? Color(.darkGray) : Color(.lightGray), in: RoundedRectangle(cornerRadius: 12))
+					}
+					.listRowBackground(
+						RoundedRectangle(cornerRadius: 12, style: .continuous)
+							.fill(selectedItems.contains(item.id) ? .blue.opacity(0.4) : .clear)
 					)
-				.flexibleSystemFont(maximum: 25)
+					.flexibleSystemFont(maximum: 20)
+				}
 			}
-		}
-		.environment(\.editMode, $editMode)
-		.onAppear {
-			lstrings = strings.map { ListItem($0) }
-		}
-		.navigationTitle("\(title) Word List")
-		.listStyle(.plain)
-		.navigationBarItems(
-			leading:  cancelEditButton,
-			trailing: addDelButton
-		)
-	}
-	
-	private var cancelEditButton: some View {
-		HStack {
-			if editMode == .inactive {
-				Button("Cancel") { dismiss() }
+			.environment(\.editMode, $editMode)
+			.onAppear {
+				lstrings = strings.map { ListItem($0) }
 			}
-			editButton
+			.navigationTitle("\(title) Word List")
+			.navigationBarTitleDisplayMode(.inline)
+			.listStyle(.plain)
+			.listRowSpacing(-20)
+			.navigationBarItems(
+				leading:  editButton,
+				trailing: addDelButton
+			)
 		}
 	}
 	
@@ -89,14 +85,10 @@ struct StringList: View {
 		}
 	}
 	
-	@ViewBuilder
 	private var addDelButton: some View {
 		if editMode == .inactive {
-			HStack {
-				Button(action: addItem) {
-					Image(systemName: "plus")
-				}
-				Button("Done") { done() }
+			Button(action: addItem) {
+				Image(systemName: "plus")
 			}
 		} else {
 			Button(action: deleteItems) {
@@ -110,6 +102,7 @@ struct StringList: View {
 			for id in selectedItems {
 				if let index = lstrings.lastIndex(where: { $0.id == id }) {
 					lstrings.remove(at: index)
+					strings.remove(at: index)
 				}
 			}
 			selectedItems = Set<UUID>()
@@ -118,7 +111,7 @@ struct StringList: View {
 		
 	fileprivate func addItem() {
 		// Add a unique name
-		let strings = lstrings.map(\.title)
+		// let strings = lstrings.map(\.title)
 		var postFix: Int = 1
 		let itemName: String
 		if let _ = strings.firstIndex(of: "untitled") {
@@ -131,6 +124,7 @@ struct StringList: View {
 		}
 		withAnimation {
 			lstrings.insert(ListItem(itemName), at: 0)
+			strings.insert(itemName, at: 0)
 		}
 	}
 	
@@ -140,10 +134,10 @@ struct StringList: View {
 		}
 	}
 	
-	func done() {
-		strings = lstrings.map(\.title.capitalized)
-		dismiss()
-	}
+//	func done() {
+//		strings = lstrings.map(\.title.capitalized)
+//		dismiss()
+//	}
 }
 
 extension EditMode {
@@ -158,7 +152,7 @@ extension EditMode {
 
 #Preview {
 	@Previewable @State var strings = SampleWordLists.all[0].words
-	NavigationStack {
+	// NavigationStack {
 		StringList(title: SampleWordLists.all[0].name, strings: $strings)
-	}
+	// }
 }

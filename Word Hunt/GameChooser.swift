@@ -8,17 +8,18 @@
 import SwiftUI
 
 struct GameChooser: View {
-	@State private var selection: Game? = nil
-	@State private var columnVisibility: NavigationSplitViewVisibility = .all
+	@Binding var selectedTab: Tabs
+	@Binding var selection: Game?
+	
+	@State private var columnVisibility: NavigationSplitViewVisibility = .detailOnly
 	
 	var body: some View {
 		NavigationSplitView(columnVisibility: $columnVisibility) {
 			GameList(selection: $selection)
 		} detail: {
 			if let game = selection {
-				GameView(game: game)
+				GameView(game: game, selectedTab: $selectedTab)
 					.id(UUID())
-					.padding(.bottom)
 					.onTapGesture {
 						// Tap in detail to hide puzzles list selector
 						guard columnVisibility == .all else { return }
@@ -34,6 +35,7 @@ struct GameChooser: View {
 }
 
 #Preview {
-	GameChooser()
+	@Previewable @State var game: Game?
+	GameChooser(selectedTab: .constant(.wordHunt), selection: $game)
 }
 

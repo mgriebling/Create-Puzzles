@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@Observable class Game: Codable {
+@Observable class Game {
 	var board: GameBoard
 	var timer: Timer
 	
@@ -17,10 +17,8 @@ import SwiftUI
 	var placedWords: [PlacedWord] { board.wordPlacements }
 	var size: Int		   		  { board.size }
 	var name: String			  { board.words.name }
-	var level: Int 				  { placedWords.count * size * 10 /
-									(board.words.words.count * 20) }
 	var matched: Int 			  { placedWords.filter(\.highlighted).count }
-	// var score: Double { (100.0 * Double(matched)) / Double(words.count) }
+	var isOver: Bool 		  	  { matched == words.count }
 	
 	// MARK: Initializer
 	init(board: GameBoard) {
@@ -35,13 +33,18 @@ import SwiftUI
 		self.timer = try container.decode(Timer.self, forKey: .timer)
 	}
 	
-	func encode(to encoder: any Encoder) throws {
-		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encode(board, forKey: .board)
-		try container.encode(timer, forKey: .timer)
+	var level: Int {
+		// first calculate average difficulty of the words (5 is typical word length)
+		let averageWordLength = 6.0
+		let wordsCount = Double(words.count)
+		let wordScore = words.map({ Double($0.count) }).reduce(0, +) /
+						(wordsCount * averageWordLength)
+		let puzzleScore = Double(size) / Settings.maxGridRange.upperBound
+		let numberOfWordsScore = wordsCount / Double(board.words.words.count)
+		let total = wordScore + puzzleScore + numberOfWordsScore
+		//print("Word score = \(wordScore), puzzle score = \(puzzleScore), number of words score = \(numberOfWordsScore)")
+		return min(10, Int((10.0 / 3.0) * total + 0.5))
 	}
-	
-	enum CodingKeys: String, CodingKey { case board, timer }
 
     func removeActiveWord() {
 		if let index = words.firstIndex(of: activeWord.lowercased()) {
@@ -153,6 +156,17 @@ extension Game: Equatable {
 	static func == (lhs: Game, rhs: Game) -> Bool {
 		lhs.id == rhs.id
 	}
+}
+
+extension Game: Codable {
+
+	func encode(to encoder: any Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(board, forKey: .board)
+		try container.encode(timer, forKey: .timer)
+	}
+	
+	enum CodingKeys: String, CodingKey { case board, timer }
 }
 
 extension Game: Hashable {
