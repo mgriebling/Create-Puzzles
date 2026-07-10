@@ -135,6 +135,10 @@ extension String {
 	public var words: [String]
 	private var revision: Int = 0
 	
+	public var averageLength: Double {
+		words.map({ Double($0.count) }).reduce(0, +) / Double(words.count)
+	}
+	
 	convenience init() {
 		self.init(name: "Empty", language: .english,
 				  author: "Unknown", date: Date(), words: [])

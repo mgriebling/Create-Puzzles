@@ -15,7 +15,7 @@ struct MainAppView: View {
 	@State private var columnVisibility: NavigationSplitViewVisibility = .all
 	
 	var body: some View {
-		NavigationSplitView {
+		NavigationSplitView(columnVisibility: $columnVisibility) {
 			Group {
 				switch activeCategory {
 					case .puzzles:
@@ -36,11 +36,16 @@ struct MainAppView: View {
 						}
 				}
 			}
-			.listStyle(.sidebar)
-			.navigationTitle("App")
+			.listStyle(.plain)
+			.navigationTitle(activeCategory.rawValue)
+			.onChange(of: selectedPuzzle) { _, newValue in
+				if newValue != nil {
+					columnVisibility = .detailOnly
+				}
+			}
 			.toolbar {
 				ToolbarItem(placement: .principal) {
-					Picker("Category", selection: $activeCategory) {
+					Picker("Category", selection: $activeCategory.animation()) {
 						ForEach(SidebarCategory.allCases) { category in
 							Text(category.rawValue).tag(category)
 						}
@@ -56,19 +61,27 @@ struct MainAppView: View {
 						if let game = selectedPuzzle {
 							GameView(game: game)
 						} else {
-							Text("Select a game")
+							ContentUnavailableView {
+								Label("No puzzle selected yet!", systemImage: "exclamationmark.circle")
+							} description: {
+								Text("Select a puzzle on the left to get started.")
+							}
 						}
 					case .words:
 						if let words = selectedWords {
 							WordsEditor(words: .constant(words))
 						} else {
-							Text("Select a word list")
+							ContentUnavailableView {
+								Label("No word list selected yet!", systemImage: "exclamationmark.circle")
+							} description: {
+								Text("Select a word list on the left to get started.")
+							}
 						}
 				}
 			}
 			.id(activeCategory)
 		}
-		.navigationSplitViewStyle(.prominentDetail)
+		.navigationSplitViewStyle(.balanced)
 		.onAppear {
 			if games.isEmpty {
 				games = Game.loadGames()  // read back any saved games

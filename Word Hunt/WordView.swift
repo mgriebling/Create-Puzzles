@@ -10,7 +10,6 @@ import SwiftUI
 struct WordView: View {
 	let words: [PlacedWord]
 	var style: TextStyle = .columns
-	var columns: Int = -1
 	
 	@Environment(\.horizontalSizeClass) var size
 	
@@ -26,7 +25,7 @@ struct WordView: View {
 	}
 	
 	private func columnText(fontSize: CGFloat) -> some View {
-		let columnCount = columns != -1 ? columns : size == .compact ? 3 : 6
+		let columnCount = 3
 		let columns = Array(repeating: GridItem(.flexible(), alignment: .leading),
 							count: columnCount)
 		return LazyVGrid(columns: columns, alignment: .trailing) {

@@ -15,7 +15,7 @@ struct WordListSummary: View {
 	var body: some View {
 		let isCompact: Bool = size == .compact
 		VStack(alignment: .leading) {
-			Text(wordList.name).font(isCompact ? .title2 : .title)
+			Text(wordList.name + " List").font(isCompact ? .title2 : .title)
 			let author = wordList.author.isEmpty ? "Anonymous" : wordList.author
 			if isCompact && author != "Anonymous" && author != "Unknown" {
 				Text("Author: \(wordList.author)")
@@ -24,8 +24,10 @@ struct WordListSummary: View {
 				Text("Created: \(wordList.date, format: .dateTime.day().month().year())")
 			}
 			Text("^[\(wordList.words.count) word](inflect: true) (\(wordList.language.description))")
+			Text("Words: (Average \(wordList.averageLength, specifier: "%.2f") letters)")
 			Text(wordList.words.map({ $0.capitalized }).joined(separator: ", "))
-				.font(isCompact ? .caption2 : .caption)
+					.font(.caption)
+					.lineLimit(isCompact ? 2 : nil)
 		}
 		.padding(.horizontal)
 	}

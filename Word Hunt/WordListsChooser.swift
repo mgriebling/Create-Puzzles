@@ -23,19 +23,14 @@ struct WordListsChooser: View {
 //					}
 //				}
 		} detail: {
-			if selection != nil {
-				WordsEditor(words: $selection)
-					.id(UUID())
-					.padding(.bottom)
-					.onTapGesture {
-						// Tap in detail to hide puzzles list selector
-						guard columnVisibility == .all else { return }
-						columnVisibility = .detailOnly
-					}
-			} else {
-				Text("Choose a word list on the left!")
-					.flexibleSystemFont(maximum: 30).bold()
-			}
+			WordsEditor(words: $selection)
+				.id(UUID())
+				.padding(.bottom)
+				.onTapGesture {
+					// Tap in detail to hide puzzles list selector
+					guard columnVisibility == .all else { return }
+					columnVisibility = .detailOnly
+				}
 		}
 		.navigationSplitViewStyle(.prominentDetail)
 //		.navigationTitle(Text("Word Lists"))
