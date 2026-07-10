@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct WordsEditor: View {
-	@Binding var words: WordList?
-	@Binding var selectedTab: Tabs
+	@Binding var words: WordList
 	var onDone: (() -> Void)?
 	
 	// MARK: Data (Function) In
@@ -55,6 +54,9 @@ struct WordsEditor: View {
 				wordList = lwords.words.map { PlacedWord(word: $0) }
 				if onDone == nil {
 					// update passed word list directly
+					if words.words != lwords.words {
+						lwords.reviseName()
+					}
 					words = lwords
 				}
 			}
@@ -64,18 +66,16 @@ struct WordsEditor: View {
 //#if os(iOS)
 //		.navigationBarTitleDisplayMode(.inline)
 //#endif
-		.toolbar {
-			ToolbarItem(placement: .principal) {
-				TabTitle(selectedTab: $selectedTab)
-			}
-			// EditToolbar { done() }
-		}
+//		.toolbar {
+//			ToolbarItem(placement: .principal) {
+//				TabTitle(selectedTab: $selectedTab)
+//			}
+//			// EditToolbar { done() }
+//		}
 		.onAppear {
-			if let words {
-				lwords = words
-				selectedLanguage = lwords.language
-				wordList = lwords.words.map { PlacedWord(word: $0) }
-			}
+			lwords = words
+			selectedLanguage = lwords.language
+			wordList = lwords.words.map { PlacedWord(word: $0) }
 		}
 	}
 	
@@ -88,8 +88,8 @@ struct WordsEditor: View {
 }
 
 #Preview {
-	@Previewable @State var words = SampleWordLists.all.randomElement()
+	@Previewable @State var words = SampleWordLists.all.randomElement()!
 	NavigationStack {
-		WordsEditor(words: $words, selectedTab: .constant(.wordLists))
+		WordsEditor(words: $words)
 	}
 }

@@ -9,27 +9,28 @@ import SwiftUI
 
 struct WordListEditor: View {
 	// MARK: Data Shared with Me
-	@Binding var selection: WordList?
+	@Binding var selection: WordList
+	@Binding var wordLists: [WordList]
 	
-	@State private var wordLists = [WordList]()
-	@State private var wordListToEdit: WordList? = WordList()
+	@State private var wordListToEdit: WordList = WordList()
 	@State private var showWordListEditor: Bool = false
-	@State private var originalWordList: WordList? = nil
+	@State private var listItem: WordList?
+	// @State private var originalWordList: WordList? = nil
 	
 	var body: some View {
 		NavigationStack {
-			List(selection: $selection) {
+			List(selection: $listItem) {
 				ForEach(wordLists, id: \.self) { wordList in
 					NavigationLink(value: wordList) {
 						WordListSummary(wordList: wordList)
 					}
 					.contextMenu {
-						editButton(for: wordList) // editing a word list
-						deleteButton(for: wordList)
+						editButton(for: selection) // editing a word list
+						deleteButton(for: selection)
 					}
-					.swipeActions(edge: .leading) {
-						editButton(for: wordList).tint(.accentColor)
-					}
+//					.swipeActions(edge: .leading) {
+//						editButton(for: wordList).tint(.accentColor)
+//					}
 				}
 				.onDelete { indexSet in
 					indexSet.forEach { index in
@@ -41,11 +42,14 @@ struct WordListEditor: View {
 				}
 			}
 			.navigationTitle("Word Lists")
-			.onChange(of: selection) {
-				if let selection, !wordLists.contains(selection) {
-					self.selection = nil
-				}
+			.onChange(of: listItem) { _, newValue in
+				selection = newValue!
 			}
+//			.onChange(of: selection) {
+//				if let selection, !wordLists.contains(selection) {
+//					self.selection = nil
+//				}
+//			}
 			.listStyle(.plain)
 			.toolbar {
 				addButton
@@ -53,19 +57,19 @@ struct WordListEditor: View {
 				EditButton()
 #endif
 			}
-			.onAppear {
-				if wordLists.isEmpty {
-					wordLists = SampleWordLists.all
-					//selection = wordLists[Int.random(in: 0..<wordLists.count)]
-				}
-			}
+//			.onAppear {
+//				if wordLists.isEmpty {
+//					wordLists = SampleWordLists.all
+//					//selection = wordLists[Int.random(in: 0..<wordLists.count)]
+//				}
+//			}
 		}
 	}
 		
 	func editButton(for wordList: WordList) -> some View {
 		Button("Edit", systemImage: "pencil") {
-			originalWordList = wordList
-			wordListToEdit = wordList
+//			originalWordList = wordList
+			wordListToEdit = selection.copy()
 			showWordListEditor.toggle()
 		}
 	}
@@ -96,25 +100,23 @@ struct WordListEditor: View {
 		Button("Add Word List", systemImage: "plus") {
 			let name = uniqueName(for: "Random")
 			wordListToEdit = WordList(name: name, wordRange: 3...7, totalWords: 50)
-			showWordListEditor.toggle()
+			showWordListEditor = true
 		}
-//		.sheet(isPresented: $showWordListEditor) {
-//			WordsEditor(words: $wordListToEdit) {
-//				if let list = originalWordList,
-//				   let index = wordLists.firstIndex(of: list) {
-//					// word list already exists
-//					wordLists[index] = wordListToEdit!
-//					originalWordList = nil
-//				} else {
-//					// add new word list
-//					wordLists.insert(wordListToEdit!, at: 0)
-//				}
-//			}
-//		}
+		.sheet(isPresented: $showWordListEditor) {
+			WordsEditor(words: $wordListToEdit) {
+				if let index = wordLists.firstIndex(of: wordListToEdit) {
+					// word list already exists
+					wordLists[index] = wordListToEdit
+				} else {
+					// add new word list
+					wordLists.insert(wordListToEdit, at: 0)
+				}
+			}
+		}
 	}
 }
 
 #Preview {
-	@Previewable @State var selection: WordList?
-	WordListEditor(selection: $selection)
+	@Previewable @State var selection = SampleWordLists.all[0]
+	WordListEditor(selection: $selection, wordLists: .constant(SampleWordLists.all))
 }

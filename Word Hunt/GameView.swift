@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GameView: View {
 	let game: Game
-	@Binding var selectedTab: Tabs
 	
 	@AppStorage(.settings) private var settings
 	
@@ -54,9 +53,9 @@ struct GameView: View {
 		}
 		#endif
 		.toolbar {
-			ToolbarItem(placement: .principal) {
-				TabTitle(selectedTab: $selectedTab)
-			}
+//			ToolbarItem(placement: .principal) {
+//				TabTitle(selectedTab: $selectedTab)
+//			}
 			ToolbarItem(placement: .automatic) {
 				ElapsedTime(text: "", timer: game.timer)
 					.lineLimit(1)
@@ -81,8 +80,8 @@ struct GameView: View {
 				}
 			}
 		}
-		//.navigationTitle(game.name)
-		//.navigationBarTitleDisplayMode(.inline)
+		.navigationTitle(game.name)
+		.navigationBarTitleDisplayMode(.inline)
 		.background(Color(.yellow.opacity(0.15)), ignoresSafeAreaEdges: .all)
 	}
 	
@@ -99,7 +98,7 @@ struct GameView: View {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 20, words: SampleWordLists.all[0]))
 	NavigationStack {
-		GameView(game: game, selectedTab: .constant(.wordHunt))
+		GameView(game: game)
 	}
 }
 

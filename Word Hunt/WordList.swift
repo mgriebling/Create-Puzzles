@@ -102,21 +102,68 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 	}
 }
 
-public struct WordList: Codable, Hashable {
-	public var name: String
+extension String {
+	var trailingDigits: String {
+		String(self.reversed().prefix(while: { $0.isNumber }).reversed())
+	}
+	
+	var removeTrailingDigits: String {
+		let trailingDigits = self.trailingDigits
+		return String(self.dropLast(trailingDigits.count))
+	}
+}
+
+@Observable public class WordList: Codable {
+	public var name: String {
+		get {
+			if revision == 0 { return _name }
+			return "\(_name)\(revision)"
+		}
+		set {
+			var value = newValue
+			if let revision = Int(newValue.trailingDigits) {
+				self.revision = revision
+				value = newValue.removeTrailingDigits
+			}
+			_name = value
+		}
+	}
+	private var _name: String		// internal name
 	public var language: Language
 	public var author: String
 	public var date: Date
 	public var words: [String]
+	private var revision: Int = 0
 	
-	init() {
+	convenience init() {
 		self.init(name: "Empty", language: .english,
 				  author: "Unknown", date: Date(), words: [])
 	}
 	
+	/// Create a copy of words
+	convenience init(words: WordList) {
+		self.init(name: words.name, language: words.language,
+			 author: words.author, date: words.date, words: words.words)
+	}
+	
+	convenience init?(from file: URL) {
+		if let rawData = try? Data(contentsOf: file) {
+			let decoder = JSONDecoder()
+			if let wordList = try? decoder.decode(WordList.self, from: rawData) {
+				print("Loaded word List: \(wordList.name)")
+				self.init(words: wordList)
+				return
+			} else {
+				// remove corrupted file
+				try? FileManager.default.removeItem(at: file)
+			}
+		}
+		return nil
+	}
+	
 	init(name: String = "Empty", language: Language = .english,
 		 author: String = "Unknown", date: Date = Date(), words: [String]) {
-		self.name = name
+		self._name = name
 		self.language = language
 		self.author = author
 		self.date = date
@@ -128,11 +175,83 @@ public struct WordList: Codable, Hashable {
 		 author: String = "Unknown", date: Date = Date(),
 		 wordRange: CountableClosedRange<Int>, totalWords: Int) {
 		print("Creating word list")
-		self.name = name
+		self._name = name
 		self.language = language
 		self.author = author
 		self.date = date
 		self.words = Self.generateWords(with: wordRange, total: totalWords)
+	}
+	
+	/// Creates a copy of the word list
+	func copy() -> WordList { WordList(words: self) }
+	
+	static var documentDirectory: URL? {
+		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+	}
+	
+	/// Saves the word list to a file
+	func save(to fileName: String) {
+		// 2. Get the URL for the user's Documents directory
+		guard let documentsDirectory = Self.documentDirectory else { return }
+		
+		// 3. Append the desired filename to the directory path
+		let fileURL = documentsDirectory.appendingPathComponent("\(fileName).wlist")
+		
+		// 4. Initialize JSONEncoder and format the output
+		let encoder = JSONEncoder()
+		// encoder.outputFormatting = .prettyPrinted // Makes the JSON file human-readable
+		
+		do {
+			// 5. Encode the class instance into raw Data
+			let jsonData = try encoder.encode(self)
+			
+			// 6. Write the raw Data to disk
+			try jsonData.write(to: fileURL, options: .atomic)
+		} catch {
+			print("Failed to write JSON file: \(error.localizedDescription)")
+		}
+	}
+	
+	func reviseName() {
+		revision += 1
+	}
+	
+	func delete() {
+		// 2. Get the URL for the user's Documents directory
+		guard let documentsDirectory = Self.documentDirectory else { return }
+		
+		// 3. Append the desired filename to the directory path
+		let fileURL = documentsDirectory.appendingPathComponent("\(self.name).wlist")
+		
+		try? FileManager.default.removeItem(at: fileURL)
+	}
+	
+	static func save(wordLists: [WordList]) {
+		wordLists.forEach { wordList in
+			wordList.save(to: wordList.name)
+		}
+	}
+	
+	static func loadWordLists() -> [WordList] {
+		guard let documentsURL = Self.documentDirectory else { return [] }
+		let fileManager = FileManager.default
+		do {
+			let contents = try fileManager.contentsOfDirectory(at: documentsURL,
+					includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+			
+			// Filter for files with "json" extension (case-insensitive)
+			let wordListURLs = contents.filter { $0.pathExtension.lowercased() == "wlist" }
+			var wordLists = [WordList]()
+			for url in wordListURLs {
+				if let wordList = WordList(from: url) {
+					wordLists.append(wordList)
+				}
+			}
+			return wordLists
+		} catch {
+			print("Error reading directory: \(error)")
+			return []
+		}
 	}
 	
 	static func loadSystemWords() -> [String] {
@@ -161,4 +280,16 @@ public struct WordList: Codable, Hashable {
 		}
 		return words.sorted()
 	}
+}
+
+extension WordList: Identifiable { }  // auto-generated
+
+extension WordList: Equatable {
+	static public func == (lhs: WordList, rhs: WordList) -> Bool {
+		lhs.id == rhs.id
+	}
+}
+
+extension WordList: Hashable {
+	public func hash(into hasher: inout Hasher) { hasher.combine(id) }
 }

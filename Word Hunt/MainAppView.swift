@@ -2,46 +2,110 @@ import SwiftUI
 
 struct MainAppView: View {
 	// Track the currently active tab
-	@State private var selectedTab = Tabs.wordHunt
+	@State private var activeCategory: SidebarCategory = .puzzles
+	@State private var selectedPuzzle: Game? = nil
+	@State private var selectedWords: WordList? = nil
+	
 	@State private var game: Game?
+	@State private var games: [Game] = []
 	@State private var words: WordList?
 	@State private var wordLists: [WordList] = []
+	@State private var puzzlesExpanded: Bool = true
+	@State private var wordsExpanded: Bool = false
+	@State private var columnVisibility: NavigationSplitViewVisibility = .all
 	
 	var body: some View {
-		if selectedTab == .wordHunt {
-			GameChooser(selectedTab: $selectedTab.animation(), selection: $game)
-		} else {
-			WordListsChooser(selectedTab: $selectedTab.animation(), selection: $words)
+		NavigationSplitView {
+			Group {
+				switch activeCategory {
+					case .puzzles:
+						List(selection: $selectedPuzzle) {
+							ForEach(games) { game in
+								NavigationLink(value: game) {
+									GameSummary(game: game)
+								}
+							}
+						}
+					case .words:
+						List(selection: $selectedWords) {
+							ForEach(wordLists) { wordList in
+								NavigationLink(value: wordList) {
+									WordListSummary(wordList: wordList)
+								}
+							}
+						}
+				}
+			}
+			.listStyle(.sidebar)
+			.navigationTitle("App")
+			.toolbar {
+				ToolbarItem(placement: .principal) {
+					Picker("Category", selection: $activeCategory) {
+						ForEach(SidebarCategory.allCases) { category in
+							Text(category.rawValue).tag(category)
+						}
+					}
+					.pickerStyle(.segmented)
+					.fixedSize()
+				}
+			}
+		} detail: {
+			Group {
+				switch activeCategory {
+					case .puzzles:
+						if let game = selectedPuzzle {
+							GameView(game: game)
+						} else {
+							Text("Select a game")
+						}
+					case .words:
+						if let words = selectedWords {
+							WordsEditor(words: .constant(words))
+						} else {
+							Text("Select a word list")
+						}
+				}
+			}
+			.id(activeCategory)
+		}
+		.navigationSplitViewStyle(.prominentDetail)
+		.onAppear {
+			if games.isEmpty {
+				games = Game.loadGames()  // read back any saved games
+			}
+			addSampleGames()
+			game = games.first
+			wordLists = SampleWordLists.all
+			words = wordLists.first
 		}
 	}
-}
-
-struct TabTitle: View {
-	@Binding var selectedTab: Tabs
 	
-	var body: some View {
-		HStack {
-			ForEach(Tabs.allCases) { tab in
-				Button(action: {
-					selectedTab = tab
-				}) {
-					Image(systemName: tab.image)
-				}
+	private func addSampleGames() {
+		if games.isEmpty {
+			for i in 0..<4 {
+				let game = Game(board: GameBoard(size: 14 + i*2,
+								words: SampleWordLists.all[i]))
+				games.append(game)
 			}
 		}
 	}
 }
 
-enum Tabs: Int, CaseIterable, Identifiable {
-
-	case wordHunt, wordLists
+enum SidebarCategory: String, CaseIterable, Identifiable {
+	case puzzles = "Puzzles"
+	case words = "Words"
 	
-	var id: Int { rawValue }
+	var id: Self { self }
+}
+
+enum SidebarSelection: Hashable {
+	case wordHunt(Game)
+	case wordLists(WordList)
 	
 	var name: String {
 		switch self {
-			case .wordHunt:  "Word Hunt Puzzles"
-			case .wordLists: "Edit Word Lists"
+			case .wordHunt:  "Puzzles"
+			case .wordLists: "Words"
 		}
 	}
 	
@@ -51,7 +115,6 @@ enum Tabs: Int, CaseIterable, Identifiable {
 			case .wordLists: "long.text.page.and.pencil.fill"
 		}
 	}
-	
 }
 
 // MARK: - Preview

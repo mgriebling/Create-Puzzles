@@ -33,6 +33,20 @@ import SwiftUI
 		self.timer = try container.decode(Timer.self, forKey: .timer)
 	}
 	
+	convenience init?(from file: URL) {
+		if let rawData = try? Data(contentsOf: file) {
+			let decoder = JSONDecoder()
+			if let game = try? decoder.decode(Game.self, from: rawData) {
+				print("Loaded game: \(game.name)")
+				self.init(board: game.board)
+			} else {
+				// remove corrupted file
+				try? FileManager.default.removeItem(at: file)
+			}
+		}
+		return nil
+	}
+	
 	var level: Int {
 		// first calculate average difficulty of the words (5 is typical word length)
 		let averageWordLength = 6.0
@@ -81,7 +95,7 @@ import SwiftUI
 	}
 	
 	static func save(games: [Game]) {
-		for game in games {
+		games.forEach { game in
 			game.save(to: game.name)
 		}
 	}
@@ -97,7 +111,7 @@ import SwiftUI
 			let gameURLs = contents.filter { $0.pathExtension.lowercased() == "json" }
 			var games = [Game]()
 			for url in gameURLs {
-				if let game = load(from: url) {
+				if let game = Game(from: url) {
 					games.append(game)
 				}
 			}
@@ -106,20 +120,6 @@ import SwiftUI
 			print("Error reading directory: \(error)")
 			return []
 		}
-	}
-	
-	static func load(from file: URL) -> Game? {
-		if let rawData = try? Data(contentsOf: file) {
-			let decoder = JSONDecoder()
-			if let game = try? decoder.decode(Game.self, from: rawData) {
-				print("Loaded game: \(game.name)")
-				return game
-			} else {
-				// remove corrupted file
-				try? FileManager.default.removeItem(at: file)
-			}
-		}
-		return nil
 	}
 	
 	func delete() {
@@ -153,7 +153,7 @@ import SwiftUI
 extension Game: Identifiable { }  // auto-generated
 
 extension Game: Equatable {
-	static func == (lhs: Game, rhs: Game) -> Bool {
+	static public func == (lhs: Game, rhs: Game) -> Bool {
 		lhs.id == rhs.id
 	}
 }
