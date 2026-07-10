@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct WordListsChooser: View {
-	@Binding var selection: WordList
+	@Binding var selection: WordList?
 	@Binding var selectedTab: Category
 	@Binding var wordLists: [WordList]
 	

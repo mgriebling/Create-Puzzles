@@ -15,12 +15,11 @@ struct GameSummary: View {
 	var body: some View {
 		VStack(alignment: .leading) {
 			Text("\(game.board.words.name) Puzzle").font(.title2).bold()
-			Text("Size: \(game.size)⨉\(game.size)")
-			Text("Matched: \(game.matched) of ^[\(game.words.count) word](inflect: true)")
+			Text("Size: \(game.size) ⨉ \(game.size)")
+			Text("Matched: \(game.matched) of \(game.words.count) words")
 			ElapsedTime(text: "Time: ", timer: game.timer)
 			Text("Difficulty: \(game.level)")
 			Text("Language: \(game.board.words.language.description)")
-				//.padding(.trailing, width)
 			WordView(words: game.placedWords, style: .paragraph)
 		}
 		.onGeometryChange(for: CGFloat.self) { proxy in

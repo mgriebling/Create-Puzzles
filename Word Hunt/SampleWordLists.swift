@@ -103,7 +103,11 @@ struct SampleWordLists {
 				 words: ["One", "Two", "Three", "Four", "Five", "Six", "Seven",
 						 "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen",
 						 "Fifteen", "Twenty", "Thirty", "Forty", "Fifty", "Sixty",
-						 "Hundred", "Thousand", "Million", "Billion", "Trillion"])
+						 "Hundred", "Thousand", "Million", "Billion", "Trillion"]),
+		
+		WordList(name: "Random1", wordRange: 4...7, totalWords: 50),
+		WordList(name: "Random2", wordRange: 5...8, totalWords: 50),
+		WordList(name: "Random3", wordRange: 6...10, totalWords: 50)
 	]}
 	
 }

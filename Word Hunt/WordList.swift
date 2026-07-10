@@ -278,7 +278,7 @@ extension String {
 		while words.count < total {
 			if let word = largeWordBank.randomElement() {
 				if size.contains(word.count) {
-					words.append(word)
+					words.append(word.capitalized)
 				}
 			}
 		}

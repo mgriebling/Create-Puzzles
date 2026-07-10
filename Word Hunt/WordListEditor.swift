@@ -9,10 +9,10 @@ import SwiftUI
 
 struct WordListEditor: View {
 	// MARK: Data Shared with Me
-	@Binding var selection: WordList
+	@Binding var selection: WordList?
 	@Binding var wordLists: [WordList]
 	
-	@State private var wordListToEdit: WordList = WordList()
+	@State private var wordListToEdit: WordList? = WordList()
 	@State private var showWordListEditor: Bool = false
 	@State private var listItem: WordList?
 	// @State private var originalWordList: WordList? = nil
@@ -25,8 +25,8 @@ struct WordListEditor: View {
 						WordListSummary(wordList: wordList)
 					}
 					.contextMenu {
-						editButton(for: selection) // editing a word list
-						deleteButton(for: selection)
+						editButton(for: selection!) // editing a word list
+						deleteButton(for: selection!)
 					}
 //					.swipeActions(edge: .leading) {
 //						editButton(for: wordList).tint(.accentColor)
@@ -69,7 +69,7 @@ struct WordListEditor: View {
 	func editButton(for wordList: WordList) -> some View {
 		Button("Edit", systemImage: "pencil") {
 //			originalWordList = wordList
-			wordListToEdit = selection.copy()
+			wordListToEdit = selection!.copy()
 			showWordListEditor.toggle()
 		}
 	}
@@ -104,12 +104,12 @@ struct WordListEditor: View {
 		}
 		.sheet(isPresented: $showWordListEditor) {
 			WordsEditor(words: $wordListToEdit) {
-				if let index = wordLists.firstIndex(of: wordListToEdit) {
+				if let index = wordLists.firstIndex(of: wordListToEdit!) {
 					// word list already exists
-					wordLists[index] = wordListToEdit
+					wordLists[index] = wordListToEdit!
 				} else {
 					// add new word list
-					wordLists.insert(wordListToEdit, at: 0)
+					wordLists.insert(wordListToEdit!, at: 0)
 				}
 			}
 		}
@@ -117,6 +117,6 @@ struct WordListEditor: View {
 }
 
 #Preview {
-	@Previewable @State var selection = SampleWordLists.all[0]
+	@Previewable @State var selection = SampleWordLists.all.first
 	WordListEditor(selection: $selection, wordLists: .constant(SampleWordLists.all))
 }

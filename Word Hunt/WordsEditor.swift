@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WordsEditor: View {
-	@Binding var words: WordList
+	@Binding var words: WordList?
 	var onDone: (() -> Void)?
 	
 	// MARK: Data (Function) In
@@ -45,16 +45,20 @@ struct WordsEditor: View {
 					print("Chose: \(selectedLanguage.description)")
 				}
 			}
-			Section(header: Text("Word List (\(lwords.words.count))")) {
-				// WordView(words: wordList, style: .paragraph)
-				StringList(title: lwords.name, strings: $lwords.words)
-					.frame(height: 300)
+			Section(header: Text("Word List (\(lwords.words.count)) Tap List to Edit")) {
+				WordView(words: wordList, style: .paragraph)
+					.onTapGesture {
+						editWordList = true
+					}
+					.sheet(isPresented: $editWordList) {
+						StringList(title: lwords.name, strings: $lwords.words)
+					}
 			}
 			.onChange(of: lwords) { oldValue, newValue in
 				wordList = lwords.words.map { PlacedWord(word: $0) }
 				if onDone == nil {
 					// update passed word list directly
-					if words.words != lwords.words {
+					if words!.words != lwords.words {
 						lwords.reviseName()
 					}
 					words = lwords
@@ -73,7 +77,7 @@ struct WordsEditor: View {
 //			// EditToolbar { done() }
 //		}
 		.onAppear {
-			lwords = words
+			lwords = words!
 			selectedLanguage = lwords.language
 			wordList = lwords.words.map { PlacedWord(word: $0) }
 		}
@@ -88,7 +92,7 @@ struct WordsEditor: View {
 }
 
 #Preview {
-	@Previewable @State var words = SampleWordLists.all.randomElement()!
+	@Previewable @State var words = SampleWordLists.all.randomElement()
 	NavigationStack {
 		WordsEditor(words: $words)
 	}

@@ -43,6 +43,11 @@ struct MainAppView: View {
 					columnVisibility = .detailOnly
 				}
 			}
+			.onChange(of: selectedWords) { _, newValue in
+				if newValue != nil {
+					columnVisibility = .all
+				}
+			}
 			.toolbar {
 				ToolbarItem(placement: .principal) {
 					Picker("Category", selection: $activeCategory.animation()) {
@@ -59,7 +64,7 @@ struct MainAppView: View {
 				switch activeCategory {
 					case .puzzles:
 						if let game = selectedPuzzle {
-							GameView(game: game)
+							GameView(game: game).id(selectedPuzzle)
 						} else {
 							ContentUnavailableView {
 								Label("No puzzle selected yet!", systemImage: "exclamationmark.circle")
@@ -68,8 +73,8 @@ struct MainAppView: View {
 							}
 						}
 					case .words:
-						if let words = selectedWords {
-							WordsEditor(words: .constant(words))
+						if let _ = selectedWords {
+							WordsEditor(words: $selectedWords).id(selectedWords)
 						} else {
 							ContentUnavailableView {
 								Label("No word list selected yet!", systemImage: "exclamationmark.circle")
@@ -83,9 +88,9 @@ struct MainAppView: View {
 		}
 		.navigationSplitViewStyle(.balanced)
 		.onAppear {
-			if games.isEmpty {
-				games = Game.loadGames()  // read back any saved games
-			}
+//			if games.isEmpty {
+//				games = Game.loadGames()  // read back any saved games
+//			}
 			addSampleGames()
 			game = games.first
 			wordLists = SampleWordLists.all
@@ -94,9 +99,10 @@ struct MainAppView: View {
 	}
 	
 	private func addSampleGames() {
+		games = []
 		if games.isEmpty {
-			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: 14 + i*2,
+			for i in 0..<SampleWordLists.all.count {
+				let game = Game(board: GameBoard(size: Int.random(in: 6...20),
 								words: SampleWordLists.all[i]))
 				games.append(game)
 			}
