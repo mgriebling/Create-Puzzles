@@ -31,7 +31,7 @@ struct GameEditor: View {
 			Form {
 				let size = Int(settings.gridDefaultSize)
 				Section(header: Text("\(selectedWordList.name) Game (\(size) Rows/Columns)")) {
-					let range = Settings.maxGridRange
+					let range = SettingsType.maxGridRange
 					Slider(value: $settings.gridDefaultSize, in: range, step: 1) {
 						Text("Rows/Columns:")
 					} minimumValueLabel: {

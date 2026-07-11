@@ -17,7 +17,7 @@ struct SettingsView: View {
 	// MARK: Data (Function) In
 	@Environment(\.dismiss) var dismiss
 	
-	@State private var internalSettings = Settings()
+	@State private var internalSettings = SettingsType()
 	@State private var game = Game(board: GameBoard(size: 4, words: words))
 	
 	var body: some View {
@@ -28,12 +28,12 @@ struct SettingsView: View {
 				}
 				
 				Section("Word Grid Default Size: \(Int(internalSettings.gridDefaultSize))") {
-					Slider(value: $internalSettings.gridDefaultSize, in: Settings.maxGridRange, step: 1) {
+					Slider(value: $internalSettings.gridDefaultSize, in: SettingsType.maxGridRange, step: 1) {
 						Text("Word Grid Minimum")
 					} minimumValueLabel: {
-						Text("\(Int(Settings.maxGridRange.lowerBound))")
+						Text("\(Int(SettingsType.maxGridRange.lowerBound))")
 					} maximumValueLabel: {
-						Text("\(Int(Settings.maxGridRange.upperBound))")
+						Text("\(Int(SettingsType.maxGridRange.upperBound))")
 					}
 				}
 				

@@ -27,7 +27,9 @@ struct StringList: View {
 	
 	@State private var lstrings = [ListItem]()
 	@State private var selectedItems = Set<UUID>()
+	#if !os(macOS)
 	@State private var editMode: EditMode = .inactive
+	#endif
 	
 	var body: some View {
 		let isDark = colorScheme == .dark
@@ -61,22 +63,26 @@ struct StringList: View {
 					.flexibleSystemFont(maximum: 20)
 				}
 			}
-			.environment(\.editMode, $editMode)
 			.onAppear {
 				lstrings = strings.map { ListItem($0) }
 			}
 			.navigationTitle("\(title) Word List")
-			.navigationBarTitleDisplayMode(.inline)
 			.listStyle(.plain)
+			#if !os(macOS)
+			.navigationBarTitleDisplayMode(.inline)
+			.environment(\.editMode, $editMode)
 			.listRowSpacing(-20)
 			.navigationBarItems(
 				leading:  editButton,
 				trailing: addDelButton
 			)
+			#endif
 		}
 	}
 	
+#if os(iOS)
 	private var editButton: some View {
+
 		Button(action: {
 			self.editMode.toggle()
 			self.selectedItems = Set<UUID>()
@@ -84,8 +90,9 @@ struct StringList: View {
 			Text(self.editMode.title)
 		}
 	}
-	
+
 	private var addDelButton: some View {
+
 		if editMode == .inactive {
 			Button(action: addItem) {
 				Image(systemName: "plus")
@@ -96,6 +103,7 @@ struct StringList: View {
 			}
 		}
 	}
+#endif
 
 	private func deleteItems() {
 		withAnimation {
@@ -140,6 +148,7 @@ struct StringList: View {
 //	}
 }
 
+#if !os(macOS)
 extension EditMode {
 	var title: String {
 		self == .active ? "Done" : "Edit"
@@ -149,6 +158,7 @@ extension EditMode {
 		self = self == .active ? .inactive : .active
 	}
 }
+#endif
 
 #Preview {
 	@Previewable @State var strings = SampleWordLists.all[0].words

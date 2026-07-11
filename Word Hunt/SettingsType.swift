@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct Settings {
+public struct SettingsType {
 	static let maxGridRange = 4.0...20.0
 	
 	var gridDefaultSize: Double
@@ -40,11 +40,11 @@ public struct Settings {
 	}
 }
 
-public extension AppStorageKey where Value == Settings {
-	static let settings = AppStorageKey("settings", defaultValue: Settings())
+public extension AppStorageKey where Value == SettingsType {
+	static let settings = AppStorageKey("settings", defaultValue: SettingsType())
 }
 
-extension Settings: Codable {
+extension SettingsType: Codable {
 	enum CodingKeys: String, CodingKey {
 		case gridDefaultSize, userName, highlight, selectionColor,
 			 selectionOKColor, highlightColor, soundsOn, soundVolume, showTimer
@@ -77,7 +77,7 @@ extension Settings: Codable {
 	}
 }
 
-extension Settings: RawRepresentable {
+extension SettingsType: RawRepresentable {
 	
 	public var rawValue: String {
 		do {
@@ -91,7 +91,7 @@ extension Settings: RawRepresentable {
 	
 	public init?(rawValue: String) {
 		if let jsonData = rawValue.data(using: .utf8) {
-			if let settings = try? JSONDecoder().decode(Settings.self, from: jsonData) {
+			if let settings = try? JSONDecoder().decode(SettingsType.self, from: jsonData) {
 				self.init(settings)
 				return
 			}

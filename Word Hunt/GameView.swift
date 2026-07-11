@@ -53,9 +53,6 @@ struct GameView: View {
 		}
 		#endif
 		.toolbar {
-//			ToolbarItem(placement: .principal) {
-//				TabTitle(selectedTab: $selectedTab)
-//			}
 			ToolbarItem(placement: .automatic) {
 				ElapsedTime(text: "", timer: game.timer)
 					.lineLimit(1)
@@ -68,7 +65,7 @@ struct GameView: View {
 					.lineLimit(1)
 					.fixedSize(horizontal: true, vertical: false)
 			}
-			ToolbarItem(placement: .navigationBarTrailing) {
+			ToolbarItem(placement: .primaryAction) {
 				Button(action: {
 					self.showSettings.toggle()
 				}) {
@@ -81,7 +78,9 @@ struct GameView: View {
 			}
 		}
 		.navigationTitle(game.name)
+		#if os(iOS)
 		.navigationBarTitleDisplayMode(.inline)
+		#endif
 		.background(Color(.yellow.opacity(0.15)), ignoresSafeAreaEdges: .all)
 	}
 	

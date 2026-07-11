@@ -54,7 +54,11 @@ extension Color {
 
     /// Convert a SwiftUI Color to hex string like "#RRGGBB" or "#RRGGBBAA"
     var hex: String {
+		#if os(macOS)
+		let uiColor = NSColor(self)
+		#else
         let uiColor = UIColor(self)
+		#endif
 
         var red: CGFloat = 0
         var green: CGFloat = 0

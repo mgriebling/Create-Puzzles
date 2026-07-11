@@ -53,7 +53,7 @@ import SwiftUI
 		let wordsCount = Double(words.count)
 		let wordScore = words.map({ Double($0.count) }).reduce(0, +) /
 						(wordsCount * averageWordLength)
-		let puzzleScore = Double(size) / Settings.maxGridRange.upperBound
+		let puzzleScore = Double(size) / SettingsType.maxGridRange.upperBound
 		let numberOfWordsScore = wordsCount / Double(board.words.words.count)
 		let total = wordScore + puzzleScore + numberOfWordsScore
 		//print("Word score = \(wordScore), puzzle score = \(puzzleScore), number of words score = \(numberOfWordsScore)")

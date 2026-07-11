@@ -14,7 +14,7 @@ struct LetterGridView: View {
 	let game: Game
 	var allowDrag: Bool = false
 	var showWordSelection: Bool = true
-	let settings: Settings
+	let settings: SettingsType
 	
 	@Environment(\.colorScheme) var colorScheme: ColorScheme
 
@@ -41,6 +41,11 @@ struct LetterGridView: View {
 				let fontSize = cellSize * 0.7
 				let fill = Set([.fill, .both]).contains(settings.highlight)
 				let lineWidth = Set([.outline, .both]).contains(settings.highlight) ? 3.0 : 0.0
+				#if os(iOS)
+				let gray = Color(.systemGray2)
+				#else
+				let gray = Color(nsColor: .tertiaryLabelColor)
+				#endif
 				
 				ZStack(alignment: .topLeading) {
 					// Floating selected name
@@ -53,7 +58,7 @@ struct LetterGridView: View {
 							.fixedSize(horizontal: true, vertical: false)
 							.frame(width: cellSize * CGFloat(frameWidth), height: fontSize)
 							.padding(10)
-							.background(Color(.systemGray2))
+							.background(gray)
 							.cornerRadius(15)
 							.offset(x: cellSize * center, y: -fontSize)
 							.zIndex(10)
@@ -282,5 +287,5 @@ struct LetterGridView: View {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 16, words: SampleWordLists.all[0]))
 	@Previewable @State var activeWord = ""
-	LetterGridView(game: game, allowDrag: true, settings: Settings())
+	LetterGridView(game: game, allowDrag: true, settings: SettingsType())
 }

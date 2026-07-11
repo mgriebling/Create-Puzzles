@@ -26,7 +26,7 @@ public extension AppStorage {
 		self.init(wrappedValue: key.defaultValue, key.key, store: store)
 	}
 	
-	init(_ key: AppStorageKey<Value>, store: UserDefaults? = nil) where Value == Settings {
+	init(_ key: AppStorageKey<Value>, store: UserDefaults? = nil) where Value == SettingsType {
 		self.init(wrappedValue: key.defaultValue, key.key, store: store)
 	}
 	
