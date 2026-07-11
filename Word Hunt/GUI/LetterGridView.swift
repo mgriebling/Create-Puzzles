@@ -145,7 +145,7 @@ struct LetterGridView: View {
 //				game.board.highlightWord(game.placedWords.count-1)
 			}
 			.aspectRatio(1, contentMode: .fit)
-			// .padding(.top, 10)
+			//.padding(.top, 10)
 		}
 		.overlay {
 			WinnerView(game: game, width: width)

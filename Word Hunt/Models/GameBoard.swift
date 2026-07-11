@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI
 
 struct Cell: Codable, Identifiable, Equatable, Hashable {
     let letter: String
