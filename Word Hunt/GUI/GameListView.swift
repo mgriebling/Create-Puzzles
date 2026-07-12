@@ -68,7 +68,7 @@ struct GameListView: View {
 		Button("Add Game", systemImage: "plus") {
 			gameToEdit = Game(board: GameBoard(size: 14,
 				words: WordList(name: "Unnamed", words: ["Word1", "Word2"])))
-			showGameEditor.toggle()
+			showGameEditor = true
 		}
 		.sheet(isPresented: $showGameEditor) {
 			GameEditor(game: $gameToEdit) {

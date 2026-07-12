@@ -15,12 +15,14 @@ struct EditToolbar: ToolbarContent {
 	
 	var body: some ToolbarContent {
 		ToolbarItem(placement: .cancellationAction) {
-			Button("Cancel") { dismiss() }
-				.tint(Color(.systemRed))
+			Button(action: { dismiss() }) {
+				Image(systemName: "xmark")
+			}
 		}
 		ToolbarItem(placement: .confirmationAction) {
-			Button("Done") { onDone?(); dismiss() }
-				.tint(Color(.systemGreen))
+			Button(action: { onDone?(); dismiss() }) {
+				Image(systemName: "checkmark")
+			}
 		}
 	}
 }

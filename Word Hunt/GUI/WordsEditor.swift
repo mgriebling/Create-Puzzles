@@ -21,64 +21,63 @@ struct WordsEditor: View {
 	@State private var editWordList: Bool = false
 	
 	var body: some View {
-		Form {
-			Section("Word List Name") {
-				TextField("Word List Name", text: $lwords.name)
-					.autocorrectionDisabled(true)
-			}
-			Section("Author") {
-				TextField("Author", text: $lwords.author)
-					.autocorrectionDisabled(true)
-			}
-			Section {
-				DatePicker("Date", selection: $lwords.date,
-						   displayedComponents: [.date])
-			}
-			Section {
-				Picker("Language", selection: $selectedLanguage) {
-					ForEach(Language.allCases, id: \.self) {
-						Text($0.description.capitalized)
+		NavigationStack {
+			Form {
+				Section("Word List Name") {
+					TextField("Word List Name", text: $lwords.name)
+						.autocorrectionDisabled(true)
+				}
+				Section("Author") {
+					TextField("Author", text: $lwords.author)
+						.autocorrectionDisabled(true)
+				}
+				Section {
+					DatePicker("Date", selection: $lwords.date,
+							   displayedComponents: [.date])
+				}
+				Section {
+					Picker("Language", selection: $selectedLanguage) {
+						ForEach(Language.allCases, id: \.self) {
+							Text($0.description.capitalized)
+						}
+					}
+					.onSubmit {
+						lwords.language = selectedLanguage
+						print("Chose: \(selectedLanguage.description)")
 					}
 				}
-				.onSubmit {
-					lwords.language = selectedLanguage
-					print("Chose: \(selectedLanguage.description)")
+				Section(header: Text("Word List (\(lwords.words.count)) Tap List to Edit")) {
+					WordView(words: wordList, style: .paragraph)
+						.id(lwords.words)
+						.padding(.vertical, 8)
+						.onTapGesture {
+							editWordList = true
+						}
+						.sheet(isPresented: $editWordList) {
+							StringList(title: lwords.name, strings: $lwords.words)
+						}
+				}
+				.onChange(of: lwords.words) { oldValue, newValue in
+					// print("Refreshing wordList...")
+					wordList = lwords.words.sorted().map { PlacedWord(word: $0) }
+					if onDone == nil {
+						// update passed word list directly
+						if words!.words != lwords.words {
+							lwords.reviseName()
+						}
+						words = lwords
+					}
 				}
 			}
-			Section(header: Text("Word List (\(lwords.words.count)) Tap List to Edit")) {
-				WordView(words: wordList, style: .paragraph)
-					.id(lwords.words)
-					.padding(.vertical, 8)
-					.onTapGesture {
-						editWordList = true
-					}
-					.sheet(isPresented: $editWordList) {
-						StringList(title: lwords.name, strings: $lwords.words)
-					}
-			}
-			.onChange(of: lwords.words) { oldValue, newValue in
-				print("Refreshing wordList...")
-				wordList = lwords.words.map /* .sorted().map */ { PlacedWord(word: $0) }
-				if onDone == nil {
-					// update passed word list directly
-					if words!.words != lwords.words {
-						lwords.reviseName()
-					}
-					words = lwords
-				}
+			
+			.navigationTitle("Word List Editor")
+#if os(iOS)
+			.navigationBarTitleDisplayMode(.inline)
+#endif
+			.toolbar {
+				EditToolbar { done() }
 			}
 		}
-		
-		.navigationTitle("Word List Editor")
-#if os(iOS)
-		.navigationBarTitleDisplayMode(.inline)
-#endif
-//		.toolbar {
-////			ToolbarItem(placement: .principal) {
-////				TabTitle(selectedTab: $selectedTab)
-////			}
-//			EditToolbar { done() }
-//		}
 		.onAppear {
 			if let words {
 				lwords = words
