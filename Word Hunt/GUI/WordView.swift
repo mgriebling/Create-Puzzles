@@ -11,31 +11,32 @@ struct WordView: View {
 	let words: [PlacedWord]
 	var style: TextStyle = .columns
 	
-	@Environment(\.horizontalSizeClass) var size
-	
 	var body: some View {
-		let fontSize: CGFloat = size == .compact ? 15 : 18
 		if style == .columns {
-			columnText(fontSize: fontSize)
-				.font(.system(size: fontSize))
+			columnText()
 		} else {
 			concatenatedText
-				.font(Font.system(size: fontSize))
+				.flexibleSystemFont(maximum: 15)
 		}
 	}
 	
-	private func columnText(fontSize: CGFloat) -> some View {
-		let columnCount = 3
-		let columns = Array(repeating: GridItem(.flexible(), alignment: .leading),
-							count: columnCount)
-		return LazyVGrid(columns: columns, alignment: .trailing) {
-			ForEach(words.indices, id: \.self) { index in
-				let word = words[index]
-				let textColor = word.highlighted ? Color(.gray) : .primary
-				Text(word.word.capitalized)
-					.foregroundColor(textColor)
-					.strikethrough(word.highlighted)
-					.lineLimit(1)
+	@ViewBuilder
+	private func columnText() -> some View {
+		// let columnCount = 3
+		let columns = [
+			GridItem(.adaptive(minimum: 120, maximum: .infinity), spacing: 16)
+		]
+		//Array(repeating: GridItem(.flexible(), alignment: .leading), count: columnCount)
+		ScrollView {
+			LazyVGrid(columns: columns, alignment: .leading) {
+				ForEach(words.indices, id: \.self) { index in
+					let word = words[index]
+					let textColor = word.highlighted ? Color(.gray) : .primary
+					Text(word.word.capitalized)
+						.foregroundColor(textColor)
+						.strikethrough(word.highlighted)
+						.lineLimit(1)
+				}
 			}
 		}
 	}

@@ -28,7 +28,7 @@ struct WordHunt: App {
 					showAboutWindow = true
 				}
 				// Optional: Provide a native keyboard shortcut (e.g., Command + I)
-				.keyboardShortcut("i", modifiers: .command)
+//				.keyboardShortcut("i", modifiers: .command)
 			}
 			
 			// Replaces the system Help menu items

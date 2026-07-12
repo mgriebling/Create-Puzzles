@@ -19,28 +19,17 @@ struct MainAppView: View {
 			Group {
 				switch activeCategory {
 					case .puzzles:
-						List(selection: $selectedPuzzle) {
-							ForEach(games) { game in
-								NavigationLink(value: game) {
-									GameSummary(game: game)
-								}
-							}
-						}
+						GameListView(selection: $selectedPuzzle, games: $games)
 					case .words:
-						List(selection: $selectedWords) {
-							ForEach(wordLists) { wordList in
-								NavigationLink(value: wordList) {
-									WordListSummary(wordList: wordList)
-								}
-							}
-						}
+						WordListView(selection: $selectedWords, wordLists: $wordLists)
 				}
 			}
-			.listStyle(.plain)
 			.navigationTitle(activeCategory.rawValue)
 			.onChange(of: selectedPuzzle) { _, newValue in
 				if newValue != nil {
-					columnVisibility = .detailOnly
+					withAnimation {
+						columnVisibility = .detailOnly
+					}
 				}
 			}
 			.onChange(of: selectedWords) { _, newValue in
@@ -50,7 +39,7 @@ struct MainAppView: View {
 			}
 			.toolbar {
 				ToolbarItem(placement: .principal) {
-					Picker("Category", selection: $activeCategory.animation()) {
+					Picker("Category", selection: $activeCategory) {
 						ForEach(SidebarCategory.allCases) { category in
 							Text(category.rawValue).tag(category)
 						}
@@ -66,46 +55,51 @@ struct MainAppView: View {
 						if let game = selectedPuzzle {
 							GameView(game: game).id(selectedPuzzle)
 						} else {
-							ContentUnavailableView {
-								Label("No puzzle selected yet!", systemImage: "exclamationmark.circle")
-							} description: {
-								Text("Select a puzzle on the left to get started.")
-							}
+							blankView(for: activeCategory)
 						}
 					case .words:
 						if let _ = selectedWords {
 							WordsEditor(words: $selectedWords).id(selectedWords)
 						} else {
-							ContentUnavailableView {
-								Label("No word list selected yet!", systemImage: "exclamationmark.circle")
-							} description: {
-								Text("Select a word list on the left to get started.")
-							}
+							blankView(for: activeCategory)
 						}
 				}
 			}
 			.id(activeCategory)
 		}
-		.navigationSplitViewStyle(.balanced)
 		.onAppear {
 //			if games.isEmpty {
 //				games = Game.loadGames()  // read back any saved games
 //			}
 			addSampleGames()
-			game = games.first
-			wordLists = SampleWordLists.all
-			words = wordLists.first
+			addSampleWords()
+		}
+	}
+	
+	private func blankView(for category: SidebarCategory) -> some View {
+		let name = category.rawValue.lowercased().dropLast(1)
+		return ContentUnavailableView {
+			Label("No \(name) selected yet!", systemImage: "exclamationmark.circle")
+		} description: {
+			Text("Select a \(name) on the left to get started.")
 		}
 	}
 	
 	private func addSampleGames() {
 		games = []
 		if games.isEmpty {
-			for i in 0..<SampleWordLists.all.count {
+			for i in 0..<4 {
 				let game = Game(board: GameBoard(size: Int.random(in: 6...20),
 								words: SampleWordLists.all[i]))
 				games.append(game)
 			}
+		}
+	}
+	
+	private func addSampleWords() {
+		wordLists = []
+		if wordLists.isEmpty {
+			wordLists = SampleWordLists.all
 		}
 	}
 }

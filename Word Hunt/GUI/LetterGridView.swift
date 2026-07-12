@@ -38,7 +38,8 @@ struct LetterGridView: View {
 				let spacing: CGFloat = 0
 				let totalWidth = geometry.size.width
 				let cellSize = (totalWidth - (spacing * CGFloat(numCols - 1))) / CGFloat(numCols)
-				let fontSize = cellSize * 0.7
+				let highlightSize = cellSize * 0.7
+				let fontSize = cellSize * 0.6
 				let fill = Set([.fill, .both]).contains(settings.highlight)
 				let lineWidth = Set([.outline, .both]).contains(settings.highlight) ? 3.0 : 0.0
 				#if os(iOS)
@@ -94,7 +95,7 @@ struct LetterGridView: View {
 									.fill(fill ? color : .clear)
 									.stroke(.foreground, lineWidth: lineWidth)
 									.brightness(isDark ? -0.6 : 0.5)
-									.frame(width: cellSize, height: distance(from: startPoint, to: endPoint) + cellSize)
+									.frame(width: highlightSize, height: distance(from: startPoint, to: endPoint) + highlightSize * 1.2)
 									.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
 									.position(midPoint(from: startPoint, to: endPoint))
 							}
@@ -129,7 +130,9 @@ struct LetterGridView: View {
 				)
 			}
 			.onAppear {
-				validWordBank = Set(game.board.words.words)
+				let words = game.placedWords.map { $0.word.capitalized + $0.start.description }
+//				print(words)
+				validWordBank = Set(words)
 				numRows = game.board.size
 				numCols = game.board.size
 				let blankRow = Array(repeating: " ", count: numCols)
@@ -138,14 +141,14 @@ struct LetterGridView: View {
 					for col in 0..<numCols {
 						grid[row][col] = game.board[row, col].letter
 					}
+//					for i in 0..<game.placedWords.count-1 {
+//						game.board.highlightWord(i)
+//					}
 				}
-//				for i in 0..<game.placedWords.count-1 {
-//					game.board.highlightWord(i)
-//				}
-//				game.board.highlightWord(game.placedWords.count-1)
+				// game.board.highlightWord(game.placedWords.count-1)
+				print("Last word: \(game.placedWords.last?.word ?? "none")")
 			}
 			.aspectRatio(1, contentMode: .fit)
-			//.padding(.top, 10)
 		}
 		.overlay {
 			WinnerView(game: game, width: width)
@@ -214,7 +217,9 @@ struct LetterGridView: View {
 	
 	// Helper to evaluate if the current selection forms a valid word
 	private var detectedWord: String? {
-		if validWordBank.contains(game.board.selectedWord.capitalized) {
+		let start = dragStartCell?.description ?? ""
+		let selected = game.board.selectedWord.capitalized + start
+		if validWordBank.contains(selected) {
 			return game.board.selectedWord
 		}
 		return nil
@@ -231,11 +236,7 @@ struct LetterGridView: View {
 				)
 				foundWords.append(finalizedPath)
 				if settings.soundsOn {
-					if game.isOver {
-						play(sound: "victory-chime.mp3", volume: settings.soundVolume)
-					} else {
-						play(sound: "success.mp3", volume: settings.soundVolume)
-					}
+					play(sound: "success.mp3", volume: settings.soundVolume)
 				}
 				game.removeActiveWord()
 				game.save(to: game.name)
@@ -247,6 +248,10 @@ struct LetterGridView: View {
 			}
 		}
 		game.clearWord()
+		
+		if game.isOver {
+			play(sound: "victory-chime.mp3", volume: settings.soundVolume)
+		}
 		
 		// UI cleanup sequence
 		withAnimation(.easeOut(duration: 0.15)) {

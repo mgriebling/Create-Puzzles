@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WordListEditor: View {
+struct WordListView: View {
 	// MARK: Data Shared with Me
 	@Binding var selection: WordList?
 	@Binding var wordLists: [WordList]
@@ -18,59 +18,60 @@ struct WordListEditor: View {
 	// @State private var originalWordList: WordList? = nil
 	
 	var body: some View {
-		NavigationStack {
-			List(selection: $listItem) {
-				ForEach(wordLists, id: \.self) { wordList in
-					NavigationLink(value: wordList) {
-						WordListSummary(wordList: wordList)
-					}
-					.contextMenu {
-						editButton(for: selection!) // editing a word list
-						deleteButton(for: selection!)
-					}
-//					.swipeActions(edge: .leading) {
-//						editButton(for: wordList).tint(.accentColor)
-//					}
+		List(selection: $listItem) {
+			ForEach(wordLists, id: \.self) { wordList in
+				NavigationLink(value: wordList) {
+					WordListSummary(wordList: wordList)
 				}
-				.onDelete { indexSet in
-					indexSet.forEach { index in
-						wordLists.remove(at: index)
-					}
-				}
-				.onMove { offsets, destination in
-					wordLists.move(fromOffsets: offsets, toOffset: destination)
+				//					.contextMenu {
+				//						editButton(for: selection) // editing a word list
+				//						deleteButton(for: selection)
+				//					}
+				//					.swipeActions(edge: .leading) {
+				//						editButton(for: wordList).tint(.accentColor)
+				//					}
+			}
+			.onDelete { indexSet in
+				indexSet.forEach { index in
+					wordLists.remove(at: index)
 				}
 			}
-			.navigationTitle("Word Lists")
-			.onChange(of: listItem) { _, newValue in
-				selection = newValue!
+			.onMove { offsets, destination in
+				wordLists.move(fromOffsets: offsets, toOffset: destination)
 			}
-//			.onChange(of: selection) {
-//				if let selection, !wordLists.contains(selection) {
-//					self.selection = nil
-//				}
-//			}
-			.listStyle(.plain)
-			.toolbar {
-				addButton
-#if os(iOS)
-				EditButton()
-#endif
-			}
-//			.onAppear {
-//				if wordLists.isEmpty {
-//					wordLists = SampleWordLists.all
-//					//selection = wordLists[Int.random(in: 0..<wordLists.count)]
-//				}
-//			}
 		}
+		.onChange(of: listItem) { _, newValue in
+			if let value = newValue {
+				selection = value
+			}
+		}
+		//			.onChange(of: selection) {
+		//				if let selection, !wordLists.contains(selection) {
+		//					self.selection = nil
+		//				}
+		//			}
+		.listStyle(.plain)
+		.toolbar {
+			addButton
+			//#if os(iOS)
+			//				EditButton()
+			//#endif
+		}
+		//			.onAppear {
+		//				if wordLists.isEmpty {
+		//					wordLists = SampleWordLists.all
+		//					//selection = wordLists[Int.random(in: 0..<wordLists.count)]
+		//				}
+		//			}
 	}
 		
 	func editButton(for wordList: WordList) -> some View {
 		Button("Edit", systemImage: "pencil") {
-//			originalWordList = wordList
-			wordListToEdit = selection!.copy()
-			showWordListEditor.toggle()
+			if let selection {
+				//			originalWordList = wordList
+				wordListToEdit = selection.copy()
+				showWordListEditor.toggle()
+			}
 		}
 	}
 	
@@ -118,5 +119,8 @@ struct WordListEditor: View {
 
 #Preview {
 	@Previewable @State var selection = SampleWordLists.all.first
-	WordListEditor(selection: $selection, wordLists: .constant(SampleWordLists.all))
+	@Previewable @State var words = SampleWordLists.all
+	NavigationStack {
+		WordListView(selection: $selection, wordLists: $words)
+	}
 }

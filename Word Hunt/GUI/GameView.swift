@@ -11,47 +11,39 @@ struct GameView: View {
 	let game: Game
 	
 	@AppStorage(.settings) private var settings
-	
-	@State private var isLandscape: Bool = false
 	@State private var showSettings = false
 	
 	var body: some View {
 		Group {
-			if isLandscape {
-				HStack(alignment: .center, spacing: 0) {
+			ViewThatFits(in: .horizontal) {
+				// landscape mode
+				HStack(alignment: .center) {
+					Spacer()
 					VStack(alignment: .center) {
 						Text("Words").font(.title3)
-						ScrollView {
-							WordView(words: game.board.wordPlacements)
-						}
-						//Spacer()
+						WordView(words: game.board.wordPlacements)
+							.containerRelativeFrame(.horizontal) { length, axis in
+								length * 0.3
+							}
 					}
-					//Spacer()
+					Spacer()
 					LetterGridView(game: game, allowDrag: true, settings: settings)
-						.layoutPriority(10)
 				}
-				//.padding()
-			} else {
+				
+				// portrait mode
 				VStack {
 					LetterGridView(game: game, allowDrag: true, settings: settings)
 						.layoutPriority(10)
 					Text("Words").font(.title3)
-					ScrollView(.vertical) {
-						WordView(words: game.board.wordPlacements)
-							.padding(.leading, 40)
-					}
+					WordView(words: game.board.wordPlacements)
+						.containerRelativeFrame(.horizontal) { length, axis in
+							length * 0.9
+						}
 				}
 			}
 		}
+		.padding()
 		.trackElapsedTime(in: game)
-		.onAppear {
-			checkOrientation()
-		}
-		#if os(iOS)
-		.onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
-			checkOrientation()
-		}
-		#endif
 		.toolbar {
 			ToolbarItem(placement: .automatic) {
 				ElapsedTime(text: "", timer: game.timer)
@@ -60,7 +52,7 @@ struct GameView: View {
 					.fontDesign(.monospaced)
 			}
 			ToolbarItem(placement: .navigation) {
-				let text = (isLandscape ? "Matched: " : "") + "\(game.matched) of \(game.placedWords.count)"
+				let text = "Matched: \(game.matched) of \(game.placedWords.count)"
 				Text(text)
 					.lineLimit(1)
 					.fixedSize(horizontal: true, vertical: false)
@@ -77,20 +69,20 @@ struct GameView: View {
 				}
 			}
 		}
-		.navigationTitle(game.name)
+		.navigationTitle(game.name + " Puzzle")
 		#if os(iOS)
 		.navigationBarTitleDisplayMode(.inline)
 		#endif
-		.background(Color(.yellow.opacity(0.15)), ignoresSafeAreaEdges: .all)
+//		.background(Color(.yellow.opacity(0.15)), ignoresSafeAreaEdges: .all)
 	}
 	
-	private func checkOrientation() {
-		#if os(iOS)
-		if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-			isLandscape = windowScene.interfaceOrientation.isLandscape
-		}
-		#endif
-	}
+//	private func checkOrientation() {
+//		#if os(iOS)
+//		if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+//			isLandscape = windowScene.interfaceOrientation.isLandscape
+//		}
+//		#endif
+//	}
 }
 
 #Preview {

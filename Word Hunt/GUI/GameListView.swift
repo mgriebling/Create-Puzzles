@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct GameList: View {
+struct GameListView: View {
 	// MARK: Data shared with me
 	@Binding var selection: Game?
+	@Binding var games: [Game]
 	
-	@Environment(\.scenePhase) private var scenePhase
-	@State private var games: [Game] = []
-	
+//	@Environment(\.scenePhase) private var scenePhase
+
 	// MARK: Data Owned by me
 	@State private var gameToEdit: Game?
 	@State private var showGameEditor: Bool = false
@@ -38,20 +38,20 @@ struct GameList: View {
 		//.navigationTitle(Text("Puzzles"))
 		//.navigationBarTitleDisplayMode(.inline)
 		.listStyle(.plain)
-		.onAppear {
-			if games.isEmpty {
-				games = Game.loadGames()  // read back any saved games
-			}
-			addSampleGames()
-		}
-		.onDisappear {
-			Game.save(games: games)
-		}
-		.onChange(of: scenePhase) { oldPhase, newPhase in
-			if newPhase == .background {
-				Game.save(games: games)
-			}
-		}
+//		.onAppear {
+//			if games.isEmpty {
+//				games = Game.loadGames()  // read back any saved games
+//			}
+//			addSampleGames()
+//		}
+//		.onDisappear {
+//			Game.save(games: games)
+//		}
+//		.onChange(of: scenePhase) { oldPhase, newPhase in
+//			if newPhase == .background {
+//				Game.save(games: games)
+//			}
+//		}
 		.onChange(of: selection) {
 			if let selection, !games.contains(selection) {
 				self.selection = nil
@@ -93,7 +93,10 @@ struct GameList: View {
 
 #Preview {
 	@Previewable @State var selection: Game?
+	@Previewable @State var games: [Game] = [
+		Game(board: GameBoard(size: 14, words: SampleWordLists.all[0]))
+	]
 	NavigationStack {
-		GameList(selection: $selection)
+		GameListView(selection: $selection, games: $games)
 	}
 }

@@ -8,9 +8,12 @@
 import Foundation
 import NaturalLanguage
 
-struct CellIndex: Equatable, Codable, Hashable {
+struct CellIndex: Equatable, Codable, Hashable, CustomStringConvertible {
+
 	let row: Int
 	let col: Int
+	
+	var description: String { "(\(row),\(col))" }
 	
 	init() { self.init(row: 0, col: 0) }
 	
