@@ -47,6 +47,8 @@ struct WordsEditor: View {
 			}
 			Section(header: Text("Word List (\(lwords.words.count)) Tap List to Edit")) {
 				WordView(words: wordList, style: .paragraph)
+					.id(lwords.words)
+					.padding(.vertical, 8)
 					.onTapGesture {
 						editWordList = true
 					}
@@ -54,8 +56,9 @@ struct WordsEditor: View {
 						StringList(title: lwords.name, strings: $lwords.words)
 					}
 			}
-			.onChange(of: lwords) { oldValue, newValue in
-				wordList = lwords.words.map { PlacedWord(word: $0) }
+			.onChange(of: lwords.words) { oldValue, newValue in
+				print("Refreshing wordList...")
+				wordList = lwords.words.map /* .sorted().map */ { PlacedWord(word: $0) }
 				if onDone == nil {
 					// update passed word list directly
 					if words!.words != lwords.words {
@@ -66,29 +69,31 @@ struct WordsEditor: View {
 			}
 		}
 		
-//		.navigationTitle("Word List Editor")
-//#if os(iOS)
-//		.navigationBarTitleDisplayMode(.inline)
-//#endif
+		.navigationTitle("Word List Editor")
+#if os(iOS)
+		.navigationBarTitleDisplayMode(.inline)
+#endif
 //		.toolbar {
-//			ToolbarItem(placement: .principal) {
-//				TabTitle(selectedTab: $selectedTab)
-//			}
-//			// EditToolbar { done() }
+////			ToolbarItem(placement: .principal) {
+////				TabTitle(selectedTab: $selectedTab)
+////			}
+//			EditToolbar { done() }
 //		}
 		.onAppear {
-			lwords = words!
-			selectedLanguage = lwords.language
-			wordList = lwords.words.map { PlacedWord(word: $0) }
+			if let words {
+				lwords = words
+				selectedLanguage = lwords.language
+				wordList = lwords.words.map { PlacedWord(word: $0) }
+			}
 		}
 	}
 	
-//	func done() {
-//		lwords.words = wordList.map(\.word)
-//		words = lwords
-//		onDone?()
-//		dismiss()
-//	}
+	func done() {
+		lwords.words = wordList.map(\.word)
+		words = lwords
+		onDone?()
+		dismiss()
+	}
 }
 
 #Preview {

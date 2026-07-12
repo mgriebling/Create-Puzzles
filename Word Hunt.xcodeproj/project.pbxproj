@@ -152,6 +152,7 @@
 				47800D1F2FEAAC90009537EC /* WordListSummary.swift */,
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
 				47800D152FE9D2FE009537EC /* WordsEditor.swift */,
+				47800D212FEAD186009537EC /* StringList.swift */,
 				47079FFB2FF5AF9200F88A40 /* SettingsView.swift */,
 				47079FFD2FF5B83400F88A40 /* EditToolbar.swift */,
 				478BF1342FEC13A3001F4018 /* FileImportButton.swift */,
@@ -174,7 +175,6 @@
 				472CE13D291BE6380074891E /* GameBoard.swift */,
 				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 				4707A01B2FF93FF300F88A40 /* SettingsType.swift */,
-				47800D212FEAD186009537EC /* StringList.swift */,
 				47E0ABEA2FF15B36009D7BB0 /* Timer.swift */,
 				47800D132FE9CD9C009537EC /* WordList.swift */,
 			);

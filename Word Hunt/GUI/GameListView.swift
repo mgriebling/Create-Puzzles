@@ -24,6 +24,7 @@ struct GameListView: View {
 				NavigationLink(value: game) {
 					GameSummary(game: game)
 				}
+				.tag(game)
 			}
 			.onDelete { offsets in
 				for offset in offsets.reversed() {

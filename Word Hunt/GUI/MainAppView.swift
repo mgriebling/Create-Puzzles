@@ -12,7 +12,7 @@ struct MainAppView: View {
 	@State private var wordLists: [WordList] = []
 	@State private var puzzlesExpanded: Bool = true
 	@State private var wordsExpanded: Bool = false
-	@State private var columnVisibility: NavigationSplitViewVisibility = .all
+	@State private var columnVisibility: NavigationSplitViewVisibility = .automatic
 	
 	var body: some View {
 		NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -32,11 +32,11 @@ struct MainAppView: View {
 					}
 				}
 			}
-			.onChange(of: selectedWords) { _, newValue in
-				if newValue != nil {
-					columnVisibility = .all
-				}
-			}
+//			.onChange(of: selectedWords) { _, newValue in
+//				if newValue != nil {
+//					columnVisibility = .all
+//				}
+//			}
 			.toolbar {
 				ToolbarItem(placement: .principal) {
 					Picker("Category", selection: $activeCategory) {
@@ -53,13 +53,18 @@ struct MainAppView: View {
 				switch activeCategory {
 					case .puzzles:
 						if let game = selectedPuzzle {
-							GameView(game: game).id(selectedPuzzle)
+							GameView(game: game)
+								.id(selectedPuzzle)
+								.onTapGesture {
+									columnVisibility = .detailOnly
+								}
 						} else {
 							blankView(for: activeCategory)
 						}
 					case .words:
 						if let _ = selectedWords {
-							WordsEditor(words: $selectedWords).id(selectedWords)
+							WordsEditor(words: $selectedWords)
+								.id(selectedWords)
 						} else {
 							blankView(for: activeCategory)
 						}
@@ -76,8 +81,8 @@ struct MainAppView: View {
 		}
 	}
 	
-	private func blankView(for category: SidebarCategory) -> some View {
-		let name = category.rawValue.lowercased().dropLast(1)
+	private func blankView(for category: SidebarCategory?) -> some View {
+		let name = category?.rawValue.lowercased().dropLast(1) ?? "item"
 		return ContentUnavailableView {
 			Label("No \(name) selected yet!", systemImage: "exclamationmark.circle")
 		} description: {

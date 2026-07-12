@@ -14,22 +14,14 @@ struct WordListView: View {
 	
 	@State private var wordListToEdit: WordList? = WordList()
 	@State private var showWordListEditor: Bool = false
-	@State private var listItem: WordList?
-	// @State private var originalWordList: WordList? = nil
 	
 	var body: some View {
-		List(selection: $listItem) {
+		List(selection: $selection) {
 			ForEach(wordLists, id: \.self) { wordList in
 				NavigationLink(value: wordList) {
 					WordListSummary(wordList: wordList)
 				}
-				//					.contextMenu {
-				//						editButton(for: selection) // editing a word list
-				//						deleteButton(for: selection)
-				//					}
-				//					.swipeActions(edge: .leading) {
-				//						editButton(for: wordList).tint(.accentColor)
-				//					}
+				.tag(wordList)
 			}
 			.onDelete { indexSet in
 				indexSet.forEach { index in
@@ -40,29 +32,10 @@ struct WordListView: View {
 				wordLists.move(fromOffsets: offsets, toOffset: destination)
 			}
 		}
-		.onChange(of: listItem) { _, newValue in
-			if let value = newValue {
-				selection = value
-			}
-		}
-		//			.onChange(of: selection) {
-		//				if let selection, !wordLists.contains(selection) {
-		//					self.selection = nil
-		//				}
-		//			}
 		.listStyle(.plain)
 		.toolbar {
 			addButton
-			//#if os(iOS)
-			//				EditButton()
-			//#endif
 		}
-		//			.onAppear {
-		//				if wordLists.isEmpty {
-		//					wordLists = SampleWordLists.all
-		//					//selection = wordLists[Int.random(in: 0..<wordLists.count)]
-		//				}
-		//			}
 	}
 		
 	func editButton(for wordList: WordList) -> some View {

@@ -40,9 +40,15 @@ struct StringList: View {
 					let index = lstrings.firstIndex(where: { $0.id == item.id })!
 					HStack {
 						Text("\(index+1))").frame(width: 50)
-						TextField("Edit Word", text: $lstrings[index].title)
+						// Note: .vertical axis prevent textfield from exiting on return
+						TextField("Edit Word", text: $lstrings[index].title, axis: .vertical)
 							.textEditorStyle(.plain)
 							.autocorrectionDisabled(true)
+							.onChange(of: lstrings[index].title) { _, newValue in
+								if newValue.contains("\n") {
+									lstrings[index].title = newValue.replacingOccurrences(of: "\n", with: "")
+								}
+							}
 							.onSubmit {
 								let edited = lstrings[index].title.capitalized
 									.filter { $0.isLetter }
@@ -82,20 +88,29 @@ struct StringList: View {
 	
 #if os(iOS)
 	private var editButton: some View {
-
-		Button(action: {
-			self.editMode.toggle()
-			self.selectedItems = Set<UUID>()
-		}) {
-			Text(self.editMode.title)
+		HStack {
+			Button(action: { dismiss() }) {
+				Image(systemName: "xmark")
+			}
+			Button(action: {
+				self.editMode.toggle()
+				self.selectedItems = Set<UUID>()
+			}) {
+				Text(self.editMode.title)
+			}
 		}
 	}
 
+	@ViewBuilder
 	private var addDelButton: some View {
-
 		if editMode == .inactive {
-			Button(action: addItem) {
-				Image(systemName: "plus")
+			HStack {
+				Button(action: addItem) {
+					Image(systemName: "plus")
+				}
+				Button(action: done) {
+					Image(systemName: "checkmark")
+				}
 			}
 		} else {
 			Button(action: deleteItems) {
@@ -142,10 +157,10 @@ struct StringList: View {
 		}
 	}
 	
-//	func done() {
-//		strings = lstrings.map(\.title.capitalized)
-//		dismiss()
-//	}
+	func done() {
+		strings = lstrings.map(\.title.capitalized)
+		dismiss()
+	}
 }
 
 #if !os(macOS)
