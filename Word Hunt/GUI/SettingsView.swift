@@ -24,7 +24,7 @@ struct SettingsView: View {
 		NavigationStack {
 			Form {
 				Section("Word List Creator Default Name") {
-					TextField("Enter your name", text: $internalSettings.userName)
+					TextField("Enter your name", text: $internalSettings.player.name)
 				}
 				
 				Section("Word Grid Default Size: \(Int(internalSettings.gridDefaultSize))") {
@@ -102,7 +102,7 @@ struct SettingsView: View {
 			.navigationBarTitle("Settings")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
-				EditToolbar {
+				EditToolbar(okDisabled: internalSettings == settings, cancelDisabled: false) {
 					settings = internalSettings
 					dismiss()
 				}

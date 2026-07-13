@@ -62,7 +62,7 @@ struct WordsEditor: View {
 					wordList = lwords.words.sorted().map { PlacedWord(word: $0) }
 					if onDone == nil {
 						// update passed word list directly
-						if words!.words != lwords.words {
+						if words?.words != lwords.words {
 							lwords.reviseName()
 						}
 						words = lwords
@@ -75,7 +75,8 @@ struct WordsEditor: View {
 			.navigationBarTitleDisplayMode(.inline)
 #endif
 			.toolbar {
-				EditToolbar { done() }
+				let disabled = words == lwords
+				EditToolbar(okDisabled: disabled, cancelDisabled: disabled) { done() }
 			}
 		}
 		.onAppear {

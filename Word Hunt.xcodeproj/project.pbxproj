@@ -38,9 +38,13 @@
 		47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */; };
 		47E0AC2A2FF17361009D7BB0 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC292FF17361009D7BB0 /* GameView.swift */; };
 		47F140A83002519000E8B927 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140A73002519000E8B927 /* AboutView.swift */; };
-		47F140D23002EB3D00E8B927 /* Awards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140D13002EB3D00E8B927 /* Awards.swift */; };
+		47F140D23002EB3D00E8B927 /* AwardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140D13002EB3D00E8B927 /* AwardsView.swift */; };
 		47F140EE3003B18F00E8B927 /* WordListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140ED3003B18F00E8B927 /* WordListView.swift */; };
 		47F140F03003CC7C00E8B927 /* FlightTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140EF3003CC7C00E8B927 /* FlightTest.swift */; };
+		47F1412230052B7000E8B927 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F1412130052B7000E8B927 /* Player.swift */; };
+		47F1412430052FFE00E8B927 /* AwardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F1412330052FFE00E8B927 /* AwardDetailView.swift */; };
+		47F141583005315D00E8B927 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141573005315D00E8B927 /* Badge.swift */; };
+		47F1415A300531E500E8B927 /* BadgeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F14159300531E500E8B927 /* BadgeDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,9 +80,13 @@
 		47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTime.swift; sourceTree = "<group>"; };
 		47E0AC292FF17361009D7BB0 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		47F140A73002519000E8B927 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		47F140D13002EB3D00E8B927 /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
+		47F140D13002EB3D00E8B927 /* AwardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardsView.swift; sourceTree = "<group>"; };
 		47F140ED3003B18F00E8B927 /* WordListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListView.swift; sourceTree = "<group>"; };
 		47F140EF3003CC7C00E8B927 /* FlightTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTest.swift; sourceTree = "<group>"; };
+		47F1412130052B7000E8B927 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		47F1412330052FFE00E8B927 /* AwardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardDetailView.swift; sourceTree = "<group>"; };
+		47F141573005315D00E8B927 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
+		47F14159300531E500E8B927 /* BadgeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -161,8 +169,9 @@
 				471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */,
 				472CE130291858D90074891E /* _GameChooser.swift */,
 				4707DADF2FFA881100B4764F /* _WordListsChooser.swift */,
-				47F140D13002EB3D00E8B927 /* Awards.swift */,
+				47F140D13002EB3D00E8B927 /* AwardsView.swift */,
 				47F140EF3003CC7C00E8B927 /* FlightTest.swift */,
+				47F1412330052FFE00E8B927 /* AwardDetailView.swift */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -171,12 +180,15 @@
 			isa = PBXGroup;
 			children = (
 				47578B052FE885B90072FFED /* Alphabets.swift */,
+				47F14159300531E500E8B927 /* BadgeDetails.swift */,
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
 				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 				4707A01B2FF93FF300F88A40 /* SettingsType.swift */,
 				47E0ABEA2FF15B36009D7BB0 /* Timer.swift */,
 				47800D132FE9CD9C009537EC /* WordList.swift */,
+				47F1412130052B7000E8B927 /* Player.swift */,
+				47F141573005315D00E8B927 /* Badge.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -271,9 +283,10 @@
 				472CE131291858D90074891E /* _GameChooser.swift in Sources */,
 				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
 				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
-				47F140D23002EB3D00E8B927 /* Awards.swift in Sources */,
+				47F140D23002EB3D00E8B927 /* AwardsView.swift in Sources */,
 				471E2A232FFC4C4A00A1ADBD /* WinnerView.swift in Sources */,
 				47F140EE3003B18F00E8B927 /* WordListView.swift in Sources */,
+				47F1415A300531E500E8B927 /* BadgeDetails.swift in Sources */,
 				472CE13E291BE6380074891E /* GameBoard.swift in Sources */,
 				47578B062FE885B90072FFED /* Alphabets.swift in Sources */,
 				47E0ABE52FF069CB009D7BB0 /* GameListView.swift in Sources */,
@@ -284,13 +297,16 @@
 				471670AC2FF4493700A09C13 /* LetterGridView.swift in Sources */,
 				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
 				47079FFC2FF5AF9200F88A40 /* SettingsView.swift in Sources */,
+				47F141583005315D00E8B927 /* Badge.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
 				4707DAE02FFA881100B4764F /* _WordListsChooser.swift in Sources */,
 				4771F1762FEF208B00A98387 /* SampleWordLists.swift in Sources */,
+				47F1412430052FFE00E8B927 /* AwardDetailView.swift in Sources */,
 				47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */,
 				4707A01C2FF93FF300F88A40 /* SettingsType.swift in Sources */,
 				4707A0122FF84B8400F88A40 /* MainAppView.swift in Sources */,
+				47F1412230052B7000E8B927 /* Player.swift in Sources */,
 				47F140F03003CC7C00E8B927 /* FlightTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

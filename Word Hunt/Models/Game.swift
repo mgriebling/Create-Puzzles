@@ -19,6 +19,7 @@ import SwiftUI
 	var name: String			  { board.words.name }
 	var matched: Int 			  { placedWords.filter(\.highlighted).count }
 	var isOver: Bool 		  	  { matched == words.count }
+	var placedSet: Set<String> 	  { Set(placedWords.map({ $0.extended })) }
 	
 	// MARK: Initializer
 	init(board: GameBoard) {
@@ -56,7 +57,6 @@ import SwiftUI
 		let puzzleScore = Double(size) / SettingsType.maxGridRange.upperBound
 		let numberOfWordsScore = wordsCount / Double(board.words.words.count)
 		let total = wordScore + puzzleScore + numberOfWordsScore
-		//print("Word score = \(wordScore), puzzle score = \(puzzleScore), number of words score = \(numberOfWordsScore)")
 		return min(10, Int((10.0 / 3.0) * total + 0.5))
 	}
 
@@ -132,22 +132,23 @@ import SwiftUI
 		try? FileManager.default.removeItem(at: fileURL)
 	}
 	
-	func isWordMatch() -> Bool {
-		guard !activeWord.isEmpty else { return false }
-		if let index = words.firstIndex(of: activeWord.lowercased()) {
-			board.highlightWord(index)
+	func isWordMatch(start: CellIndex?) -> Bool {
+		guard !activeWord.isEmpty, let start else { return false }
+		let setElement = PlacedWord(word: activeWord, start: start).extended
+		if placedSet.contains(setElement) {
+//			board.highlightWord(index)
 			return true
 		}
 		return false
 	}
 	
-	func placeWords (words: [String]) -> [PlacedWord] {
+	func placeWords(words: [String]) -> [PlacedWord] {
 		words.map { PlacedWord(word: $0) }
 	}
 	
 	func copy() -> Game { Game(board: self.board) }
     func clearWord() { board.clearWord() }
-	func wordIsHighlighted(_ index: Int) -> Bool { board.ishighlighted(index) }
+//	func wordIsHighlighted(_ index: Int) -> Bool { board.ishighlighted(index) }
 }
 
 extension Game: Identifiable { }  // auto-generated

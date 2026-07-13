@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Awards: View {
+struct AwardsView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
 		
@@ -25,5 +25,5 @@ struct Awards: View {
 }
 
 #Preview {
-    Awards()
+    AwardsView()
 }

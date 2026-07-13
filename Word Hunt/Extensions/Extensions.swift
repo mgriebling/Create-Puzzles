@@ -18,3 +18,17 @@ extension View {
 extension Int {
 	func signum() -> Int { (self > 0) ? 1 : ((self < 0) ? -1 : 0) }
 }
+
+extension CGPoint {
+	// MARK: - Geometry Math Helpers
+	func distance(to other: CGPoint) -> CGFloat { hypot(x - other.x, y - other.y) }
+	
+	func angle(to: CGPoint) -> CGFloat {
+		// Offset by 90 degrees (pi/2) because SwiftUI capsules extend vertically by default
+		atan2(to.y - self.y, to.x - self.x) - (.pi / 2)
+	}
+	
+	func midPoint(to: CGPoint) -> CGPoint {
+		CGPoint(x: (self.x + to.x) / 2, y: (self.y + to.y) / 2)
+	}
+}

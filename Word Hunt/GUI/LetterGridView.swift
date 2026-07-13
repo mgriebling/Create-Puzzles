@@ -9,8 +9,8 @@
 import SwiftUI
 import Subsonic
 
+/// Row x Col Game Board Matrix
 struct LetterGridView: View {
-	// Row x Col Game Board Matrix
 	let game: Game
 	var allowDrag: Bool = false
 	var showWordSelection: Bool = true
@@ -19,11 +19,9 @@ struct LetterGridView: View {
 	@Environment(\.colorScheme) var colorScheme: ColorScheme
 
 	// Active Interaction States
-	@State private var grid: [[String]] = [[" "]]
-	@State private var validWordBank: Set<String> = []
 	@State private var dragStartCell: CellIndex?
 	@State private var dragCurrentCell: CellIndex?
-	@State private var selectionDirection: SelectionDirection = .none
+	@State private var selectionDirection: Direction = .none
 	@State private var numRows = 1
 	@State private var numCols = 1
 	@State private var done: Bool = false
@@ -72,7 +70,7 @@ struct LetterGridView: View {
 						ForEach(0..<numRows, id: \.self) { row in
 							HStack(spacing: spacing) {
 								ForEach(0..<numCols, id: \.self) { col in
-									Text(grid[row][col])
+									Text(game.board[row, col].letter)  //  grid[row][col])
 										.font(.system(size: cellSize * 0.7, weight: .bold))
 										.frame(width: cellSize, height: cellSize)
 								}
@@ -86,8 +84,8 @@ struct LetterGridView: View {
 					.background {
 						// 2. Persistent Layer: Displays correctly guessed historical word
 						ForEach(game.placedWords) { word in
-							let startPoint = centerOfCell(row: word.start.row, col: word.start.col, cellSize: cellSize, spacing: spacing)
-							let endPoint = centerOfCell(row: word.end.row, col: word.end.col, cellSize: cellSize, spacing: spacing)
+							let startPoint = word.start.centerOfCell(cellSize: cellSize, spacing: spacing)
+							let endPoint = word.end.centerOfCell(cellSize: cellSize, spacing: spacing)
 							let color = settings.highlightColor
 							let isDark = colorScheme == .dark
 							if word.highlighted {
@@ -95,25 +93,25 @@ struct LetterGridView: View {
 									.fill(fill ? color : .clear)
 									.stroke(.foreground, lineWidth: lineWidth)
 									.brightness(isDark ? -0.6 : 0.5)
-									.frame(width: highlightSize, height: distance(from: startPoint, to: endPoint) + highlightSize * 1.2)
-									.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
-									.position(midPoint(from: startPoint, to: endPoint))
+									.frame(width: highlightSize, height: startPoint.distance(to: endPoint) + highlightSize * 1.2)
+									.rotationEffect(Angle(radians: startPoint.angle(to: endPoint)))
+									.position(startPoint.midPoint(to: endPoint))
 							}
 						}
 						
 						// 3. Active Layer: Current continuous user gesture drag highlight
 						if let start = dragStartCell, let end = dragCurrentCell, selectionDirection != .none {
-							let startPoint = centerOfCell(row: start.row, col: start.col, cellSize: cellSize, spacing: spacing)
-							let endPoint = centerOfCell(row: end.row, col: end.col, cellSize: cellSize, spacing: spacing)
+							let startPoint = start.centerOfCell(cellSize: cellSize, spacing: spacing)
+							let endPoint = end.centerOfCell(cellSize: cellSize, spacing: spacing)
 							let selColor = settings.selectionColor
 							let selColorOK = settings.selectionOKColor
 							let color = detectedWord != nil ? selColorOK : selColor
 							Capsule()
 								.fill(fill ? color.opacity(0.6) : .clear)
 								.stroke(color, lineWidth: lineWidth)
-								.frame(width: cellSize, height: distance(from: startPoint, to: endPoint) + cellSize)
-								.rotationEffect(Angle(radians: angle(from: startPoint, to: endPoint)))
-								.position(midPoint(from: startPoint, to: endPoint))
+								.frame(width: cellSize, height: startPoint.distance(to: endPoint) + cellSize)
+								.rotationEffect(Angle(radians: startPoint.angle(to: endPoint)))
+								.position(startPoint.midPoint(to: endPoint))
 								.allowsHitTesting(false)
 						}
 					 }
@@ -130,23 +128,22 @@ struct LetterGridView: View {
 				)
 			}
 			.onAppear {
-				let words = game.placedWords.map { $0.word.capitalized + $0.start.description }
-//				print(words)
-				validWordBank = Set(words)
+				//let words = game.placedWords.map { $0.word.capitalized + $0.start.description }
+				//validWordBank = Set(words)
 				numRows = game.board.size
 				numCols = game.board.size
-				let blankRow = Array(repeating: " ", count: numCols)
-				grid = Array(repeating: blankRow, count: numRows)
-				for row in 0..<numRows {
-					for col in 0..<numCols {
-						grid[row][col] = game.board[row, col].letter
-					}
-//					for i in 0..<game.placedWords.count-1 {
-//						game.board.highlightWord(i)
+//				let blankRow = Array(repeating: " ", count: numCols)
+				// grid = Array(repeating: blankRow, count: numRows)
+//				for row in 0..<numRows {
+//					for col in 0..<numCols {
+//						grid[row][col] = game.board[row, col].letter
 //					}
-				}
+////					for i in 0..<game.placedWords.count-1 {
+////						game.board.highlightWord(i)
+////					}
+//				}
 				// game.board.highlightWord(game.placedWords.count-1)
-				print("Last word: \(game.placedWords.last?.word ?? "none")")
+				// print("Last word: \(game.placedWords.last?.word ?? "none")")
 			}
 			.aspectRatio(1, contentMode: .fit)
 		}
@@ -182,13 +179,18 @@ struct LetterGridView: View {
 		
 		// Lock vector tracks and lock cell endpoints
 		if deltaRow == 0 && deltaCol != 0 {
-			selectionDirection = .horizontal
+			// horizontal drag
+			selectionDirection = deltaCol > 0 ? .right : .left
 			dragCurrentCell = CellIndex(row: origin.row, col: boundedCol)
 		} else if deltaCol == 0 && deltaRow != 0 {
-			selectionDirection = .vertical
+			// vertical drag
+			selectionDirection = deltaRow > 0 ? .down : .up
 			dragCurrentCell = CellIndex(row: boundedRow, col: origin.col)
 		} else if abs(deltaRow) == abs(deltaCol) && deltaRow != 0 {
-			selectionDirection = deltaRow == deltaCol ? .diagonalDown : .diagonalUp
+			// diagonal drag
+			selectionDirection = deltaRow == deltaCol
+			? (deltaCol > 0 ? .diagonalDownRight : .diagonalUpLeft)
+			: (deltaCol < 0 ? .diagonalDownLeft : .diagonalUpRight)
 			dragCurrentCell = CellIndex(row: boundedRow, col: boundedCol)
 		}
 		
@@ -199,14 +201,16 @@ struct LetterGridView: View {
 		guard let start = dragStartCell, let end = dragCurrentCell else { return }
 		
 		var tempWord = ""
-		let rowStep = (end.row - start.row).signum()
-		let colStep = (end.col - start.col).signum()
+		let rowStep = selectionDirection.deltaRow //  (end.row - start.row).signum()
+		let colStep = selectionDirection.deltaCol // (end.col - start.col).signum()
 		
 		var currRow = start.row
 		var currCol = start.col
 		
-		while true {
-			tempWord.append(grid[currRow][currCol])
+		//print("Direction: \(selectionDirection)")
+		while true { // currRow >= 0 && currCol >= 0 {
+			// print("Current: \(currRow), \(currCol)")
+			tempWord.append(game.board[currRow, currCol].letter)
 			if currRow == end.row && currCol == end.col { break }
 			currRow += rowStep
 			currCol += colStep
@@ -217,9 +221,10 @@ struct LetterGridView: View {
 	
 	// Helper to evaluate if the current selection forms a valid word
 	private var detectedWord: String? {
-		let start = dragStartCell?.description ?? ""
-		let selected = game.board.selectedWord.capitalized + start
-		if validWordBank.contains(selected) {
+//		let start = dragStartCell?.description ?? ""
+//		let selected = game.board.selectedWord.capitalized + start
+		if game.isWordMatch(start: dragStartCell) {
+//		}  validWordBank.contains(selected) {
 			return game.board.selectedWord
 		}
 		return nil
@@ -235,23 +240,17 @@ struct LetterGridView: View {
 					word: target, start: start, end: end
 				)
 				foundWords.append(finalizedPath)
-				if settings.soundsOn {
-					play(sound: "success.mp3", volume: settings.soundVolume)
-				}
-				game.removeActiveWord()
+				play(sound: "success.mp3", volume: settings.soundVolume)
+				game.removeActiveWord()  // set the highlight flag
 				game.save(to: game.name)
 				print("SUCCESS: Found Word \(target)")
 			}
 		} else {
-			if settings.soundsOn {
-				play(sound: "oops.mp3", volume: settings.soundVolume)
-			}
+			self.play(sound: "oops.mp3")
 		}
-		game.clearWord()
 		
-		if game.isOver {
-			play(sound: "victory-chime.mp3", volume: settings.soundVolume)
-		}
+		game.clearWord()
+		if game.isOver { self.play("victory-chime.mp3") }
 		
 		// UI cleanup sequence
 		withAnimation(.easeOut(duration: 0.15)) {
@@ -261,36 +260,40 @@ struct LetterGridView: View {
 		}
 	}
 	
-	enum SelectionDirection {
-		case none, horizontal, vertical, diagonalUp, diagonalDown
+	private func play(_ sound: String) {
+		if settings.soundsOn {
+			play(sound: sound, volume: settings.soundVolume)
+		}
 	}
 	
-	// MARK: - Geometry Math Helpers
+//	enum SelectionDirection {
+//		case none, horizontal, vertical, diagonalUp, diagonalDown
+//	}
 	
-	private func centerOfCell(row: Int, col: Int, cellSize: CGFloat, spacing: CGFloat) -> CGPoint {
-		// let cellSize = cellSize.isFinite ? cellSize : 50
-		let x = CGFloat(col) * (cellSize + spacing) + cellSize / 2
-		let y = CGFloat(row) * (cellSize + spacing) + cellSize / 2
-		return CGPoint(x: x, y: y)
-	}
-	
-	private func distance(from s: CGPoint, to d: CGPoint) -> CGFloat {
-		hypot(d.x - s.x, d.y - s.y)
-	}
-	
-	private func angle(from: CGPoint, to: CGPoint) -> CGFloat {
-		// Offset by 90 degrees (pi/2) because SwiftUI capsules extend vertically by default
-		atan2(to.y - from.y, to.x - from.x) - (.pi / 2)
-	}
-	
-	private func midPoint(from: CGPoint, to: CGPoint) -> CGPoint {
-		CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
-	}
+//	// MARK: - Geometry Math Helpers
+//	
+//	private func centerOfCell(row: Int, col: Int, cellSize: CGFloat, spacing: CGFloat) -> CGPoint {
+//		let x = CGFloat(col) * (cellSize + spacing) + cellSize / 2
+//		let y = CGFloat(row) * (cellSize + spacing) + cellSize / 2
+//		return CGPoint(x: x, y: y)
+//	}
+//	
+//	private func distance(from s: CGPoint, to d: CGPoint) -> CGFloat {
+//		hypot(d.x - s.x, d.y - s.y)
+//	}
+//	
+//	private func angle(from: CGPoint, to: CGPoint) -> CGFloat {
+//		// Offset by 90 degrees (pi/2) because SwiftUI capsules extend vertically by default
+//		atan2(to.y - from.y, to.x - from.x) - (.pi / 2)
+//	}
+//	
+//	private func midPoint(from: CGPoint, to: CGPoint) -> CGPoint {
+//		CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
+//	}
 }
 
 #Preview {
 	@Previewable
 	@State var game = Game(board: GameBoard(size: 16, words: SampleWordLists.all[0]))
-	@Previewable @State var activeWord = ""
 	LetterGridView(game: game, allowDrag: true, settings: SettingsType())
 }

@@ -33,14 +33,10 @@ struct GameBoard: Codable, Equatable, Hashable {
     // active word selection
 	private var _selectedWord: String = ""
 	var selectedWord: String {
-		set {
-			_selectedWord = newValue
-		}
-		get {
-			_selectedWord
-		}
+		set { _selectedWord = newValue }
+		get { _selectedWord }
 	}
-    private var selectedMoves = [Int]()
+//    private var selectedMoves = [Int]()
 	
 	// active set of words
 	private(set) var words: WordList
@@ -169,7 +165,9 @@ struct GameBoard: Codable, Equatable, Hashable {
 			let newCol = col + (i * direction.deltaCol)
 			
 			// Check bounds
-			guard newRow >= 0 && newRow < size && newCol >= 0 && newCol < size else {
+			guard
+				newRow >= 0 && newRow < size && newCol >= 0 && newCol < size
+			else {
 				return false
 			}
 			
@@ -225,19 +223,11 @@ struct GameBoard: Codable, Equatable, Hashable {
 		return unplaced
 	}
 	
-	mutating func highlightWord(_ index: Int) {
-		wordPlacements[index].highlighted = true
-	}
+	mutating func highlightWord(_ index: Int) { wordPlacements[index].highlighted = true }
 	
-	func ishighlighted(_ index: Int) -> Bool {
-		wordPlacements[index].highlighted
-	}
+//	func ishighlighted(_ index: Int) -> Bool { wordPlacements[index].highlighted }
     
-    mutating func clearWord() {
-        // clear the active word
-        selectedWord = ""
-        selectedMoves = []
-    }
+	mutating func clearWord() { selectedWord = "" } // clear the active word
  
     func indexOf(_ row: Int, column: Int) -> Int {
 		let row = max(0, min(row, size-1))

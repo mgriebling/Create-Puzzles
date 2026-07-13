@@ -11,7 +11,7 @@ public struct SettingsType {
 	static let maxGridRange = 4.0...20.0
 	
 	var gridDefaultSize: Double
-	var userName: String
+	var player: Player
 	
 	var highlight: HighLight
 	var selectionColor: Color
@@ -25,7 +25,7 @@ public struct SettingsType {
 	
 	init() {
 		self.gridDefaultSize = 12.0
-		self.userName = "Unknown"
+		self.player = Player()
 		self.highlight = .allCases.first!
 		self.selectionColor = .blue
 		self.selectionOKColor = .green
@@ -46,14 +46,14 @@ public extension AppStorageKey where Value == SettingsType {
 
 extension SettingsType: Codable {
 	enum CodingKeys: String, CodingKey {
-		case gridDefaultSize, userName, highlight, selectionColor,
+		case gridDefaultSize, player, highlight, selectionColor,
 			 selectionOKColor, highlightColor, soundsOn, soundVolume, showTimer
 	}
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		self.gridDefaultSize = try container.decode(Double.self, forKey: .gridDefaultSize)
-		self.userName = try container.decode(String.self, forKey: .userName)
+		self.player = try container.decode(Player.self, forKey: .player)
 		self.highlight = try container.decode(HighLight.self, forKey: .highlight)
 		self.selectionColor = try container.decode(Color.self, forKey: .selectionColor)
 		self.selectionOKColor = try container.decode(Color.self, forKey: .selectionOKColor)
@@ -66,7 +66,7 @@ extension SettingsType: Codable {
 	public func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.gridDefaultSize, forKey: .gridDefaultSize)
-		try container.encode(self.userName, forKey: .userName)
+		try container.encode(self.player, forKey: .player)
 		try container.encode(self.highlight, forKey: .highlight)
 		try container.encode(self.selectionColor, forKey: .selectionColor)
 		try container.encode(self.selectionOKColor, forKey: .selectionOKColor)

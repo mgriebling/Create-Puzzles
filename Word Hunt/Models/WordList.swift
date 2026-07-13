@@ -9,7 +9,6 @@ import Foundation
 import NaturalLanguage
 
 struct CellIndex: Equatable, Codable, Hashable, CustomStringConvertible {
-
 	let row: Int
 	let col: Int
 	
@@ -21,6 +20,12 @@ struct CellIndex: Equatable, Codable, Hashable, CustomStringConvertible {
 		self.row = row
 		self.col = col
 	}
+	
+	func centerOfCell(cellSize: CGFloat, spacing: CGFloat) -> CGPoint {
+		let x = CGFloat(col) * (cellSize + spacing) + cellSize / 2
+		let y = CGFloat(row) * (cellSize + spacing) + cellSize / 2
+		return CGPoint(x: x, y: y)
+	}
 }
 
 struct PlacedWord: Codable, Identifiable, Hashable {
@@ -30,6 +35,7 @@ struct PlacedWord: Codable, Identifiable, Hashable {
 	let end: CellIndex
 	let direction: Direction
 	var highlighted: Bool
+	var extended: String { word + start.description } // used as set element
 	
 	init(word:String, start:CellIndex = CellIndex(), end:CellIndex = CellIndex(),
 		 direction: Direction = .right, highlighted:Bool = false) {
@@ -50,14 +56,14 @@ struct PlacedWord: Codable, Identifiable, Hashable {
 }
 
 public enum Direction: Int, Codable, CaseIterable {
-	case left, right, down, up, diagonalUpLeft, diagonalUpRight,
+	case none, left, right, down, up, diagonalUpLeft, diagonalUpRight,
 		 diagonalDownLeft, diagonalDownRight
 	
 	var deltaCol: Int {
 		switch self {
 			case .left, .diagonalUpLeft, .diagonalDownLeft: return -1
 			case .right, .diagonalUpRight, .diagonalDownRight: return 1
-			case .up, .down: return 0
+			case .up, .down, .none: return 0
 		}
 	}
 	
@@ -65,7 +71,7 @@ public enum Direction: Int, Codable, CaseIterable {
 		switch self {
 			case .down, .diagonalDownLeft, .diagonalDownRight: return 1
 			case .up, .diagonalUpLeft, .diagonalUpRight: return -1
-			case .left, .right: return 0
+			case .left, .right, .none: return 0
 		}
 	}
 	
