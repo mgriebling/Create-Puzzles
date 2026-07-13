@@ -19,9 +19,9 @@ enum BadgeDetails: Int, Codable, CaseIterable {
 	var requirements: String {
 		switch self {
 			case .first:
-				"Log a moment to start your journey."
+				"Solve a puzzle to unlock this award."
 			case .novice:
-				"Record five moments."
+				"Complete five puzzles with increasing difficulty levels to earn this award."
 			case .bright:
 				"Add a photo to one of your moments."
 			case .skillful:
@@ -78,15 +78,6 @@ enum BadgeDetails: Int, Codable, CaseIterable {
 		}
 	}
 	
-//	Metal Type			Metal HEX	Primary Accent	 Accent HEX	Aesthetic Vibe
-//	Rhodium 			#E2E8F0 	Midnight Blue 	 #0F172A 	Ultra-Modern & Sleek
-//	Silver 				#C0C0C0  	Classic Burgundy #722F37 	Traditional & ElegantWhite
-//	Gold  				#F3EFE0  	Rich Plum 		 #4A2E35W	arm & Sophisticated
-//	Yellow Gold			#FFD700		Matte Black		 #111111	High-End LuxuryBlue
-//	Titanium			#4B9CD3		Copper Orange	 #B87333	Bold & High-Tech
-//	Platinum-Iridium	#D1D5DB		Crimson Red	 	 #DC2626	Industrial & Powerful
-//	Platinum			#E5E4E2		Deep Teal		 #004B49	Clean & Prestigious
-	
 //	var lockedImage: ImageResource {
 //		switch self {
 //			case .firstEntry: .firstEntryLocked
@@ -99,13 +90,13 @@ enum BadgeDetails: Int, Codable, CaseIterable {
 	
 	var color: Color {
 		switch self {
-			case .first: Color(.burgandy)
-			case .novice:  Color(.yellowGold)
-			case .bright: Color(.blueTitanium)
-			case .skillful: Color(.whiteGold)
-			case .expert: Color(.rhodium)
-			case .master: Color(.platinumIridium)
-			case .ultimate: Color(.platinum)
+			case .first: Color(.classicBurgandy)
+			case .novice:  Color(.matteBlack)
+			case .bright: Color(.matteBlack)
+			case .skillful: Color(.emeraldGreen)
+			case .expert: Color(.midnightBlue)
+			case .master: Color(.crimsonRed)
+			case .ultimate: Color(.deepTeal)
 		}
 	}
 }

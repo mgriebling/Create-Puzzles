@@ -122,7 +122,7 @@ extension String {
 	}
 }
 
-@Observable public class WordList: Codable {
+@Observable public class WordList {
 	public var name: String {
 		get {
 			if revision == 0 { return _name }
@@ -151,6 +151,16 @@ extension String {
 	convenience init() {
 		self.init(name: "Empty", language: .english,
 				  author: "Unknown", date: Date(), words: [])
+	}
+	
+	required public init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		self._name = try container.decode(String.self, forKey: ._name)
+		self.language = try container.decode(Language.self, forKey: .language)
+		self.author = try container.decode(String.self, forKey: .author)
+		self.date = try container.decode(Date.self, forKey: .date)
+		self.words = try container.decode([String].self, forKey: .words)
+		self.revision = try container.decode(Int.self, forKey: .revision)
 	}
 	
 	/// Create a copy of words
@@ -293,6 +303,23 @@ extension String {
 		}
 		return words.sorted()
 	}
+}
+
+// Needed to handcode to prevent compiler warning with observable/codable
+extension WordList: Codable {
+	
+	public func encode(to encoder: any Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(_name, forKey: ._name)
+		try container.encode(language, forKey: .language)
+		try container.encode(author, forKey: .author)
+		try container.encode(date, forKey: .date)
+		try container.encode(words, forKey: .words)
+		try container.encode(revision, forKey: .revision)
+	}
+	
+	enum CodingKeys: String, CodingKey { case _name, language, author, date, words, revision }
+	
 }
 
 extension WordList: Identifiable { }  // auto-generated

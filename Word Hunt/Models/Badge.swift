@@ -15,6 +15,7 @@ struct Badge {
 	var details: BadgeDetails
 	// var moment: Moment?
 	var timestamp: Date?
+	let id: UUID = UUID()
 	
 	init(details: BadgeDetails) {
 		self.details = details
@@ -22,6 +23,8 @@ struct Badge {
 		self.timestamp = nil
 	}
 }
+
+extension Badge: Identifiable { }
 
 extension Badge {
 	static var sample: Badge {

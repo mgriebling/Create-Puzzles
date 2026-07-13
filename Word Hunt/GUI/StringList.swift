@@ -27,6 +27,7 @@ struct StringList: View {
 	
 	@State private var lstrings = [ListItem]()
 	@State private var selectedItems = Set<UUID>()
+	@State private var showConfirmation: Bool = false
 	#if !os(macOS)
 	@State private var editMode: EditMode = .inactive
 	#endif
@@ -113,8 +114,18 @@ struct StringList: View {
 				}
 			}
 		} else {
-			Button(action: deleteItems) {
+			Button {
+				showConfirmation = true
+			} label: {
 				Image(systemName: "trash")
+			}
+			.confirmationDialog("Delete Words", isPresented: $showConfirmation) {
+				Button("Delete Words", role: .destructive) {
+					deleteItems()
+					dismiss()
+				}
+			} message: {
+				Text("The words will be permanently deleted.")
 			}
 		}
 	}

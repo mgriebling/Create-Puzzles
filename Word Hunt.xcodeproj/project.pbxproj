@@ -38,13 +38,15 @@
 		47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */; };
 		47E0AC2A2FF17361009D7BB0 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0AC292FF17361009D7BB0 /* GameView.swift */; };
 		47F140A83002519000E8B927 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140A73002519000E8B927 /* AboutView.swift */; };
-		47F140D23002EB3D00E8B927 /* AwardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140D13002EB3D00E8B927 /* AwardsView.swift */; };
 		47F140EE3003B18F00E8B927 /* WordListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140ED3003B18F00E8B927 /* WordListView.swift */; };
 		47F140F03003CC7C00E8B927 /* FlightTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F140EF3003CC7C00E8B927 /* FlightTest.swift */; };
 		47F1412230052B7000E8B927 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F1412130052B7000E8B927 /* Player.swift */; };
 		47F1412430052FFE00E8B927 /* AwardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F1412330052FFE00E8B927 /* AwardDetailView.swift */; };
 		47F141583005315D00E8B927 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141573005315D00E8B927 /* Badge.swift */; };
 		47F1415A300531E500E8B927 /* BadgeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F14159300531E500E8B927 /* BadgeDetails.swift */; };
+		47F141A63005727700E8B927 /* UnlockedAwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141A53005727700E8B927 /* UnlockedAwardView.swift */; };
+		47F141A93005740800E8B927 /* LockedAwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141A83005740800E8B927 /* LockedAwardView.swift */; };
+		47F141AB300574CB00E8B927 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141AA300574CB00E8B927 /* AchievementsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,13 +82,15 @@
 		47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTime.swift; sourceTree = "<group>"; };
 		47E0AC292FF17361009D7BB0 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		47F140A73002519000E8B927 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		47F140D13002EB3D00E8B927 /* AwardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardsView.swift; sourceTree = "<group>"; };
 		47F140ED3003B18F00E8B927 /* WordListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListView.swift; sourceTree = "<group>"; };
 		47F140EF3003CC7C00E8B927 /* FlightTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightTest.swift; sourceTree = "<group>"; };
 		47F1412130052B7000E8B927 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		47F1412330052FFE00E8B927 /* AwardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardDetailView.swift; sourceTree = "<group>"; };
 		47F141573005315D00E8B927 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		47F14159300531E500E8B927 /* BadgeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeDetails.swift; sourceTree = "<group>"; };
+		47F141A53005727700E8B927 /* UnlockedAwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockedAwardView.swift; sourceTree = "<group>"; };
+		47F141A83005740800E8B927 /* LockedAwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedAwardView.swift; sourceTree = "<group>"; };
+		47F141AA300574CB00E8B927 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -169,9 +173,8 @@
 				471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */,
 				472CE130291858D90074891E /* _GameChooser.swift */,
 				4707DADF2FFA881100B4764F /* _WordListsChooser.swift */,
-				47F140D13002EB3D00E8B927 /* AwardsView.swift */,
+				47F141A7300572B800E8B927 /* Achievements */,
 				47F140EF3003CC7C00E8B927 /* FlightTest.swift */,
-				47F1412330052FFE00E8B927 /* AwardDetailView.swift */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -191,6 +194,17 @@
 				47F141573005315D00E8B927 /* Badge.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		47F141A7300572B800E8B927 /* Achievements */ = {
+			isa = PBXGroup;
+			children = (
+				47F141AA300574CB00E8B927 /* AchievementsView.swift */,
+				47F1412330052FFE00E8B927 /* AwardDetailView.swift */,
+				47F141A53005727700E8B927 /* UnlockedAwardView.swift */,
+				47F141A83005740800E8B927 /* LockedAwardView.swift */,
+			);
+			path = Achievements;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,7 +297,6 @@
 				472CE131291858D90074891E /* _GameChooser.swift in Sources */,
 				478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */,
 				472CE12F291858D90074891E /* WordHunt.swift in Sources */,
-				47F140D23002EB3D00E8B927 /* AwardsView.swift in Sources */,
 				471E2A232FFC4C4A00A1ADBD /* WinnerView.swift in Sources */,
 				47F140EE3003B18F00E8B927 /* WordListView.swift in Sources */,
 				47F1415A300531E500E8B927 /* BadgeDetails.swift in Sources */,
@@ -298,12 +311,15 @@
 				47800D1C2FEA9789009537EC /* WordView.swift in Sources */,
 				47079FFC2FF5AF9200F88A40 /* SettingsView.swift in Sources */,
 				47F141583005315D00E8B927 /* Badge.swift in Sources */,
+				47F141A63005727700E8B927 /* UnlockedAwardView.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
 				4707DAE02FFA881100B4764F /* _WordListsChooser.swift in Sources */,
 				4771F1762FEF208B00A98387 /* SampleWordLists.swift in Sources */,
+				47F141AB300574CB00E8B927 /* AchievementsView.swift in Sources */,
 				47F1412430052FFE00E8B927 /* AwardDetailView.swift in Sources */,
 				47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */,
+				47F141A93005740800E8B927 /* LockedAwardView.swift in Sources */,
 				4707A01C2FF93FF300F88A40 /* SettingsType.swift in Sources */,
 				4707A0122FF84B8400F88A40 /* MainAppView.swift in Sources */,
 				47F1412230052B7000E8B927 /* Player.swift in Sources */,
