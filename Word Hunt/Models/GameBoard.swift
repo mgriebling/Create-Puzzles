@@ -92,6 +92,7 @@ struct GameBoard: Codable, Equatable, Hashable {
 			clearBoard()
 			wordPlacements = []
 			unplaced = generatePuzzle(with: words)
+			print("Unplaced: \(unplaced)")
 			if unplaced < bestPlacement {
 				bestPlacement = unplaced
 				bestPlacementWords = wordPlacements
@@ -106,6 +107,10 @@ struct GameBoard: Codable, Equatable, Hashable {
 
 		let newSet = Set(wordPlacements.map(\.word))
 		missingWords = words.filter { !newSet.contains($0.lowercased()) }.sorted(by: <)
+		print("Original words: \(words)")
+		print("Missing words: \(missingWords)")
+		print("Placed words: \(wordPlacements.map(\.word))")
+		print("Board size: \(size)x\(size)")
 	}
 	
 	mutating func clearBoard() {
@@ -115,6 +120,7 @@ struct GameBoard: Codable, Equatable, Hashable {
 	
 	// Checks placement validity and scores the quality of the overlap
 	private func scorePlacement(for word: String, atRow row: Int, col: Int, direction: Direction) -> Int? {
+		// guard direction != .none else { print("Invalid direction"); return nil }
 		let letters = Array(word.uppercased())
 		var currentScore = 0
 		

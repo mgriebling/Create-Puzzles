@@ -56,14 +56,14 @@ struct PlacedWord: Codable, Identifiable, Hashable {
 }
 
 public enum Direction: Int, Codable, CaseIterable {
-	case none, left, right, down, up, diagonalUpLeft, diagonalUpRight,
+	case left, right, down, up, diagonalUpLeft, diagonalUpRight,
 		 diagonalDownLeft, diagonalDownRight
 	
 	var deltaCol: Int {
 		switch self {
 			case .left, .diagonalUpLeft, .diagonalDownLeft: return -1
 			case .right, .diagonalUpRight, .diagonalDownRight: return 1
-			case .up, .down, .none: return 0
+			case .up, .down: return 0
 		}
 	}
 	
@@ -71,7 +71,7 @@ public enum Direction: Int, Codable, CaseIterable {
 		switch self {
 			case .down, .diagonalDownLeft, .diagonalDownRight: return 1
 			case .up, .diagonalUpLeft, .diagonalUpRight: return -1
-			case .left, .right, .none: return 0
+			case .left, .right: return 0
 		}
 	}
 	
@@ -108,17 +108,6 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 		} else {
 			return nil
 		}
-	}
-}
-
-extension String {
-	var trailingDigits: String {
-		String(self.reversed().prefix(while: { $0.isNumber }).reversed())
-	}
-	
-	var removeTrailingDigits: String {
-		let trailingDigits = self.trailingDigits
-		return String(self.dropLast(trailingDigits.count))
 	}
 }
 

@@ -94,11 +94,7 @@ import SwiftUI
 		}
 	}
 	
-	static func save(games: [Game]) {
-		games.forEach { game in
-			game.save(to: game.name)
-		}
-	}
+	static func save(games: [Game]) { games.forEach { $0.save(to: $0.name) } }
 	
 	static func loadGames() -> [Game] {
 		guard let documentsURL = Self.documentDirectory else { return [] }
@@ -136,7 +132,6 @@ import SwiftUI
 		guard !activeWord.isEmpty, let start else { return false }
 		let setElement = PlacedWord(word: activeWord, start: start).extended
 		if placedSet.contains(setElement) {
-//			board.highlightWord(index)
 			return true
 		}
 		return false
@@ -148,7 +143,6 @@ import SwiftUI
 	
 	func copy() -> Game { Game(board: self.board) }
     func clearWord() { board.clearWord() }
-//	func wordIsHighlighted(_ index: Int) -> Bool { board.ishighlighted(index) }
 }
 
 extension Game: Identifiable { }  // auto-generated

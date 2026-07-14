@@ -32,3 +32,14 @@ extension CGPoint {
 		CGPoint(x: (self.x + to.x) / 2, y: (self.y + to.y) / 2)
 	}
 }
+
+extension String {
+	var trailingDigits: String {
+		String(self.reversed().prefix(while: { $0.isNumber }).reversed())
+	}
+	
+	var removeTrailingDigits: String {
+		let trailingDigits = self.trailingDigits
+		return String(self.dropLast(trailingDigits.count))
+	}
+}

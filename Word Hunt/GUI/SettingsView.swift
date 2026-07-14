@@ -78,7 +78,7 @@ struct SettingsView: View {
 					HStack {
 						Spacer()
 						LetterGridView(game: game, allowDrag: true, showWordSelection: false,
-									   settings: internalSettings).id(UUID())
+									   settings: $internalSettings).id(UUID())
 							.frame(maxWidth: 150)
 							.onAppear {
 								game.board.highlightWord(0)

@@ -27,12 +27,12 @@ struct GameView: View {
 							}
 					}
 					Spacer()
-					LetterGridView(game: game, allowDrag: true, settings: settings)
+					LetterGridView(game: game, allowDrag: true, settings: $settings)
 				}
 				
 				// portrait mode
 				VStack {
-					LetterGridView(game: game, allowDrag: true, settings: settings)
+					LetterGridView(game: game, allowDrag: true, settings: $settings)
 						.layoutPriority(10)
 					Text("Words").font(.title3)
 					WordView(words: game.board.wordPlacements)

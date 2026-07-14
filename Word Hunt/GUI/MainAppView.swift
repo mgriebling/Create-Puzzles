@@ -81,9 +81,10 @@ struct MainAppView: View {
 		}
 	}
 	
+	@ViewBuilder
 	private func blankView(for category: SidebarCategory?) -> some View {
 		let name = category?.rawValue.lowercased().dropLast(1) ?? "item"
-		return ContentUnavailableView {
+		ContentUnavailableView {
 			Label("No \(name) selected yet!", systemImage: "exclamationmark.circle")
 		} description: {
 			Text("Select a \(name) on the left to get started.")

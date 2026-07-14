@@ -12,6 +12,8 @@ struct GameSummary: View {
 	
 	@State private var width: CGFloat = 200
 	
+	@AppStorage(.settings) private var settings
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			Text("\(game.board.words.name) Puzzle").font(.title2).bold()
@@ -28,7 +30,7 @@ struct GameSummary: View {
 			self.width = width * 0.8
 		}
 		.overlay {
-			WinnerView(game: game, width: width)
+			WinnerView(game: game, width: width, points: settings.player.points)
 		}
 	}
 }

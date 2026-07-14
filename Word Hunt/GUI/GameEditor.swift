@@ -57,7 +57,7 @@ struct GameEditor: View {
 				.onTapGesture(perform: toggleWordList)
 
 				Section(header: wordListTitle) {
-					LetterGridView(game: lgame, settings: settings).id(gameID)
+					LetterGridView(game: lgame, settings: $settings).id(gameID)
 				}
 			}
 			.onAppear(perform: setUpGame)
