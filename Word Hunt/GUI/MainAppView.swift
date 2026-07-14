@@ -32,11 +32,6 @@ struct MainAppView: View {
 					}
 				}
 			}
-//			.onChange(of: selectedWords) { _, newValue in
-//				if newValue != nil {
-//					columnVisibility = .all
-//				}
-//			}
 			.toolbar {
 				ToolbarItem(placement: .principal) {
 					Picker("Category", selection: $activeCategory) {

@@ -230,6 +230,7 @@ struct GameBoard: Codable, Equatable, Hashable {
 	}
 	
 	mutating func highlightWord(_ index: Int) { wordPlacements[index].highlighted = true }
+	mutating func unhighlightWord(_ index: Int) { wordPlacements[index].highlighted = false }
 	
 //	func ishighlighted(_ index: Int) -> Bool { wordPlacements[index].highlighted }
     

@@ -77,7 +77,7 @@ import SwiftUI
 		guard let documentsDirectory = Self.documentDirectory else { return }
 		
 		// 3. Append the desired filename to the directory path
-		let fileURL = documentsDirectory.appendingPathComponent("\(fileName).json")
+		let fileURL = self.url
 		
 		// 4. Initialize JSONEncoder and format the output
 		let encoder = JSONEncoder()
@@ -92,6 +92,10 @@ import SwiftUI
 		} catch {
 			print("Failed to write JSON file: \(error.localizedDescription)")
 		}
+	}
+	
+	var url: URL {
+		Self.documentDirectory!.appendingPathComponent("\(name).json")
 	}
 	
 	static func save(games: [Game]) { games.forEach { $0.save(to: $0.name) } }

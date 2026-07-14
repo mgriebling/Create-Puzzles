@@ -177,12 +177,12 @@
 				47F14159300531E500E8B927 /* BadgeDetails.swift */,
 				472CE13F291BFA8C0074891E /* Game.swift */,
 				472CE13D291BE6380074891E /* GameBoard.swift */,
-				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 				4707A01B2FF93FF300F88A40 /* SettingsType.swift */,
 				47E0ABEA2FF15B36009D7BB0 /* Timer.swift */,
 				47800D132FE9CD9C009537EC /* WordList.swift */,
 				47F1412130052B7000E8B927 /* Player.swift */,
 				47F141573005315D00E8B927 /* Badge.swift */,
+				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

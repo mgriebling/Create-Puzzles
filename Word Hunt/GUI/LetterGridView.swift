@@ -131,9 +131,9 @@ struct LetterGridView: View {
 			.onAppear {
 				numRows = game.board.size
 				numCols = game.board.size
-				for i in 0..<game.placedWords.count-1 {
-					game.board.highlightWord(i)
-				}
+//				for i in 0..<game.placedWords.count-1 {
+//					game.board.highlightWord(i)
+//				}
 				// game.board.highlightWord(game.placedWords.count-1)
 			}
 			.aspectRatio(1, contentMode: .fit)
@@ -230,8 +230,8 @@ struct LetterGridView: View {
 					word: target, start: start, end: end
 				)
 				foundWords.append(finalizedPath)
-				play(sound: "success.mp3", volume: settings.soundVolume)
-				game.removeActiveWord()  // set the highlight flag
+				self.play(sound: "success.mp3")
+				game.removeActiveWord()  // sets the highlight flag
 				game.save(to: game.name)
 				print("SUCCESS: Found Word \(target)")
 			}
@@ -244,12 +244,6 @@ struct LetterGridView: View {
 			self.play("victory-chime.mp3")
 			settings.player.add(points: game.level)
 			animateWin = true
-//			Task {
-//				try? await Task.sleep(for: .seconds(3))
-//				withAnimation {
-//					print("Adding points: \(game.level)")
-//				}
-//			}
 		}
 		
 		// UI cleanup sequence

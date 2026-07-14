@@ -22,11 +22,9 @@ struct WordView: View {
 	
 	@ViewBuilder
 	private func columnText() -> some View {
-		// let columnCount = 3
 		let columns = [
-			GridItem(.adaptive(minimum: 120, maximum: .infinity), spacing: 16)
+			GridItem(.adaptive(minimum: 130, maximum: .infinity), spacing: 0)
 		]
-		//Array(repeating: GridItem(.flexible(), alignment: .leading), count: columnCount)
 		ScrollView {
 			LazyVGrid(columns: columns, alignment: .leading) {
 				ForEach(words.indices, id: \.self) { index in
@@ -70,7 +68,7 @@ struct WordView: View {
 
 #Preview {
 	let words: [PlacedWord] =
-		SampleWordLists.all[1].words.enumerated().map { index, word in
+		SampleWordLists.all[10].words.enumerated().map { index, word in
 			PlacedWord(word: word, highlighted: Bool.random())
 		}
 	WordView(words: words, style: .columns).padding(.bottom)
