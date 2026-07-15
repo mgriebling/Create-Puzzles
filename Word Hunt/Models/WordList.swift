@@ -112,26 +112,12 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 }
 
 @Observable public class WordList {
-	public var name: String {
-		get {
-			if revision == 0 { return _name }
-			return "\(_name)\(revision)"
-		}
-		set {
-			var value = newValue
-			if let revision = Int(newValue.trailingDigits) {
-				self.revision = revision
-				value = newValue.removeTrailingDigits
-			}
-			_name = value
-		}
-	}
-	private var _name: String		// internal name
+
+	public var name: String
 	public var language: Language
 	public var author: String
 	public var date: Date
 	public var words: [String]
-	private var revision: Int = 0
 	
 	public var averageLength: Double {
 		words.map({ Double($0.count) }).reduce(0, +) / Double(words.count)
@@ -149,7 +135,6 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 		self.author = try container.decode(String.self, forKey: .author)
 		self.date = try container.decode(Date.self, forKey: .date)
 		self.words = try container.decode([String].self, forKey: .words)
-		self.revision = try container.decode(Int.self, forKey: .revision)
 	}
 	
 	/// Create a copy of words
@@ -186,7 +171,7 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 	init(name: String = "Empty", language: Language = .english,
 		 author: String = "Unknown", date: Date = Date(),
 		 wordRange: CountableClosedRange<Int>, totalWords: Int) {
-		print("Creating word list")
+		//print("Creating word list")
 		self._name = name
 		self.language = language
 		self.author = author
@@ -223,10 +208,10 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 			print("Failed to write JSON file: \(error.localizedDescription)")
 		}
 	}
-	
-	func reviseName() {
-		revision += 1
-	}
+//	
+//	func reviseName() {
+//		revision += 1
+//	}
 	
 	func delete() {
 		// 2. Get the URL for the user's Documents directory
@@ -281,7 +266,7 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 	static let largeWordBank = loadSystemWords()
 	
 	static private func generateWords(with size: CountableClosedRange<Int>, total: Int) -> [String] {
-		print("Generating words...")
+		//print("Generating words...")
 		var words: [String] = []
 		while words.count < total {
 			if let word = largeWordBank.randomElement() {
@@ -304,11 +289,12 @@ extension WordList: Codable {
 		try container.encode(author, forKey: .author)
 		try container.encode(date, forKey: .date)
 		try container.encode(words, forKey: .words)
-		try container.encode(revision, forKey: .revision)
+//		try container.encode(revision, forKey: .revision)
 	}
 	
-	enum CodingKeys: String, CodingKey { case _name, language, author, date, words, revision }
-	
+	enum CodingKeys: String, CodingKey {
+		case _name, language, author, date, words, revision
+	}
 }
 
 extension WordList: Identifiable { }  // auto-generated

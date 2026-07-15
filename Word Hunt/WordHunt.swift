@@ -24,7 +24,7 @@ struct WordHunt: App {
 		}
 		.commands {
 			CommandGroup(replacing: .appInfo) {
-				Button("About My App") {
+				Button("About Word Hunt") {
 					showAboutWindow = true
 				}
 				// Optional: Provide a native keyboard shortcut (e.g., Command + I)

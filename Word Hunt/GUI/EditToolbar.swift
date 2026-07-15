@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct EditToolbar: ToolbarContent {
-	let okDisabled: Bool
-	let cancelDisabled: Bool
+	var okDisabled: Bool = false
 	let onDone: (() -> Void)?
 	
 	// MARK: Data (Function) In
@@ -20,7 +19,6 @@ struct EditToolbar: ToolbarContent {
 			Button(action: { dismiss() }) {
 				Image(systemName: "xmark")
 			}
-			.disabled(cancelDisabled)
 		}
 		ToolbarItem(placement: .confirmationAction) {
 			Button(action: { onDone?(); dismiss() }) {

@@ -55,6 +55,7 @@ struct AchievementsView: View {
 				}
 			}
 		}
+		
 		.padding()
 		.frame(maxWidth: .infinity)
 	}

@@ -51,7 +51,9 @@ struct WordsEditor: View {
 						.id(lwords.words)
 						.padding(.vertical, 8)
 						.onTapGesture {
-							editWordList = true
+							if !editWordList {
+								editWordList = true
+							}
 						}
 						.sheet(isPresented: $editWordList) {
 							StringList(title: lwords.name, strings: $lwords.words)
@@ -61,10 +63,7 @@ struct WordsEditor: View {
 					// print("Refreshing wordList...")
 					wordList = lwords.words.sorted().map { PlacedWord(word: $0) }
 					if onDone == nil {
-						// update passed word list directly
-						if words?.words != lwords.words {
-							lwords.reviseName()
-						}
+						// update passed to word list directly
 						words = lwords
 					}
 				}
@@ -75,8 +74,9 @@ struct WordsEditor: View {
 			.navigationBarTitleDisplayMode(.inline)
 #endif
 			.toolbar {
-				let disabled = words == lwords
-				EditToolbar(okDisabled: disabled, cancelDisabled: disabled) { done() }
+				if onDone != nil {
+					EditToolbar() { done() }
+				}
 			}
 		}
 		.onAppear {
@@ -99,6 +99,8 @@ struct WordsEditor: View {
 #Preview {
 	@Previewable @State var words = SampleWordLists.all.randomElement()
 	NavigationStack {
-		WordsEditor(words: $words)
+		WordsEditor(words: $words) {
+			// nothing to do
+		}
 	}
 }

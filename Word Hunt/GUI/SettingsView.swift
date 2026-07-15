@@ -102,7 +102,7 @@ struct SettingsView: View {
 			.navigationBarTitle("Settings")
 			.navigationBarTitleDisplayMode(.inline)
 			.toolbar {
-				EditToolbar(okDisabled: internalSettings == settings, cancelDisabled: false) {
+				EditToolbar(okDisabled: internalSettings == settings) {
 					settings = internalSettings
 					dismiss()
 				}

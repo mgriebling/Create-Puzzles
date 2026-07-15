@@ -33,6 +33,28 @@ extension CGPoint {
 	}
 }
 
+extension Bundle {
+	var displayName: String? {
+		if let bundleDisplayName = object(forInfoDictionaryKey: "CFBundleDisplayName") as? String {
+			return bundleDisplayName
+		}
+		return object(forInfoDictionaryKey: "CFBundleName") as? String
+	}
+	var version: String? {
+		if let build = object(forInfoDictionaryKey: "CFBundleVersion") as? String,
+		   let revision = object(forInfoDictionaryKey: "CFBundleShortVersionString" ) as? String {
+			return revision + " (\(build))"
+		}
+		return nil
+	}
+	var copyright: String? {
+		if let copy = object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String {
+			return copy
+		}
+		return "Copyright © 2025 Computer Inspirations."
+	}
+}
+
 extension String {
 	var trailingDigits: String {
 		String(self.reversed().prefix(while: { $0.isNumber }).reversed())

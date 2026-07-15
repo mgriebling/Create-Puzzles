@@ -41,21 +41,15 @@ struct StringList: View {
 					let index = lstrings.firstIndex(where: { $0.id == item.id })!
 					HStack {
 						Text("\(index+1))").frame(width: 50)
-						// Note: .vertical axis prevent textfield from exiting on return
-						TextField("Edit Word", text: $lstrings[index].title, axis: .vertical)
+						PersistentTextField("Edit Word", text: $lstrings[index].title)
 							.textEditorStyle(.plain)
+							.showClearButton($lstrings[index].title)
+							.keyboardType(.alphabet)
 							.autocorrectionDisabled(true)
 							.onChange(of: lstrings[index].title) { _, newValue in
-								if newValue.contains("\n") {
-									lstrings[index].title = newValue.replacingOccurrences(of: "\n", with: "")
-								}
-							}
-							.onSubmit {
-								let edited = lstrings[index].title.capitalized
-									.filter { $0.isLetter }
-								withAnimation {
-									lstrings[index].title = edited
-									strings[index] = edited
+								let s = newValue.filter { $0.isLetter }
+								if s != newValue {
+									lstrings[index].title = s.capitalized
 								}
 							}
 							.padding(5)
@@ -79,17 +73,17 @@ struct StringList: View {
 			.navigationBarTitleDisplayMode(.inline)
 			.environment(\.editMode, $editMode)
 			.listRowSpacing(-20)
-			.navigationBarItems(
-				leading:  editButton,
-				trailing: addDelButton
-			)
+			.toolbar {
+				editButton
+				addDelButton
+			}
 			#endif
 		}
 	}
 	
 #if os(iOS)
-	private var editButton: some View {
-		HStack {
+	private var editButton: some ToolbarContent {
+		ToolbarItemGroup(placement: .topBarLeading) {
 			Button(action: { dismiss() }) {
 				Image(systemName: "xmark")
 			}
@@ -102,10 +96,10 @@ struct StringList: View {
 		}
 	}
 
-	@ViewBuilder
-	private var addDelButton: some View {
+	@ToolbarContentBuilder
+	private var addDelButton: some ToolbarContent {
 		if editMode == .inactive {
-			HStack {
+			ToolbarItemGroup(placement: .topBarTrailing) {
 				Button(action: addItem) {
 					Image(systemName: "plus")
 				}
@@ -114,62 +108,48 @@ struct StringList: View {
 				}
 			}
 		} else {
-			Button {
-				showConfirmation = true
-			} label: {
-				Image(systemName: "trash")
-			}
-			.confirmationDialog("Delete Words", isPresented: $showConfirmation) {
-				Button("Delete Words", role: .destructive) {
-					deleteItems()
-					dismiss()
+			ToolbarItemGroup(placement: .topBarTrailing) {
+				Button {
+					showConfirmation = true
+				} label: {
+					Image(systemName: "trash")
 				}
-			} message: {
-				Text("The words will be permanently deleted.")
+				.confirmationDialog("Delete Words", isPresented: $showConfirmation) {
+					Button("Delete Words", role: .destructive) {
+						deleteItems()
+						// dismiss()
+					}
+				} message: {
+					Text("The words will be permanently deleted.")
+				}
 			}
 		}
 	}
 #endif
-
+	
 	private func deleteItems() {
-		withAnimation {
-			for id in selectedItems {
-				if let index = lstrings.lastIndex(where: { $0.id == id }) {
+		for id in selectedItems {
+			if let index = lstrings.lastIndex(where: { $0.id == id }) {
+				// underscore silences a warning about ignoring return value
+				_ = withAnimation {
 					lstrings.remove(at: index)
-					strings.remove(at: index)
 				}
+				strings.remove(at: index)
 			}
-			selectedItems = Set<UUID>()
 		}
+		selectedItems = Set<UUID>()
 	}
 		
 	fileprivate func addItem() {
-		// Add a unique name
-		// let strings = lstrings.map(\.title)
-		var postFix: Int = 1
-		let itemName: String
-		if let _ = strings.firstIndex(of: "untitled") {
-			while strings.contains("untitled\(postFix)") {
-				postFix += 1
-			}
-			itemName = "untitled\(postFix)"
-		} else {
-			itemName = "untitled"
-		}
+		let itemName = "untitled"
 		withAnimation {
 			lstrings.insert(ListItem(itemName), at: 0)
-			strings.insert(itemName, at: 0)
 		}
-	}
-	
-	var addButton: some View {
-		Button("Add Word", systemImage: "plus") {
-			addItem()
-		}
+		strings.insert(itemName, at: 0)
 	}
 	
 	func done() {
-		strings = lstrings.map(\.title.capitalized)
+		strings = lstrings.map(\.title.capitalized).sorted()
 		dismiss()
 	}
 }

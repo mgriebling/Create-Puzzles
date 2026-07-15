@@ -230,18 +230,18 @@ struct LetterGridView: View {
 					word: target, start: start, end: end
 				)
 				foundWords.append(finalizedPath)
-				self.play(sound: "success.mp3")
+				effect("success.mp3")
 				game.removeActiveWord()  // sets the highlight flag
 				game.save(to: game.name)
 				print("SUCCESS: Found Word \(target)")
 			}
 		} else {
-			self.play(sound: "oops.mp3")
+			effect("oops.mp3")
 		}
 		
 		game.clearWord()
 		if game.isOver {
-			self.play("victory-chime.mp3")
+			effect("victory-chime.mp3")
 			settings.player.add(points: game.level)
 			animateWin = true
 		}
@@ -254,7 +254,7 @@ struct LetterGridView: View {
 		}
 	}
 	
-	private func play(_ sound: String) {
+	private func effect(_ sound: String) {
 		if settings.soundsOn {
 			play(sound: sound, volume: settings.soundVolume)
 		}

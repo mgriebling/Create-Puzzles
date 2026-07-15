@@ -74,13 +74,14 @@ import SwiftUI
 	/// Saves the game to a file
 	func save(to fileName: String) {
 		// 2. Get the URL for the user's Documents directory
-		guard let documentsDirectory = Self.documentDirectory else { return }
+		//guard let documentsDirectory = Self.documentDirectory else { return }
 		
 		// 3. Append the desired filename to the directory path
 		let fileURL = self.url
 		
 		// 4. Initialize JSONEncoder and format the output
 		let encoder = JSONEncoder()
+		// encoder.dataEncodingStrategy = .deferredToData
 		// encoder.outputFormatting = .prettyPrinted // Makes the JSON file human-readable
 		
 		do {

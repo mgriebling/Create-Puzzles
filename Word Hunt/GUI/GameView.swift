@@ -15,6 +15,7 @@ struct GameView: View {
 	
 	@State private var showSettings = false
 	@State private var showAbout = false
+	@State private var showAwards = false
 	
 	var body: some View {
 		Group {
@@ -47,6 +48,9 @@ struct GameView: View {
 		.sheet(isPresented: $showAbout) {
 			AboutView()
 		}
+		.sheet(isPresented: $showAwards) {
+			AchievementsView()
+		}
 		.padding()
 		.trackElapsedTime(in: game)
 		.toolbar {
@@ -73,9 +77,7 @@ struct GameView: View {
 				}
 			}
 			ToolbarItem {
-				Button(action: {
-					showSettings = true
-				}) {
+				Button(action: { showSettings = true } ) {
 					Image(systemName: "gearshape")
 				}
 				.sheet(isPresented: $showSettings) {
@@ -86,14 +88,17 @@ struct GameView: View {
 			ToolbarItem {
 				Menu("Miscellaneous", systemImage: "ellipsis") {
 					ShareLink(item: game.url)
-					Button("Save Game") {
-						
+					Button(action: {} ) {
+						Label("Save Puzzle", systemImage: "square.and.arrow.down")
 					}
 					Button("Load Game") {
 						
 					}
-					Button("About Word Hunt") {
-						showAbout = true
+					Button(action: { showAwards = true }) {
+						Label("My Awards", systemImage: "trophy")
+					}
+					Button(action: { showAbout = true }) {
+						Label("About Word Hunt", systemImage: "info.circle")
 					}
 				}
 			}
