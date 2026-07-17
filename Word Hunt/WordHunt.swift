@@ -22,6 +22,7 @@ struct WordHunt: App {
 					AboutView()
 				}
 		}
+		.windowToolbarStyle(.unified)
 		.commands {
 			CommandGroup(replacing: .appInfo) {
 				Button("About Word Hunt") {

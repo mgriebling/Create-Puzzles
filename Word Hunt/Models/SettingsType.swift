@@ -23,6 +23,9 @@ public struct SettingsType {
 	
 	var showTimer: Bool
 	
+	var horizontal: Horizontal
+	var vertical: Vertical
+	
 	init() {
 		self.gridDefaultSize = 12.0
 		self.player = Player()
@@ -33,6 +36,8 @@ public struct SettingsType {
 		self.soundsOn = true
 		self.soundVolume = 0.2
 		self.showTimer = true
+		self.horizontal = .left
+		self.vertical = .below
 	}
 	
 	init(_ settings: Self) {
@@ -47,7 +52,8 @@ public extension AppStorageKey where Value == SettingsType {
 extension SettingsType: Codable {
 	enum CodingKeys: String, CodingKey {
 		case gridDefaultSize, player, highlight, selectionColor,
-			 selectionOKColor, highlightColor, soundsOn, soundVolume, showTimer
+			 selectionOKColor, highlightColor, soundsOn, soundVolume, showTimer,
+			 horizontal, vertical
 	}
 	
 	public init(from decoder: Decoder) throws {
@@ -61,6 +67,8 @@ extension SettingsType: Codable {
 		self.soundsOn = try container.decode(Bool.self, forKey: .soundsOn)
 		self.soundVolume = try container.decode(Double.self, forKey: .soundVolume)
 		self.showTimer = try container.decode(Bool.self, forKey: .showTimer)
+		self.horizontal = try container.decode(Horizontal.self, forKey: .horizontal)
+		self.vertical = try container.decode(Vertical.self, forKey: .vertical)
 	}
 	
 	public func encode(to encoder: Encoder) throws {
@@ -74,6 +82,8 @@ extension SettingsType: Codable {
 		try container.encode(self.soundsOn, forKey: .soundsOn)
 		try container.encode(self.soundVolume, forKey: .soundVolume)
 		try container.encode(self.showTimer, forKey: .showTimer)
+		try container.encode(self.horizontal, forKey: .horizontal)
+		try container.encode(self.vertical, forKey: .vertical)
 	}
 }
 
@@ -103,5 +113,20 @@ extension SettingsType: RawRepresentable {
 enum HighLight: String, CaseIterable, Identifiable, Codable {
 	case outline, fill, both
 	
+	var isFill: Bool { self == .fill || self == .both }
+	var isOutline: Bool { self == .outline || self == .both }
+	
+	var id: Self { self }
+}
+
+enum Vertical: String, CaseIterable, Identifiable, Codable {
+	case above, below
+
+	var id: Self { self }
+}
+
+enum Horizontal: String, CaseIterable, Identifiable, Codable {
+	case left, right
+
 	var id: Self { self }
 }

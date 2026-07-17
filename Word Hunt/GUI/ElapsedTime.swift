@@ -13,8 +13,9 @@ struct ElapsedTime: View {
 	let timer: Timer
     
 	@AppStorage(.settings) private var settings
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass
 	
-	let format: Duration.TimeFormatStyle = .time(pattern: .hourMinuteSecond)
+	@State var format: Duration.TimeFormatStyle = .time(pattern: .hourMinuteSecond)
     
     var body: some View {
 		if settings.showTimer {
@@ -29,6 +30,12 @@ struct ElapsedTime: View {
 					}
 				} else {
 					Text(.seconds(timer.elapsedTime), format: format)
+				}
+			}
+			.onAppear {
+				if horizontalSizeClass == .compact &&
+					Duration.seconds(timer.elapsedTime) < Duration(attoseconds: Int128(60.0*60.0e18)) {
+					format = .time(pattern: .minuteSecond)
 				}
 			}
 		}

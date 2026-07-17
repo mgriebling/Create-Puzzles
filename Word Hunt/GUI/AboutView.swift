@@ -15,9 +15,10 @@ struct AboutView: View {
 			VStack {
 				VStack {
 					Image("mac256")
+						.resizable()
+						.aspectRatio(1, contentMode: .fit)
 				}
-				.frame(height: 180, alignment: .center)
-				.padding()
+				.frame(height: 200, alignment: .center)
 				
 				VStack(alignment: .leading) {
 					if let displayName = Bundle.main.displayName {
@@ -38,24 +39,21 @@ struct AboutView: View {
 							.padding(.bottom)
 					}
 					
-					HStack {
-						Button {
-							dismiss()
-						} label: {
-							Text("Acknowledgements")
-								.frame(maxWidth: .infinity)
-						}
-						Spacer()
-						Button {
-							dismiss()
-						} label: {
-							Text("License Agreement")
-								.frame(maxWidth: .infinity)
-						}
+					Button {
+						dismiss()
+					} label: {
+						Text("Acknowledgements")
+							.frame(maxWidth: .infinity)
+					}
+					Button {
+						dismiss()
+					} label: {
+						Text("License Agreement")
+							.frame(maxWidth: .infinity)
 					}
 					Spacer()
 				}
-				.frame(width: 350, alignment: .center)
+				.frame(width: 250, alignment: .center)
 			}
 			.toolbar {
 				ToolbarItem(placement: .cancellationAction) {
@@ -64,10 +62,8 @@ struct AboutView: View {
 					}
 				}
 			}
-			.padding(40)
-#if os(macOS)
-			.frame(width: 350, height: 250) // Restrict size nicely for Mac popups
-#endif
+			// .padding(40)
+			.frame(width: 300, height: 400) // Restrict size nicely for Mac popups
 		}
 	}
 }

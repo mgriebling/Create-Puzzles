@@ -11,6 +11,7 @@ struct GameListView: View {
 	// MARK: Data shared with me
 	@Binding var selection: Game?
 	@Binding var games: [Game]
+	let columnVisibility: NavigationSplitViewVisibility
 	
 //	@Environment(\.scenePhase) private var scenePhase
 
@@ -59,8 +60,10 @@ struct GameListView: View {
 			}
 		}
 		.toolbar {
-			addButton
-			// addChoice
+			if columnVisibility != .detailOnly {
+				addButton
+				// addChoice
+			}
 		}
     }
 	
@@ -98,6 +101,6 @@ struct GameListView: View {
 		Game(board: GameBoard(size: 14, words: SampleWordLists.all[0]))
 	]
 	NavigationStack {
-		GameListView(selection: $selection, games: $games)
+		GameListView(selection: $selection, games: $games, columnVisibility: .all)
 	}
 }

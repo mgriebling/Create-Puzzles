@@ -37,14 +37,13 @@ struct StringList: View {
 		
 		NavigationStack {
 			List(selection: $selectedItems) {
-				ForEach(lstrings) { item in
+				ForEach(lstrings, id: \.id) { item in
 					let index = lstrings.firstIndex(where: { $0.id == item.id })!
 					HStack {
-						Text("\(index+1))").frame(width: 50)
+						// Text("\(index+1))").frame(width: 50)
 						PersistentTextField("Edit Word", text: $lstrings[index].title)
 							.textEditorStyle(.plain)
 							.showClearButton($lstrings[index].title)
-							.keyboardType(.alphabet)
 							.autocorrectionDisabled(true)
 							.onChange(of: lstrings[index].title) { _, newValue in
 								let s = newValue.filter { $0.isLetter }

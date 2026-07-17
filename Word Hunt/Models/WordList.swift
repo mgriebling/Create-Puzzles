@@ -208,10 +208,6 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 			print("Failed to write JSON file: \(error.localizedDescription)")
 		}
 	}
-//	
-//	func reviseName() {
-//		revision += 1
-//	}
 	
 	func delete() {
 		// 2. Get the URL for the user's Documents directory
@@ -254,9 +250,7 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 	static func loadSystemWords() -> [String] {
 		// macOS includes a comprehensive default English word file at this path
 		if let wordFilePath = Bundle.main.path(forResource: "web2", ofType: nil) {
-			print("Found word file")
 			if let content = try? String(contentsOfFile: wordFilePath, encoding: .utf8) {
-				print("Successfully loaded word file")
 				return content.components(separatedBy: .newlines)
 			}
 		}
@@ -266,7 +260,6 @@ public enum Language: String, Codable, CaseIterable, CustomStringConvertible {
 	static let largeWordBank = loadSystemWords()
 	
 	static private func generateWords(with size: CountableClosedRange<Int>, total: Int) -> [String] {
-		//print("Generating words...")
 		var words: [String] = []
 		while words.count < total {
 			if let word = largeWordBank.randomElement() {
@@ -289,7 +282,6 @@ extension WordList: Codable {
 		try container.encode(author, forKey: .author)
 		try container.encode(date, forKey: .date)
 		try container.encode(words, forKey: .words)
-//		try container.encode(revision, forKey: .revision)
 	}
 	
 	enum CodingKeys: String, CodingKey {

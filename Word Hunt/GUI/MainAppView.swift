@@ -19,11 +19,12 @@ struct MainAppView: View {
 			Group {
 				switch activeCategory {
 					case .puzzles:
-						GameListView(selection: $selectedPuzzle, games: $games)
+						GameListView(selection: $selectedPuzzle, games: $games, columnVisibility: columnVisibility)
 					case .words:
-						WordListView(selection: $selectedWords, wordLists: $wordLists)
+						WordListView(selection: $selectedWords, wordLists: $wordLists, columnVisibility: columnVisibility)
 				}
 			}
+			.navigationSplitViewColumnWidth(min: 350, ideal: 350)
 			.navigationTitle(activeCategory.rawValue)
 			.onChange(of: selectedPuzzle) { _, newValue in
 				if newValue != nil {
@@ -33,14 +34,16 @@ struct MainAppView: View {
 				}
 			}
 			.toolbar {
-				ToolbarItem(placement: .principal) {
-					Picker("Category", selection: $activeCategory) {
-						ForEach(SidebarCategory.allCases) { category in
-							Text(category.rawValue).tag(category)
+				if columnVisibility != .detailOnly {
+					ToolbarItem(placement: .primaryAction) {
+						Picker("Category", selection: $activeCategory) {
+							ForEach(SidebarCategory.allCases) { category in
+								Text(category.rawValue).tag(category)
+							}
 						}
+						.pickerStyle(.segmented)
+						.fixedSize()
 					}
-					.pickerStyle(.segmented)
-					.fixedSize()
 				}
 			}
 		} detail: {
@@ -67,6 +70,7 @@ struct MainAppView: View {
 			}
 			.id(activeCategory)
 		}
+		.focusEffectDisabled(true)
 		.onAppear {
 //			if games.isEmpty {
 //				games = Game.loadGames()  // read back any saved games
@@ -75,7 +79,7 @@ struct MainAppView: View {
 			addSampleWords()
 		}
 	}
-	
+
 	@ViewBuilder
 	private func blankView(for category: SidebarCategory?) -> some View {
 		let name = category?.rawValue.lowercased().dropLast(1) ?? "item"

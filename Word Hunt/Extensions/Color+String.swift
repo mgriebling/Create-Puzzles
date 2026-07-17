@@ -23,6 +23,9 @@ extension Color: @retroactive RawRepresentable {
 }
 
 extension Color {
+
+	// @Environment(\.self} var environment
+
     /// Initialize a SwiftUI Color from a hex string like "#RRGGBB" or "#RRGGBBAA"
     init(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -59,23 +62,22 @@ extension Color {
 		#else
         let uiColor = UIColor(self)
 		#endif
-
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-
-        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-
-        let r = Int(red * 255)
-        let g = Int(green * 255)
-        let b = Int(blue * 255)
-//        let a = Int(alpha * 255)
-
-//        if a < 255 {
-//            return String(format: "#%02X%02X%02X%02X", r, g, b, a)
-//        } else {
-       return String(format: "#%02X%02X%02X", r, g, b)
-//        }
-    }
+		
+		if let rgbColor = uiColor.usingColorSpace(.deviceRGB) {
+			var red: CGFloat = 0
+			var green: CGFloat = 0
+			var blue: CGFloat = 0
+			var alpha: CGFloat = 0
+	
+			rgbColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+			let r = Int(red * 255)
+			let g = Int(green * 255)
+			let b = Int(blue * 255)
+			print("resolved: r: \(r), g: \(g), b: \(b)")
+			return String(format: "#%02X%02X%02X", r, g, b)
+		} else {
+			print("Could not resolve color")
+			return "#000000"
+		}
+	}
 }

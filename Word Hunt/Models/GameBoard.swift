@@ -36,8 +36,7 @@ struct GameBoard: Codable, Equatable, Hashable {
 		set { _selectedWord = newValue }
 		get { _selectedWord }
 	}
-//    private var selectedMoves = [Int]()
-	
+
 	// active set of words
 	private(set) var words: WordList
     
@@ -92,7 +91,7 @@ struct GameBoard: Codable, Equatable, Hashable {
 			clearBoard()
 			wordPlacements = []
 			unplaced = generatePuzzle(with: words)
-			print("Unplaced: \(unplaced)")
+//			print("Unplaced: \(unplaced)")
 			if unplaced < bestPlacement {
 				bestPlacement = unplaced
 				bestPlacementWords = wordPlacements
@@ -107,10 +106,10 @@ struct GameBoard: Codable, Equatable, Hashable {
 
 		let newSet = Set(wordPlacements.map(\.word))
 		missingWords = words.filter { !newSet.contains($0.lowercased()) }.sorted(by: <)
-		print("Original words: \(words)")
-		print("Missing words: \(missingWords)")
-		print("Placed words: \(wordPlacements.map(\.word))")
-		print("Board size: \(size)x\(size)")
+//		print("Original words: \(words)")
+//		print("Missing words: \(missingWords)")
+//		print("Placed words: \(wordPlacements.map(\.word))")
+//		print("Board size: \(size)x\(size)")
 	}
 	
 	mutating func clearBoard() {
@@ -232,8 +231,6 @@ struct GameBoard: Codable, Equatable, Hashable {
 	mutating func highlightWord(_ index: Int) { wordPlacements[index].highlighted = true }
 	mutating func unhighlightWord(_ index: Int) { wordPlacements[index].highlighted = false }
 	
-//	func ishighlighted(_ index: Int) -> Bool { wordPlacements[index].highlighted }
-    
 	mutating func clearWord() { selectedWord = "" } // clear the active word
  
     func indexOf(_ row: Int, column: Int) -> Int {

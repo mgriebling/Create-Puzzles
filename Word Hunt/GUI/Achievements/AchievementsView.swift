@@ -13,7 +13,11 @@ struct AchievementsView: View {
 	@State private var lockedBadges: [Badge] = []
 //	private var moments: [Moment]
 	
+	// MARK: Data (Function) In/Out
 	@AppStorage(.settings) private var settings
+	
+	// MARK: Data (Function) In
+	@Environment(\.dismiss) var dismiss
 	
 	var body: some View {
 		NavigationStack {
@@ -25,6 +29,13 @@ struct AchievementsView: View {
 				unlockedBadges = createUnlockedBadges()
 			}
 			.navigationTitle("Achievements")
+			.toolbar {
+				ToolbarItem(placement: .cancellationAction) {
+					Button(action: { dismiss() }) {
+						Image(systemName: "xmark")
+					}
+				}
+			}
 		}
 		.dynamicTypeSize(...DynamicTypeSize.xxxLarge)
 	}

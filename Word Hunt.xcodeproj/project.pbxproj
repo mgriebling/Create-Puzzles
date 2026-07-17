@@ -45,6 +45,8 @@
 		47F141A93005740800E8B927 /* LockedAwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141A83005740800E8B927 /* LockedAwardView.swift */; };
 		47F141AB300574CB00E8B927 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141AA300574CB00E8B927 /* AchievementsView.swift */; };
 		47F141F13007A9F000E8B927 /* PersistentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141F03007A9F000E8B927 /* PersistentTextField.swift */; };
+		47F141F53007D77300E8B927 /* FloatingToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141F43007D77300E8B927 /* FloatingToolbar.swift */; };
+		47F1422130096B1000E8B927 /* ToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F1422030096B1000E8B927 /* ToolbarButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +89,8 @@
 		47F141A83005740800E8B927 /* LockedAwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedAwardView.swift; sourceTree = "<group>"; };
 		47F141AA300574CB00E8B927 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		47F141F03007A9F000E8B927 /* PersistentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentTextField.swift; sourceTree = "<group>"; };
+		47F141F43007D77300E8B927 /* FloatingToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingToolbar.swift; sourceTree = "<group>"; };
+		47F1422030096B1000E8B927 /* ToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -167,8 +171,10 @@
 				47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */,
 				47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */,
 				471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */,
-				47F141A7300572B800E8B927 /* Achievements */,
 				47F141F03007A9F000E8B927 /* PersistentTextField.swift */,
+				47F141A7300572B800E8B927 /* Achievements */,
+				47F141F43007D77300E8B927 /* FloatingToolbar.swift */,
+				47F1422030096B1000E8B927 /* ToolbarButton.swift */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -299,6 +305,7 @@
 				47E0ABE52FF069CB009D7BB0 /* GameListView.swift in Sources */,
 				47800D222FEAD186009537EC /* StringList.swift in Sources */,
 				47E0AC2A2FF17361009D7BB0 /* GameView.swift in Sources */,
+				47F1422130096B1000E8B927 /* ToolbarButton.swift in Sources */,
 				47800D142FE9CD9C009537EC /* WordList.swift in Sources */,
 				478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */,
 				471670AC2FF4493700A09C13 /* LetterGridView.swift in Sources */,
@@ -306,6 +313,7 @@
 				47079FFC2FF5AF9200F88A40 /* SettingsView.swift in Sources */,
 				47F141583005315D00E8B927 /* Badge.swift in Sources */,
 				47F141A63005727700E8B927 /* UnlockedAwardView.swift in Sources */,
+				47F141F53007D77300E8B927 /* FloatingToolbar.swift in Sources */,
 				47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */,
 				472CE140291BFA8C0074891E /* Game.swift in Sources */,
 				4771F1762FEF208B00A98387 /* SampleWordLists.swift in Sources */,

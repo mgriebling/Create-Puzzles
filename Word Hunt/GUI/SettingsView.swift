@@ -25,6 +25,7 @@ struct SettingsView: View {
 			Form {
 				Section("Word List Creator Default Name") {
 					TextField("Enter your name", text: $internalSettings.player.name)
+						.showClearButton($internalSettings.player.name)
 				}
 				
 				Section("Word Grid Default Size: \(Int(internalSettings.gridDefaultSize))") {
@@ -35,6 +36,22 @@ struct SettingsView: View {
 					} maximumValueLabel: {
 						Text("\(Int(SettingsType.maxGridRange.upperBound))")
 					}
+				}
+				
+				Section("Word List (relative to letter grid):") {
+					Picker("Horizontal", selection: $internalSettings.horizontal) {
+						ForEach(Horizontal.allCases) { mode in
+							Text(mode.rawValue.capitalized)
+						}
+					}
+					.pickerStyle(.segmented)
+					
+					Picker("Vertical", selection: $internalSettings.vertical) {
+						ForEach(Vertical.allCases) { mode in
+							Text(mode.rawValue.capitalized)
+						}
+					}
+					.pickerStyle(.segmented)
 				}
 				
 				Section("Timer") {
@@ -77,8 +94,7 @@ struct SettingsView: View {
 					
 					HStack {
 						Spacer()
-						LetterGridView(game: game, allowDrag: true, showWordSelection: false,
-									   settings: $internalSettings).id(UUID())
+						LetterGridView(game: game, allowDrag: true, showWordSelection: false, settings: $internalSettings).id(UUID())
 							.frame(maxWidth: 150)
 							.onAppear {
 								game.board.highlightWord(0)
@@ -97,17 +113,20 @@ struct SettingsView: View {
 			}
 #if os(macOS)
 			.padding()
-			.frame(width: 300, height: 300)
+			.frame(width: 450, height: 700)
 #else
 			.navigationBarTitle("Settings")
 			.navigationBarTitleDisplayMode(.inline)
+#endif
 			.toolbar {
-				EditToolbar(okDisabled: internalSettings == settings) {
+				EditToolbar() {
 					settings = internalSettings
 					dismiss()
-				}
+				} //(okDisabled: internalSettings == settings) {
+//					settings = internalSettings
+//					dismiss()
+//				}
 			}
-#endif
 		}
 	}
 }
