@@ -95,10 +95,10 @@ import SwiftUI
 		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
 	}
 	
-	static var extension: String { "wordhunt" }
+	static var fileExt: String { "wordhunt" }
 	
 	var url: URL {
-		Self.documentDirectory!.appendingPathComponent("\(name).\(extension)")
+		Self.documentDirectory!.appendingPathComponent("\(name).\(Self.fileExt)")
 	}
 	
 	static func save(games: [Game]) { games.forEach { $0.save(to: $0.name) } }
@@ -111,7 +111,7 @@ import SwiftUI
 					includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
 			
 			// Filter for files with extension (case-insensitive)
-			let gameURLs = contents.filter { $0.pathExtension.lowercased() == Self.extension }
+			let gameURLs = contents.filter { $0.pathExtension.lowercased() == Self.fileExt }
 			var games = [Game]()
 			for url in gameURLs {
 				if let game = Game(from: url) {

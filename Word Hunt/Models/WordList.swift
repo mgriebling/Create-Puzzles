@@ -21,9 +21,9 @@ struct CellIndex: Equatable, Codable, Hashable, CustomStringConvertible {
 		self.col = col
 	}
 	
-	func centerOfCell(cellSize: Int, spacing: Int) -> CGPoint {
-		let x = col * (cellSize + spacing) + cellSize / 2
-		let y = row * (cellSize + spacing) + cellSize / 2
+	func centerOfCell(cellSize: CGFloat, spacing: Int) -> CGPoint {
+		let x = CGFloat(col) * (cellSize + CGFloat(spacing)) + cellSize / 2.0
+		let y = CGFloat(row) * (cellSize + CGFloat(spacing)) + cellSize / 2.0
 		return CGPoint(x: x, y: y)
 	}
 }

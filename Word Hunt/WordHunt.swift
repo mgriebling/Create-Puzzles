@@ -17,6 +17,7 @@ struct WordHunt: App {
 	var body: some Scene {
 		WindowGroup {
 			MainAppView()
+				.frame(minWidth: 800, minHeight: 600)
 				// Listen for state changes to display your About view as a sheet
 				.sheet(isPresented: $showAboutWindow) {
 					AboutView()

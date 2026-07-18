@@ -25,7 +25,6 @@ struct MainAppView: View {
 				}
 			}
 			.navigationSplitViewColumnWidth(min: 350, ideal: 350)
-			// .navigationTitle(activeCategory.rawValue)
 			.onChange(of: selectedPuzzle) { _, newValue in
 				if newValue != nil {
 					withAnimation {
@@ -68,13 +67,12 @@ struct MainAppView: View {
 						}
 				}
 			}
-			.id(activeCategory)
 		}
 		.focusEffectDisabled(true)
 		.onAppear {
-//			if games.isEmpty {
-//				games = Game.loadGames()  // read back any saved games
-//			}
+			if games.isEmpty {
+				games = Game.loadGames()  // read back any saved games
+			}
 			addSampleGames()
 			addSampleWords()
 		}

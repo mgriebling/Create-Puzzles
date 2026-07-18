@@ -33,8 +33,7 @@ struct LetterGridView: View {
 	var body: some View {
 		VStack(spacing: 0) {
 			GeometryReader { geometry in
-				// let totalWidth = geometry.size.width
-				let cellSize = (Int(geometry.size.width) - (spacing * (numCols - 1))) / numCols
+				let cellSize = (geometry.size.width - CGFloat(spacing * (numCols - 1))) / CGFloat(numCols)
 				
 				// 1. Text Grid
 				textGrid(cellSize: cellSize)
@@ -58,7 +57,7 @@ struct LetterGridView: View {
 					.gesture(
 						DragGesture(minimumDistance: 5, coordinateSpace: .named("GridSpace"))
 							.onChanged { value in
-								processDrag(location: value.location, startLocation: value.startLocation, cellSize: cellSize, spacing: spacing)
+								processDrag(location: value.location, startLocation: value.startLocation, cellSize: cellSize)
 							}
 							.onEnded { _ in
 								evaluateAndSaveWord()
@@ -79,7 +78,7 @@ struct LetterGridView: View {
 		}
 	}
 	
-	private func capsuleView(cellSize: Int, start: CellIndex, end: CellIndex, selected: Bool) -> some View {
+	private func capsuleView(cellSize: CGFloat, start: CellIndex, end: CellIndex, selected: Bool) -> some View {
 		let startPoint = start.centerOfCell(cellSize: cellSize, spacing: spacing)
 		let endPoint = end.centerOfCell(cellSize: cellSize, spacing: spacing)
 		let fill = settings.highlight.isFill
@@ -100,61 +99,55 @@ struct LetterGridView: View {
 			.allowsHitTesting(false)
 	}
 	
-	private func textGrid(cellSize: Int) -> some View {
+	private func textGrid(cellSize: CGFloat) -> some View {
 		VStack(spacing: 0) {
-			let size = Double(cellSize)
 			ForEach(0..<numRows, id: \.self) { row in
 				HStack(spacing: 0) {
 					ForEach(0..<numCols, id: \.self) { col in
 						Text(game.board[row, col].letter)
-							.font(.system(size: size * 0.7, weight: .bold))
-							.frame(width: size, height: size)
+							.font(.system(size: cellSize * 0.7, weight: .bold))
+							.frame(width: cellSize, height: cellSize)
 					}
 				}
 			}
 		}
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
 	
 	// MARK: - Word Evaluation Mechanics
 	
-	private func processDrag(location: CGPoint, startLocation: CGPoint, cellSize: Int, spacing: Int) {
-		let step = CGFloat(cellSize + spacing)
+	private func processDrag(location: CGPoint, startLocation: CGPoint, cellSize: CGFloat) {
+		let step = cellSize + CGFloat(spacing)
+		let start = CellIndex.ifloor(startLocation / step)
 		
-		let startCol = Int(floor(startLocation.x / step))
-		let startRow = Int(floor(startLocation.y / step))
-		
-		guard startRow >= 0, startRow < numRows, startCol >= 0, startCol < numCols else { return }
+		guard start.inRange(row: 0..<numRows, column: 0..<numCols)
+		else { return }
 		
 		if dragStartCell == nil {
-			dragStartCell = CellIndex(row: startRow, col: startCol)
+			dragStartCell = CellIndex(row: start.row, col: start.col)
 		}
 		
-		let currentCol = Int(floor(location.x / step))
-		let currentRow = Int(floor(location.y / step))
-		
-		let boundedCol = max(0, min(numCols - 1, currentCol))
-		let boundedRow = max(0, min(numRows - 1, currentRow))
+		let current = CellIndex.ifloor(location / step)
+		let bounded = current.limit(to: 0..<numRows, column: 0..<numCols)
 		
 		guard let origin = dragStartCell else { return }
-		
-		let deltaRow = boundedRow - origin.row
-		let deltaCol = boundedCol - origin.col
+		let delta = bounded - origin
 		
 		// Lock vector tracks and lock cell endpoints
-		if deltaRow == 0 && deltaCol != 0 {
+		if delta.row == 0 && delta.col != 0 {
 			// horizontal drag
-			selectionDirection = deltaCol > 0 ? .right : .left
-			dragCurrentCell = CellIndex(row: origin.row, col: boundedCol)
-		} else if deltaCol == 0 && deltaRow != 0 {
+			selectionDirection = delta.col > 0 ? .right : .left
+			dragCurrentCell = CellIndex(row: origin.row, col: bounded.col)
+		} else if delta.col == 0 && delta.row != 0 {
 			// vertical drag
-			selectionDirection = deltaRow > 0 ? .down : .up
-			dragCurrentCell = CellIndex(row: boundedRow, col: origin.col)
-		} else if abs(deltaRow) == abs(deltaCol) && deltaRow != 0 {
+			selectionDirection = delta.row > 0 ? .down : .up
+			dragCurrentCell = CellIndex(row: bounded.row, col: origin.col)
+		} else if abs(delta.row) == abs(delta.col) && delta.row != 0 {
 			// diagonal drag
-			selectionDirection = deltaRow == deltaCol
-				? (deltaCol > 0 ? .diagonalDownRight : .diagonalUpLeft)
-				: (deltaCol < 0 ? .diagonalDownLeft : .diagonalUpRight)
-			dragCurrentCell = CellIndex(row: boundedRow, col: boundedCol)
+			selectionDirection = delta.row == delta.col
+				? (delta.col > 0 ? .diagonalDownRight : .diagonalUpLeft)
+				: (delta.col < 0 ? .diagonalDownLeft : .diagonalUpRight)
+			dragCurrentCell = CellIndex(row: bounded.row, col: bounded.col)
 		}
 		
 		extractWordString()
@@ -164,17 +157,11 @@ struct LetterGridView: View {
 		guard let start = dragStartCell, let end = dragCurrentCell, let selectionDirection else { return }
 		
 		var tempWord = ""
-		let rowStep = selectionDirection.deltaRow
-		let colStep = selectionDirection.deltaCol
-		
-		var currRow = start.row
-		var currCol = start.col
-		
+		var curr = start
 		while true {
-			tempWord.append(game.board[currRow, currCol].letter)
-			if currRow == end.row && currCol == end.col { break }
-			currRow += rowStep
-			currCol += colStep
+			tempWord.append(game.board[curr.row, curr.col].letter)
+			if curr == end { break }
+			curr = curr + selectionDirection
 		}
 		
 		game.board.selectedWord = tempWord
@@ -206,6 +193,7 @@ struct LetterGridView: View {
 		game.clearWord()
 		if game.isOver {
 			effect("victory-chime.mp3")
+			game.timer.pause()
 			settings.player.add(points: game.level)
 			animateWin = true
 		}
@@ -222,6 +210,47 @@ struct LetterGridView: View {
 		if settings.soundsOn {
 			play(sound: sound, volume: settings.soundVolume)
 		}
+	}
+}
+
+extension CGPoint {
+	
+	static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+		CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+	}
+	
+	static func / (lhs: CGPoint, rhs: CGFloat) -> CGPoint {
+		CGPoint(x: lhs.x / rhs, y: lhs.y / rhs)
+	}
+}
+
+extension CellIndex {
+	
+	static func ifloor(_ point: CGPoint) -> CellIndex {
+		let x = Int(point.x.rounded(.down))
+		let y = Int(point.y.rounded(.down))
+		return CellIndex(row: y, col: x)
+	}
+	
+	static func - (lhs: CellIndex, rhs: CellIndex) -> CellIndex {
+		CellIndex(row: lhs.row - rhs.row, col: lhs.col - rhs.col)
+	}
+	
+	static func + (lhs: inout CellIndex, rhs: Direction) -> CellIndex {
+		CellIndex(row: lhs.row + rhs.deltaRow, col: lhs.col + rhs.deltaCol)
+	}
+	
+	func limit(to row: Range<Int>, column: Range<Int>) -> CellIndex {
+		let row = max(row.lowerBound, min(self.row, row.upperBound))
+		let col = max(column.lowerBound, min(self.col, column.upperBound))
+		return CellIndex(row: row, col: col)
+	}
+	
+	func inRange(row: Range<Int>, column: Range<Int>) -> Bool {
+		if self.row <= row.upperBound, self.row >= row.lowerBound, self.col <= column.upperBound, self.col >= column.lowerBound {
+			return true
+		}
+		return false
 	}
 }
 

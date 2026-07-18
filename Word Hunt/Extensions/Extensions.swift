@@ -15,9 +15,9 @@ extension View {
 	}
 }
 
-extension Int {
-	func signum() -> Int { (self > 0) ? 1 : ((self < 0) ? -1 : 0) }
-}
+//extension Int {
+//	func signum() -> Int { (self > 0) ? 1 : ((self < 0) ? -1 : 0) }
+//}
 
 extension CGPoint {
 	// MARK: - Geometry Math Helpers

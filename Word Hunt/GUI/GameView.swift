@@ -38,7 +38,6 @@ struct GameView: View {
 				}
 				LetterGridView(game: game, allowDrag: true, settings: $settings)
 					.layoutPriority(10)
-					.frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
 					.fixedSize(horizontal: true, vertical: false)
 				if settings.horizontal == .right {
 					divider()
@@ -49,13 +48,11 @@ struct GameView: View {
 			// portrait mode
 			VSView {
 				if settings.vertical == .above {
-					// Spacer()
 					wordsList
 					divider()
 				}
 				LetterGridView(game: game, allowDrag: true, settings: $settings)
 					.layoutPriority(10)
-					.frame(minHeight: 250, maxHeight: .infinity)
 					.fixedSize(horizontal: false, vertical: true)
 				if settings.vertical == .below {
 					divider()
@@ -71,12 +68,10 @@ struct GameView: View {
 		}
 		.trackElapsedTime(in: game)
 		.toolbar {
-			ToolbarItemGroup(placement: .principal) {   // macOS uses .status
-				HStack {
+			ToolbarItemGroup(placement: .principal) { // macOS uses .status
+				HStack(spacing: 10) {
 					Text("Found: \(game.matched)")
-						.lineLimit(1)
-						.fixedSize(horizontal: true, vertical: false)
-					ElapsedTime(text: "", timer: game.timer)
+					ElapsedTime(text: "Time:", timer: game.timer)
 						.lineLimit(1)
 						.fixedSize(horizontal: true, vertical: false)
 						.fontDesign(.monospaced)
@@ -90,6 +85,7 @@ struct GameView: View {
 				Button(action: highlightWord) {
 					Image(systemName: "lightbulb")
 				}
+				.disabled(game.isOver)
 				Button(action: { showSettings = true } ) {
 					Image(systemName: "gearshape")
 				}
@@ -117,8 +113,8 @@ struct GameView: View {
 			}
 		}
 //		#if os(ios)
-//		.navigationTitle(game.name + " Puzzle")
-//		.navigationBarTitleDisplayMode(.inline)
+		.navigationTitle("")
+		.navigationBarTitleDisplayMode(.inline)
 //		#endif
 	}
 	
@@ -134,7 +130,7 @@ struct GameView: View {
 			}
 			floatingWord()
 		}
-		.frame(minWidth: 250, maxWidth: 350)
+		//.frame(minWidth: 250, maxWidth: 350)
 	}
 	
 	// PANE 2: THE CUSTOM STYLED DIVIDING LINE BLOCK
@@ -159,14 +155,14 @@ struct GameView: View {
 			}
 		}
 		#else
-		EmptyView()
+		Spacer()
 		#endif
 	}
 	
 	/// Floating selected name
 	@ViewBuilder
 	private func floatingWord() -> some View {
-		let cellSize: CGFloat = horizontalSizeClass == .compact ? 35 : 50
+		let cellSize: CGFloat = 35 // : 50
 		let fontSize = cellSize * 0.6
 		let mix = colorScheme == .dark ? 0.4 : 0.2
 		let back = Color.backColor

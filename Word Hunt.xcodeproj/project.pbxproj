@@ -91,7 +91,7 @@
 		47F141F03007A9F000E8B927 /* PersistentTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentTextField.swift; sourceTree = "<group>"; };
 		47F141F43007D77300E8B927 /* FloatingToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingToolbar.swift; sourceTree = "<group>"; };
 		47F1422030096B1000E8B927 /* ToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButton.swift; sourceTree = "<group>"; };
-		47F14230300ACCB200E8B927 /* Word-Hunt-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Word-Hunt-Info.plist"; sourceTree = SOURCE_ROOT; };
+		47F14230300ACCB200E8B927 /* Word-Hunt-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Word-Hunt-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -131,7 +131,6 @@
 		472CE12D291858D90074891E /* Word Hunt */ = {
 			isa = PBXGroup;
 			children = (
-				47F14230300ACCB200E8B927 /* Word-Hunt-Info.plist */,
 				472CE12E291858D90074891E /* WordHunt.swift */,
 				47F140C43002D41A00E8B927 /* Models */,
 				47F140C33002D02300E8B927 /* GUI */,
@@ -139,6 +138,7 @@
 				472CE134291858DB0074891E /* WordHunt.entitlements */,
 				471E2A1E2FFC375F00A1ADBD /* web2 */,
 				472CE132291858DB0074891E /* Assets.xcassets */,
+				47F14230300ACCB200E8B927 /* Word-Hunt-Info.plist */,
 				472CE135291858DB0074891E /* Preview Content */,
 			);
 			path = "Word Hunt";
