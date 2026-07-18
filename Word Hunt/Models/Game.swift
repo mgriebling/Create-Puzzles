@@ -67,17 +67,13 @@ import SwiftUI
         }
     }
 	
-	static var documentDirectory: URL? {
-		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-	}
-	
 	/// Saves the game to a file
 	func save(to fileName: String) {
 		// 2. Get the URL for the user's Documents directory
 		//guard let documentsDirectory = Self.documentDirectory else { return }
 		
-		// 3. Append the desired filename to the directory path
-		let fileURL = self.url
+//		// 3. Append the desired filename to the directory path
+//		let fileURL = self.url
 		
 		// 4. Initialize JSONEncoder and format the output
 		let encoder = JSONEncoder()
@@ -89,14 +85,20 @@ import SwiftUI
 			let jsonData = try encoder.encode(self)
 			
 			// 6. Write the raw Data to disk
-			try jsonData.write(to: fileURL, options: .atomic)
+			try jsonData.write(to: url, options: .atomic)
 		} catch {
 			print("Failed to write JSON file: \(error.localizedDescription)")
 		}
 	}
 	
+	static var documentDirectory: URL? {
+		FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+	}
+	
+	static var extension: String { "wordhunt" }
+	
 	var url: URL {
-		Self.documentDirectory!.appendingPathComponent("\(name).json")
+		Self.documentDirectory!.appendingPathComponent("\(name).\(extension)")
 	}
 	
 	static func save(games: [Game]) { games.forEach { $0.save(to: $0.name) } }
@@ -108,8 +110,8 @@ import SwiftUI
 			let contents = try fileManager.contentsOfDirectory(at: documentsURL,
 					includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
 			
-			// Filter for files with "json" extension (case-insensitive)
-			let gameURLs = contents.filter { $0.pathExtension.lowercased() == "json" }
+			// Filter for files with extension (case-insensitive)
+			let gameURLs = contents.filter { $0.pathExtension.lowercased() == Self.extension }
 			var games = [Game]()
 			for url in gameURLs {
 				if let game = Game(from: url) {
@@ -124,13 +126,12 @@ import SwiftUI
 	}
 	
 	func delete() {
-		// 2. Get the URL for the user's Documents directory
-		guard let documentsDirectory = Self.documentDirectory else { return }
-		
-		// 3. Append the desired filename to the directory path
-		let fileURL = documentsDirectory.appendingPathComponent("\(self.name).json")
-		
-		try? FileManager.default.removeItem(at: fileURL)
+//		// 2. Get the URL for the user's Documents directory
+//		guard let documentsDirectory = Self.documentDirectory else { return }
+//		
+//		// 3. Append the desired filename to the directory path
+//		let fileURL = documentsDirectory.appendingPathComponent("\(self.name).json")
+		try? FileManager.default.removeItem(at: url)
 	}
 	
 	func isWordMatch(start: CellIndex?) -> Bool {

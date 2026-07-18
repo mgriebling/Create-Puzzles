@@ -74,7 +74,7 @@ struct GameEditor: View {
 						}
 				}
 			}
-			.navigationTitle(Text("Game Editor"))
+			.navigationTitle(Text("Game Generator"))
 			#if os(iOS)
 			.navigationBarTitleDisplayMode(.inline)
 			#endif

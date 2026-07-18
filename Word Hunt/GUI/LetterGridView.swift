@@ -26,15 +26,15 @@ struct LetterGridView: View {
 	@State private var numCols = 1
 	@State private var animateWin = false
 	@State private var done: Bool = false
-	@State private var width: CGFloat = 0
+	@State private var width: CGFloat = 0	// for the WinnerView
 	
-	let spacing: CGFloat = 0
+	let spacing = 0	// space between columns and rows
 
 	var body: some View {
-		VStack {
+		VStack(spacing: 0) {
 			GeometryReader { geometry in
-				let totalWidth = geometry.size.width
-				let cellSize = (totalWidth - (spacing * CGFloat(numCols - 1))) / CGFloat(numCols)
+				// let totalWidth = geometry.size.width
+				let cellSize = (Int(geometry.size.width) - (spacing * (numCols - 1))) / numCols
 				
 				// 1. Text Grid
 				textGrid(cellSize: cellSize)
@@ -79,34 +79,36 @@ struct LetterGridView: View {
 		}
 	}
 	
-	private func capsuleView(cellSize: CGFloat, start: CellIndex, end: CellIndex, selected: Bool) -> some View {
+	private func capsuleView(cellSize: Int, start: CellIndex, end: CellIndex, selected: Bool) -> some View {
 		let startPoint = start.centerOfCell(cellSize: cellSize, spacing: spacing)
 		let endPoint = end.centerOfCell(cellSize: cellSize, spacing: spacing)
 		let fill = settings.highlight.isFill
 		let lineWidth = settings.highlight.isOutline ? 3.0 : 0.0
 		let fillColor = detectedWord != nil ? settings.selectionOKColor : settings.selectionColor
 		let color = selected ? fillColor : settings.highlightColor
-		let backColor = Color(.windowBackgroundColor)
+		let backColor = Color.backColor
 		let mix = selected ? 0.2 : 0.6
 		let mix2 = selected ? 0.0 : 0.4
 		let scale = selected ? 1.0 : 0.84
+		let size = Double(cellSize)
 		return Capsule()
 			.fill(fill ? color.mix(with: backColor, by: mix) : .clear)
 			.stroke(color.mix(with: backColor, by: mix2), lineWidth: lineWidth)
-			.frame(width: cellSize * scale, height: startPoint.distance(to: endPoint) + cellSize * scale)
+			.frame(width: size * scale, height: startPoint.distance(to: endPoint) + size * scale)
 			.rotationEffect(Angle(radians: startPoint.angle(to: endPoint)))
 			.position(startPoint.midPoint(to: endPoint))
 			.allowsHitTesting(false)
 	}
 	
-	private func textGrid(cellSize: CGFloat) -> some View {
-		VStack(spacing: spacing) {
+	private func textGrid(cellSize: Int) -> some View {
+		VStack(spacing: 0) {
+			let size = Double(cellSize)
 			ForEach(0..<numRows, id: \.self) { row in
-				HStack(spacing: spacing) {
+				HStack(spacing: 0) {
 					ForEach(0..<numCols, id: \.self) { col in
 						Text(game.board[row, col].letter)
-							.font(.system(size: cellSize * 0.7, weight: .bold))
-							.frame(width: cellSize, height: cellSize)
+							.font(.system(size: size * 0.7, weight: .bold))
+							.frame(width: size, height: size)
 					}
 				}
 			}
@@ -115,12 +117,11 @@ struct LetterGridView: View {
 	
 	// MARK: - Word Evaluation Mechanics
 	
-	private func processDrag(location: CGPoint, startLocation: CGPoint, cellSize: CGFloat, spacing: CGFloat) {
-		let step = cellSize + spacing
+	private func processDrag(location: CGPoint, startLocation: CGPoint, cellSize: Int, spacing: Int) {
+		let step = CGFloat(cellSize + spacing)
 		
 		let startCol = Int(floor(startLocation.x / step))
 		let startRow = Int(floor(startLocation.y / step))
-		print("Cell size: \(cellSize)")
 		
 		guard startRow >= 0, startRow < numRows, startCol >= 0, startCol < numCols else { return }
 		

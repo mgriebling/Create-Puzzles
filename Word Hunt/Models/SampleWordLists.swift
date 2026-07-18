@@ -80,7 +80,7 @@ struct SampleWordLists {
 		
 		WordList(name: "Cities",
 				 words: [
-					"Amsterdam", "Athens", "Bangkok", "Barcelona", "Beijing", "Berlin", "Bogota", "Boston", "Brussels", "Cairo", "Chicago", "Dallas", "Delhi", "Dublin", "Hanoi", "Houston", "Istanbul", "Jakarta", "Jerusalem", "Lima", "Lisbon", "London", "Madrid", "Manila", "Melbourne", "Mexico-City", "Miami", "Milan", "Moscow", "Mumbai", "Nairobi", "New-York", "Paris", "Prague", "Rio", "Rome", "Santiago", "Seoul", "Shanghai", "Singapore", "Stockholm", "Sydney", "Taipei", "Tehran", "Tokyo", "Toronto", "Vienna", "Warsaw", "Washington", "Zurich"]),
+					"Amsterdam", "Athens", "Bangkok", "Barcelona", "Beijing", "Berlin", "Bogota", "Boston", "Brussels", "Cairo", "Chicago", "Dallas", "Delhi", "Dublin", "Hanoi", "Houston", "Istanbul", "Jakarta", "Jerusalem", "Lima", "Lisbon", "London", "Madrid", "Manila", "Melbourne", "Mexicocity", "Miami", "Milan", "Moscow", "Mumbai", "Nairobi", "Newyork", "Paris", "Prague", "Rio", "Rome", "Santiago", "Seoul", "Shanghai", "Singapore", "Stockholm", "Sydney", "Taipei", "Tehran", "Tokyo", "Toronto", "Vienna", "Warsaw", "Washington", "Zurich"]),
 		
 		WordList(name: "Clothing",
 				 words: [
@@ -113,11 +113,11 @@ struct SampleWordLists {
 		
 		WordList(name: "Countries",
 				 words: [
-					"Algeria", "Argentina", "Australia", "Austria", "Bangladesh", "Belgium", "Brazil", "Canada", "Chile", "China", "Colombia", "Denmark", "Egypt", "Ethiopia", "Finland", "France", "Germany", "Greece", "India", "Indonesia", "Iran", "Ireland", "Italy", "Japan", "Kenya", "Malaysia", "Mexico", "Morocco", "Netherlands", "Nigeria", "Norway", "Pakistan", "Peru", "Philippines", "Poland", "Portugal", "Russia", "Saudi-Arabia", "Singapore", "South-Africa", "Spain", "Sweden", "Switzerland", "Thailand", "Turkey", "Ukraine", "United-Kingdom", "United-States", "Vietnam", "Zambia"]),
+					"Algeria", "Argentina", "Australia", "Austria", "Bangladesh", "Belgium", "Brazil", "Canada", "Chile", "China", "Colombia", "Denmark", "Egypt", "Ethiopia", "Finland", "France", "Germany", "Greece", "India", "Indonesia", "Iran", "Ireland", "Italy", "Japan", "Kenya", "Malaysia", "Mexico", "Morocco", "Netherlands", "Nigeria", "Norway", "Pakistan", "Peru", "Philippines", "Poland", "Portugal", "Russia", "Saudiarabia", "Singapore", "Southafrica", "Spain", "Sweden", "Switzerland", "Thailand", "Turkey", "Ukraine", "Unitedstates", "Unitedkingdom", "Vietnam", "Zambia"]),
 		
 		WordList(name: "Crimes",
 				 words: [
-					"Abduction", "Arson", "Assault", "Battery", "Bigamy", "Blackmail", "Bribery", "Burglary", "Conspiracy", "Counterfeiting", "Defamation", "Embezzlement", "Espionage", "Extortion", "Forgery", "Fraud", "Harassment", "Hijacking", "Incest", "Jaywalking", "Kidnapping", "Larceny", "Libel", "Looting", "Manslaughter", "Money-laundering", "Mugging", "Murder", "Perjury", "Pickpocketing", "Piracy", "Poaching", "Polygamy", "Racketeering", "Riot", "Robbery", "Sabotage", "Sedition", "Shoplifting", "Slander", "Smuggling", "Speeding", "Stalking", "Theft", "Treason", "Trespass", "Truancy", "Vagrancy", "Vandalism"]),
+					"Abduction", "Arson", "Assault", "Battery", "Bigamy", "Blackmail", "Bribery", "Burglary", "Conspiracy", "Counterfeiting", "Defamation", "Embezzlement", "Espionage", "Extortion", "Forgery", "Fraud", "Harassment", "Hijacking", "Incest", "Jaywalking", "Kidnapping", "Larceny", "Libel", "Looting", "Manslaughter", "Moneylaundering", "Mugging", "Murder", "Perjury", "Pickpocketing", "Piracy", "Poaching", "Polygamy", "Racketeering", "Riot", "Robbery", "Sabotage", "Sedition", "Shoplifting", "Slander", "Smuggling", "Speeding", "Stalking", "Theft", "Treason", "Trespass", "Truancy", "Vagrancy", "Vandalism"]),
 
 		WordList(name: "Currencies",
 				 words: [
@@ -194,7 +194,7 @@ struct SampleWordLists {
 		
 		WordList(name: "Kitchenware",
 				 words: [
-					"Blender", "Bowl", "Cleaver", "Colander", "Crockery", "Cup", "Cutlery", "Dish", "Fork", "Grater", "Griddle", "Juicer", "Kettle", "Knife", "Ladle", "Masher", "Microplane", "Mixer", "Mug", "Pan", "Peeler", "Pitcher", "Plate", "Pot", "Ramekin", "Saucepan", "Scale", "Scissors", "Scoop", "Sieve", "Skillet", "Spatula", "Spoon", "Strainer", "Toaster", "Tongs", "Tray", "Turner", "Whisk", "Wok", "Zester", "Bake-ware", "Can-opener", "Cutting-board", "Garlic-press", "Measuring-cup", "Rolling-pin", "Salad-spinner", "Timer", "Tupperware"]),
+					"Blender", "Bowl", "Cleaver", "Colander", "Crockery", "Cup", "Cutlery", "Dish", "Fork", "Grater", "Griddle", "Juicer", "Kettle", "Knife", "Ladle", "Masher", "Microplane", "Mixer", "Mug", "Pan", "Peeler", "Pitcher", "Plate", "Pot", "Ramekin", "Saucepan", "Scale", "Scissors", "Scoop", "Sieve", "Skillet", "Spatula", "Spoon", "Strainer", "Toaster", "Tongs", "Tray", "Turner", "Whisk", "Wok", "Zester", "Bakeware", "Canopener", "Cuttingboard", "Garlicpress", "Measuringcup", "Rollingpin", "Saladspinner", "Timer", "Tupperware"]),
 		
 		WordList(name: "Languages",
 				 words: [
@@ -213,7 +213,7 @@ struct SampleWordLists {
 		
 		WordList(name: "Linear Measurements",
 				 words: [
-					"Angstrom", "Barleycorn", "Cable", "Caliber", "Centimeter", "Chain", "Cubit", "Decameter", "Decimeter", "Digit", "Ell", "Fathom", "Finger", "Foot", "Furlong", "Gauge", "Hand", "Hectometer", "Inch", "Kilometer", "League", "Lightyear", "Link", "Meter", "Micrometer", "Micron", "Mil", "Mile", "Millimeter", "Nanometer", "Nautical-mile", "Pace", "Palm", "Parsec", "Perch", "Pica", "Point", "Pole", "Rod", "Rope", "Shaftment", "Shaku", "Skein", "Span", "Spindle", "Stride", "Verst", "Yard"]),
+					"Angstrom", "Barleycorn", "Cable", "Caliber", "Centimeter", "Chain", "Cubit", "Decameter", "Decimeter", "Digit", "Ell", "Fathom", "Finger", "Foot", "Furlong", "Gauge", "Hand", "Hectometer", "Inch", "Kilometer", "League", "Lightyear", "Link", "Meter", "Micrometer", "Micron", "Mil", "Mile", "Millimeter", "Nanometer", "Knot", "Pace", "Palm", "Parsec", "Perch", "Pica", "Point", "Pole", "Rod", "Rope", "Shaftment", "Shaku", "Skein", "Span", "Spindle", "Stride", "Verst", "Yard"]),
 	
 		WordList(name: "Literary Devices",
 				 words: [
@@ -237,7 +237,7 @@ struct SampleWordLists {
 		
 		WordList(name: "Musical Genres",
 				 words: [
-					"Alternative", "Ambient", "Baroque", "Bluegrass", "Blues", "Classical", "Country", "Disco", "Dubstep", "Electronic", "Folk", "Funk", "Gospel", "Grunge", "Heavy-Metal", "Hip-Hop", "House", "Indie", "Industrial", "Jazz", "Latin", "Metal", "Minimal", "Motown", "Musical", "New-Age", "Opera", "Orchestral", "Pop", "Psychedelic", "Punk", "Rap", "Reggae", "Rock", "Salsa", "Samba", "Ska", "Soul", "Techno", "Trance", "Trap", "Vaporwave", "Western", "World", "Xoomii", "Yodeling", "Zouk", "Zydeco", "Choral", "Gothic"]),
+					"Alternative", "Ambient", "Baroque", "Bluegrass", "Blues", "Classical", "Country", "Disco", "Dubstep", "Electronic", "Folk", "Funk", "Gospel", "Grunge", "Heavymetal", "Hiphop", "House", "Indie", "Industrial", "Jazz", "Latin", "Metal", "Minimal", "Motown", "Musical", "Newage", "Opera", "Orchestral", "Pop", "Psychedelic", "Punk", "Rap", "Reggae", "Rock", "Salsa", "Samba", "Ska", "Soul", "Techno", "Trance", "Trap", "Vaporwave", "Western", "World", "Xoomii", "Yodeling", "Zouk", "Zydeco", "Choral", "Gothic"]),
 		
 		WordList(name: "Mythical Creatures",
 				 words: [

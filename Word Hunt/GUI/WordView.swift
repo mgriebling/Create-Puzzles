@@ -20,10 +20,12 @@ struct WordView: View {
 		}
 	}
 	
+	static let width = CGFloat(130)
+	
 	@ViewBuilder
 	private func columnText() -> some View {
 		let columns = [
-			GridItem(.adaptive(minimum: 130, maximum: .infinity), spacing: 0)
+			GridItem(.adaptive(minimum: Self.width, maximum: .infinity), spacing: 0)
 		]
 		ScrollView {
 			LazyVGrid(columns: columns, alignment: .leading) {

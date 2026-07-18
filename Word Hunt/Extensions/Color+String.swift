@@ -24,7 +24,13 @@ extension Color: @retroactive RawRepresentable {
 
 extension Color {
 
-	// @Environment(\.self} var environment
+	public static var backColor: Color {
+		#if os(iOS)
+		return Color(UIColor.systemBackground)
+		#else
+		return Color(NSColor.windowBackgroundColor)
+		#endif
+	}
 
     /// Initialize a SwiftUI Color from a hex string like "#RRGGBB" or "#RRGGBBAA"
     init(hex: String) {
@@ -59,11 +65,12 @@ extension Color {
     var hex: String {
 		#if os(macOS)
 		let uiColor = NSColor(self)
+		let rgbColor = uiColor.usingColorSpace(.deviceRGB) ?? UIColor.black
 		#else
-        let uiColor = UIColor(self)
+        let rgbColor = UIColor(self)
 		#endif
 		
-		if let rgbColor = uiColor.usingColorSpace(.deviceRGB) {
+//		if let rgbColor = uiColor.usingColorSpace(.deviceRGB) {
 			var red: CGFloat = 0
 			var green: CGFloat = 0
 			var blue: CGFloat = 0
@@ -75,9 +82,9 @@ extension Color {
 			let b = Int(blue * 255)
 			print("resolved: r: \(r), g: \(g), b: \(b)")
 			return String(format: "#%02X%02X%02X", r, g, b)
-		} else {
-			print("Could not resolve color")
-			return "#000000"
-		}
+//		} else {
+//			print("Could not resolve color")
+//			return "#000000"
+//		}
 	}
 }

@@ -20,17 +20,26 @@ struct GameView: View {
 	@State private var showAwards = false
 	@State private var isHovering: Bool = false
 	
+	#if os(iOS)
+	typealias HSView = HStack
+	typealias VSView = VStack
+	#else
+	typealias HSView = HSplitView
+	typealias VSView = VSplitView
+	#endif
+	
 	var body: some View {
 		ViewThatFits(in: .horizontal) {
 			// landscape mode
-			HSplitView {
+			HSView {
 				if settings.horizontal == .left {
 					wordsList
 					divider()
 				}
 				LetterGridView(game: game, allowDrag: true, settings: $settings)
 					.layoutPriority(10)
-					.frame(minWidth: 250, maxWidth: .infinity)
+					.frame(minWidth: 250, maxWidth: .infinity, maxHeight: .infinity)
+					.fixedSize(horizontal: true, vertical: false)
 				if settings.horizontal == .right {
 					divider()
 					wordsList
@@ -38,19 +47,19 @@ struct GameView: View {
 			}
 			
 			// portrait mode
-			VSplitView {
+			VSView {
 				if settings.vertical == .above {
-					Spacer()
+					// Spacer()
 					wordsList
 					divider()
 				}
 				LetterGridView(game: game, allowDrag: true, settings: $settings)
 					.layoutPriority(10)
 					.frame(minHeight: 250, maxHeight: .infinity)
+					.fixedSize(horizontal: false, vertical: true)
 				if settings.vertical == .below {
 					divider()
 					wordsList
-						.padding(.top, 10)
 				}
 			}
 		}
@@ -60,25 +69,22 @@ struct GameView: View {
 		.sheet(isPresented: $showAwards) {
 			AchievementsView()
 		}
-		.padding()
 		.trackElapsedTime(in: game)
 		.toolbar {
-			//#if os(iOS)
-			ToolbarItemGroup(placement: .status) {
-				ElapsedTime(text: "", timer: game.timer)
-					.lineLimit(1)
-					.fixedSize(horizontal: true, vertical: false)
-					.fontDesign(.monospaced)
-					.padding(.trailing, 10)
-				Group {
-					if horizontalSizeClass == .compact {
-						Text("\(game.matched)/\(game.placedWords.count)")
-					} else {
-						Text("Matched: \(game.matched) of \(game.placedWords.count)")
-					}
+			ToolbarItemGroup(placement: .principal) {   // macOS uses .status
+				HStack {
+					Text("Found: \(game.matched)")
+						.lineLimit(1)
+						.fixedSize(horizontal: true, vertical: false)
+					ElapsedTime(text: "", timer: game.timer)
+						.lineLimit(1)
+						.fixedSize(horizontal: true, vertical: false)
+						.fontDesign(.monospaced)
 				}
-				.lineLimit(1)
-				.fixedSize(horizontal: true, vertical: false)
+			}
+			ToolbarItem(placement: .topBarLeading) {
+				Text(game.name + " Puzzle")
+					.fixedSize(horizontal: true, vertical: false)
 			}
 			ToolbarItemGroup(placement: .primaryAction) {
 				Button(action: highlightWord) {
@@ -91,13 +97,13 @@ struct GameView: View {
 					SettingsView()
 						.navigationTitle("Settings")
 				}
-				Menu("Miscellaneous", systemImage: "ellipsis") {
+				Menu {
 					ShareLink(item: game.url)
 					Button(action: {} ) {
-						Label("Save Puzzle", systemImage: "square.and.arrow.down")
+						Label("Save Puzzle", systemImage: "arrow.down.document")
 					}
-					Button("Load Game") {
-						
+					Button(action: {} ) {
+						Label("Load Puzzle", systemImage: "arrow.up.document")
 					}
 					Button(action: { showAwards = true }) {
 						Label("My Awards", systemImage: "trophy")
@@ -105,20 +111,25 @@ struct GameView: View {
 					Button(action: { showAbout = true }) {
 						Label("About Word Hunt", systemImage: "info.circle")
 					}
+				} label: {
+					Image(systemName: "ellipsis")
 				}
 			}
-			//#endif
 		}
-		.navigationTitle(game.name + " Puzzle")
-		#if os(iOS)
-		.navigationBarTitleDisplayMode(.inline)
-		#endif
+//		#if os(ios)
+//		.navigationTitle(game.name + " Puzzle")
+//		.navigationBarTitleDisplayMode(.inline)
+//		#endif
 	}
 	
 	var wordsList: some View {
 		ZStack {
 			VStack {
-				Text("Words").font(.headline)
+				GeometryReader { proxy in
+					Text("Words (\(game.placedWords.count))").font(.headline)
+						.offset(x: (proxy.size.width - WordView.width)/2, y: -8)
+				}
+				.fixedSize(horizontal: false, vertical: true)
 				WordView(words: game.board.wordPlacements)
 			}
 			floatingWord()
@@ -128,6 +139,7 @@ struct GameView: View {
 	
 	// PANE 2: THE CUSTOM STYLED DIVIDING LINE BLOCK
 	func divider() -> some View {
+		#if os(macOS)
 		Group {
 			Rectangle()
 				// Changes color dynamically when the cursor hovers over the area
@@ -146,6 +158,9 @@ struct GameView: View {
 				NSCursor.pop()
 			}
 		}
+		#else
+		EmptyView()
+		#endif
 	}
 	
 	/// Floating selected name
@@ -154,7 +169,7 @@ struct GameView: View {
 		let cellSize: CGFloat = horizontalSizeClass == .compact ? 35 : 50
 		let fontSize = cellSize * 0.6
 		let mix = colorScheme == .dark ? 0.4 : 0.2
-		let back = Color(.windowBackgroundColor)
+		let back = Color.backColor
 		let gray = back.mix(with: .primary, by: mix)
 		let frameWidth = game.activeWord.count/2 + 1
 		Text(game.activeWord)
@@ -188,7 +203,7 @@ struct GameView: View {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 10, words: SampleWordLists.all[0]))
+	@State var game = Game(board: GameBoard(size: 18, words: SampleWordLists.all[0]))
 	NavigationStack {
 		GameView(game: game)
 	}

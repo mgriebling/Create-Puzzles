@@ -25,7 +25,7 @@ struct MainAppView: View {
 				}
 			}
 			.navigationSplitViewColumnWidth(min: 350, ideal: 350)
-			.navigationTitle(activeCategory.rawValue)
+			// .navigationTitle(activeCategory.rawValue)
 			.onChange(of: selectedPuzzle) { _, newValue in
 				if newValue != nil {
 					withAnimation {
@@ -35,7 +35,7 @@ struct MainAppView: View {
 			}
 			.toolbar {
 				if columnVisibility != .detailOnly {
-					ToolbarItem(placement: .primaryAction) {
+					ToolbarItem(placement: .principal) {
 						Picker("Category", selection: $activeCategory) {
 							ForEach(SidebarCategory.allCases) { category in
 								Text(category.rawValue).tag(category)
