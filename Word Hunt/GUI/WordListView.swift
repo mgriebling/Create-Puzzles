@@ -11,7 +11,7 @@ struct WordListView: View {
 	// MARK: Data Shared with Me
 	@Binding var selection: WordList?
 	@Binding var wordLists: [WordList]
-	let columnVisibility: NavigationSplitViewVisibility
+	let showToolbar: Bool
 	
 	@State private var wordListToEdit: WordList? = WordList()
 	@State private var showWordListEditor: Bool = false
@@ -35,7 +35,7 @@ struct WordListView: View {
 		}
 		.listStyle(.plain)
 		.toolbar {
-			if columnVisibility != .detailOnly {
+			if showToolbar {
 				addButton
 			}
 		}
@@ -76,10 +76,9 @@ struct WordListView: View {
 	var addButton: some View {
 		Button("Add Word List", systemImage: "plus") {
 			let name = uniqueName(for: "Random")
-			wordListToEdit = WordList(name: name, wordRange: 3...7, totalWords: 50)
+			wordListToEdit = WordList(name: name, wordRange: 3...7, totalWords: 60)
 			showWordListEditor = true
 		}
-		.buttonStyle(.plain)
 		.sheet(isPresented: $showWordListEditor) {
 			WordsEditor(words: $wordListToEdit) {
 				if let index = wordLists.firstIndex(of: wordListToEdit!) {
@@ -98,6 +97,6 @@ struct WordListView: View {
 	@Previewable @State var selection = SampleWordLists.all.first
 	@Previewable @State var words = SampleWordLists.all
 	NavigationStack {
-		WordListView(selection: $selection, wordLists: $words, columnVisibility: .all)
+		WordListView(selection: $selection, wordLists: $words, showToolbar: true)
 	}
 }

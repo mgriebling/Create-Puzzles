@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MainAppView: View {
 	// Track the currently active tab
-	@State private var activeCategory: SidebarCategory = .puzzles
+	@State private var activeTab = Tabs.puzzle
 	@State private var selectedPuzzle: Game? = nil
 	@State private var selectedWords: WordList? = nil
 	
@@ -12,33 +12,27 @@ struct MainAppView: View {
 	@State private var wordLists: [WordList] = []
 	@State private var puzzlesExpanded: Bool = true
 	@State private var wordsExpanded: Bool = false
-	@State private var columnVisibility: NavigationSplitViewVisibility = .automatic
+	@State private var columnVisibility: NavigationSplitViewVisibility = .detailOnly
 	
 	var body: some View {
 		NavigationSplitView(columnVisibility: $columnVisibility) {
 			Group {
-				switch activeCategory {
+				switch activeTab {
 					case .puzzles:
-						GameListView(selection: $selectedPuzzle, games: $games, columnVisibility: columnVisibility)
+						GameListView(selection: $selectedPuzzle, games: $games, wordLists: wordLists, showToolbar: columnVisibility != .detailOnly)
 					case .words:
-						WordListView(selection: $selectedWords, wordLists: $wordLists, columnVisibility: columnVisibility)
+						WordListView(selection: $selectedWords, wordLists: $wordLists, showToolbar: columnVisibility != .detailOnly)
 				}
 			}
 			.navigationSplitViewColumnWidth(min: 350, ideal: 350)
-			.onChange(of: selectedPuzzle) { _, newValue in
-				if newValue != nil {
-					withAnimation {
-						columnVisibility = .detailOnly
-					}
-				}
-			}
 			.toolbar {
 				if columnVisibility != .detailOnly {
 					ToolbarItem(placement: .principal) {
-						Picker("Category", selection: $activeCategory) {
-							ForEach(SidebarCategory.allCases) { category in
-								Text(category.rawValue).tag(category)
-							}
+						Picker("Tabs", selection: $activeTab) {
+							Text(Tabs.puzzle.name)
+								.tag(Tabs.puzzle)
+							Text(Tabs.wordList.name)
+								.tag(Tabs.wordList)
 						}
 						.pickerStyle(.segmented)
 						.fixedSize()
@@ -47,7 +41,7 @@ struct MainAppView: View {
 			}
 		} detail: {
 			Group {
-				switch activeCategory {
+				switch activeTab {
 					case .puzzles:
 						if let game = selectedPuzzle {
 							GameView(game: game)
@@ -56,31 +50,52 @@ struct MainAppView: View {
 									columnVisibility = .detailOnly
 								}
 						} else {
-							blankView(for: activeCategory)
+							blankView(for: activeTab)
 						}
 					case .words:
 						if let _ = selectedWords {
 							WordsEditor(words: $selectedWords)
 								.id(selectedWords)
 						} else {
-							blankView(for: activeCategory)
+							blankView(for: activeTab)
 						}
 				}
 			}
 		}
-		.focusEffectDisabled(true)
-		.onAppear {
-			if games.isEmpty {
-				games = Game.loadGames()  // read back any saved games
+		.onChange(of: activeTab) {
+			withAnimation {
+				if activeTab == .puzzle {
+					columnVisibility = .detailOnly
+				} else {
+					columnVisibility = .all
+				}
 			}
-			addSampleGames()
-			addSampleWords()
+		}
+		.onChange(of: selectedPuzzle) {
+			withAnimation {
+				columnVisibility = .detailOnly
+			}
+		}
+		.focusEffectDisabled(true)
+		.navigationSplitViewStyle(.automatic)
+		.onAppear {
+			withAnimation {
+//				if games.isEmpty {
+//					games = Game.loadGames()  // read back any saved games
+//				}
+				addSampleGames()
+				addSampleWords()
+				selectedPuzzle = games.first
+				selectedWords = wordLists.first
+				activeTab = .puzzles(selectedPuzzle)
+				columnVisibility = .detailOnly
+			}
 		}
 	}
 
 	@ViewBuilder
-	private func blankView(for category: SidebarCategory?) -> some View {
-		let name = category?.rawValue.lowercased().dropLast(1) ?? "item"
+	private func blankView(for category: Tabs?) -> some View {
+		let name = category?.name ?? "item"
 		ContentUnavailableView {
 			Label("No \(name) selected yet!", systemImage: "exclamationmark.circle")
 		} description: {
@@ -91,9 +106,8 @@ struct MainAppView: View {
 	private func addSampleGames() {
 		games = []
 		if games.isEmpty {
-			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: Int.random(in: 6...20),
-								words: SampleWordLists.all[i]))
+			for _ in 0..<10 {
+				let game = Game(board: GameBoard(size: Int.random(in: 6...20), words: SampleWordLists.all.randomElement()!))
 				games.append(game)
 			}
 		}
@@ -107,28 +121,24 @@ struct MainAppView: View {
 	}
 }
 
-enum SidebarCategory: String, CaseIterable, Identifiable {
-	case puzzles = "Puzzles"
-	case words = "Words"
+enum Tabs: Hashable {
+	case puzzles(Game?)
+	case words(WordList?)
 	
-	var id: Self { self }
-}
-
-enum SidebarSelection: Hashable {
-	case wordHunt(Game)
-	case wordLists(WordList)
+	static var puzzle: Self { .puzzles(nil) }
+	static var wordList: Self { .words(nil) }
 	
 	var name: String {
 		switch self {
-			case .wordHunt:  "Puzzles"
-			case .wordLists: "Words"
+			case .puzzles: "Puzzles"
+			case .words: "Words"
 		}
 	}
 	
 	var image: String {
 		switch self {
-			case .wordHunt:  "rectangle.and.text.magnifyingglass"
-			case .wordLists: "long.text.page.and.pencil.fill"
+			case .puzzles: "rectangle.and.text.magnifyingglass"
+			case .words: "long.text.page.and.pencil.fill"
 		}
 	}
 }

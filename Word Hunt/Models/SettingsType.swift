@@ -8,9 +8,9 @@
 import SwiftUI
 
 public struct SettingsType {
-	static let maxGridRange = 4.0...20.0
+	static let maxGridRange = 4...20
 	
-	var gridDefaultSize: Double
+	var gridDefaultSize: Int
 	var player: Player
 	
 	var highlight: HighLight
@@ -27,7 +27,7 @@ public struct SettingsType {
 	var vertical: Vertical
 	
 	init() {
-		self.gridDefaultSize = 12.0
+		self.gridDefaultSize = 12
 		self.player = Player()
 		self.highlight = .allCases.first!
 		self.selectionColor = .blue
@@ -58,7 +58,7 @@ extension SettingsType: Codable {
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		self.gridDefaultSize = try container.decode(Double.self, forKey: .gridDefaultSize)
+		self.gridDefaultSize = try container.decode(Int.self, forKey: .gridDefaultSize)
 		self.player = try container.decode(Player.self, forKey: .player)
 		self.highlight = try container.decode(HighLight.self, forKey: .highlight)
 		self.selectionColor = try container.decode(Color.self, forKey: .selectionColor)

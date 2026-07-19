@@ -11,21 +11,26 @@ struct WordView: View {
 	let words: [PlacedWord]
 	var style: TextStyle = .columns
 	
+	static let width: CGFloat = 130
+	
+	@State var width = Self.width
+	
 	var body: some View {
 		if style == .columns {
 			columnText()
+//				.onAppear {
+//					self.width = 
+//				}
 		} else {
 			concatenatedText
 				.flexibleSystemFont(maximum: 15)
 		}
 	}
 	
-	static let width = CGFloat(130)
-	
 	@ViewBuilder
 	private func columnText() -> some View {
 		let columns = [
-			GridItem(.adaptive(minimum: Self.width, maximum: .infinity), spacing: 0)
+			GridItem(.adaptive(minimum: width, maximum: .infinity), spacing: 0)
 		]
 		ScrollView {
 			LazyVGrid(columns: columns, alignment: .leading) {

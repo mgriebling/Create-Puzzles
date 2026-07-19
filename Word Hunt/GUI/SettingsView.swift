@@ -28,15 +28,15 @@ struct SettingsView: View {
 						.showClearButton($internalSettings.player.name)
 				}
 				
-				Section("Word Grid Default Size: \(Int(internalSettings.gridDefaultSize))") {
-					Slider(value: $internalSettings.gridDefaultSize, in: SettingsType.maxGridRange, step: 1) {
-						Text("Word Grid Minimum")
-					} minimumValueLabel: {
-						Text("\(Int(SettingsType.maxGridRange.lowerBound))")
-					} maximumValueLabel: {
-						Text("\(Int(SettingsType.maxGridRange.upperBound))")
-					}
-				}
+//				Section("Word Grid Default Size: \(Int(internalSettings.gridDefaultSize))") {
+//					Slider(value: $internalSettings.gridDefaultSize, in: SettingsType.maxGridRange, step: 1) {
+//						Text("Word Grid Minimum")
+//					} minimumValueLabel: {
+//						Text("\(Int(SettingsType.maxGridRange.lowerBound))")
+//					} maximumValueLabel: {
+//						Text("\(Int(SettingsType.maxGridRange.upperBound))")
+//					}
+//				}
 				
 				Section("Word List (relative to letter grid):") {
 					Picker("Horizontal", selection: $internalSettings.horizontal) {

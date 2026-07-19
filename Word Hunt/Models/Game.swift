@@ -51,10 +51,12 @@ import SwiftUI
 	var level: Int {
 		// first calculate average difficulty of the words (5 is typical word length)
 		let averageWordLength = 6.0
+		let low = SettingsType.maxGridRange.lowerBound
+		let high = SettingsType.maxGridRange.upperBound
 		let wordsCount = Double(words.count)
 		let wordScore = words.map({ Double($0.count) }).reduce(0, +) /
 						(wordsCount * averageWordLength)
-		let puzzleScore = Double(size) / SettingsType.maxGridRange.upperBound
+		let puzzleScore = Double(size - low) / Double(high - low)
 		let numberOfWordsScore = wordsCount / Double(board.words.words.count)
 		let total = wordScore + puzzleScore + numberOfWordsScore
 		return min(10, Int((10.0 / 3.0) * total + 0.5))
@@ -69,13 +71,6 @@ import SwiftUI
 	
 	/// Saves the game to a file
 	func save(to fileName: String) {
-		// 2. Get the URL for the user's Documents directory
-		//guard let documentsDirectory = Self.documentDirectory else { return }
-		
-//		// 3. Append the desired filename to the directory path
-//		let fileURL = self.url
-		
-		// 4. Initialize JSONEncoder and format the output
 		let encoder = JSONEncoder()
 		// encoder.dataEncodingStrategy = .deferredToData
 		// encoder.outputFormatting = .prettyPrinted // Makes the JSON file human-readable

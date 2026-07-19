@@ -29,21 +29,21 @@ struct GameEditor: View {
 	var body: some View {
 		NavigationStack {
 			Form {
-				let size = Int(settings.gridDefaultSize)
-				Section(header: Text("\(selectedWordList.name) Game (\(size) Rows/Columns)")) {
-					let range = SettingsType.maxGridRange
-					Slider(value: $settings.gridDefaultSize, in: range, step: 1) {
-						Text("Rows/Columns:")
-					} minimumValueLabel: {
-						Text("\(Int(range.lowerBound))")
-					} maximumValueLabel: {
-						Text("\(Int(range.upperBound))")
-					}
-					.onChange(of: settings.gridDefaultSize) {
-						print("Updating grid size & game")
-						withAnimation { updateGame() }
-					}
-				}
+//				let size = Int(settings.gridDefaultSize)
+//				Section(header: Text("\(selectedWordList.name) Game (\(size) Rows/Columns)")) {
+//					let range = SettingsType.maxGridRange
+//					Slider(value: $settings.gridDefaultSize, in: range, step: 1) {
+//						Text("Rows/Columns:")
+//					} minimumValueLabel: {
+//						Text("\(Int(range.lowerBound))")
+//					} maximumValueLabel: {
+//						Text("\(Int(range.upperBound))")
+//					}
+//					.onChange(of: settings.gridDefaultSize) {
+//						print("Updating grid size & game")
+//						withAnimation { updateGame() }
+//					}
+//				}
 					
 				Section(wordHeader, isExpanded: $showWordList) {
 					Picker("Word List Selection:", selection: $selectedWordList) {
@@ -93,7 +93,7 @@ struct GameEditor: View {
 	func setUpGame() {
 		if let game {
 			lgame = game.copy()
-			settings.gridDefaultSize = Double(game.board.size)
+			settings.gridDefaultSize = game.board.size
 			if wordLists.isEmpty {
 				wordLists = SampleWordLists.all
 			}

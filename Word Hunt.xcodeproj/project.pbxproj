@@ -47,6 +47,7 @@
 		47F141F13007A9F000E8B927 /* PersistentTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141F03007A9F000E8B927 /* PersistentTextField.swift */; };
 		47F141F53007D77300E8B927 /* FloatingToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F141F43007D77300E8B927 /* FloatingToolbar.swift */; };
 		47F1422130096B1000E8B927 /* ToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F1422030096B1000E8B927 /* ToolbarButton.swift */; };
+		47F1424E300D15B600E8B927 /* GameCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F1424D300D15B600E8B927 /* GameCreationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +93,7 @@
 		47F141F43007D77300E8B927 /* FloatingToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingToolbar.swift; sourceTree = "<group>"; };
 		47F1422030096B1000E8B927 /* ToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButton.swift; sourceTree = "<group>"; };
 		47F14230300ACCB200E8B927 /* Word-Hunt-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Word-Hunt-Info.plist"; sourceTree = SOURCE_ROOT; };
+		47F1424D300D15B600E8B927 /* GameCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCreationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -162,6 +164,7 @@
 				47800D1B2FEA9789009537EC /* WordView.swift */,
 				47E0AC292FF17361009D7BB0 /* GameView.swift */,
 				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
+				47F1424D300D15B600E8B927 /* GameCreationView.swift */,
 				471670AB2FF4493700A09C13 /* LetterGridView.swift */,
 				47800D1F2FEAAC90009537EC /* WordListSummary.swift */,
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
@@ -325,6 +328,7 @@
 				47F141A93005740800E8B927 /* LockedAwardView.swift in Sources */,
 				4707A01C2FF93FF300F88A40 /* SettingsType.swift in Sources */,
 				4707A0122FF84B8400F88A40 /* MainAppView.swift in Sources */,
+				47F1424E300D15B600E8B927 /* GameCreationView.swift in Sources */,
 				47F1412230052B7000E8B927 /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

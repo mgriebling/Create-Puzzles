@@ -11,6 +11,7 @@ struct GameView: View {
 	let game: Game
 	
 	@Environment(\.horizontalSizeClass) var horizontalSizeClass
+	@Environment(\.verticalSizeClass) var verticalSizeClass
 	@Environment(\.colorScheme) var colorScheme
 	
 	@AppStorage(.settings) private var settings
@@ -18,7 +19,6 @@ struct GameView: View {
 	@State private var showSettings = false
 	@State private var showAbout = false
 	@State private var showAwards = false
-	@State private var isHovering: Bool = false
 	
 	#if os(iOS)
 	typealias HSView = HStack
@@ -59,6 +59,10 @@ struct GameView: View {
 					wordsList
 				}
 			}
+		}
+		.onAppear {
+			print("Horizontal size class: \(horizontalSizeClass ?? .compact)")
+			print("Vertical size class: \(verticalSizeClass ?? .compact)")
 		}
 		.sheet(isPresented: $showAbout) {
 			AboutView()
@@ -130,7 +134,7 @@ struct GameView: View {
 			}
 			floatingWord()
 		}
-		//.frame(minWidth: 250, maxWidth: 350)
+		.frame(minWidth: WordView.width, maxWidth: 350)
 	}
 	
 	// PANE 2: THE CUSTOM STYLED DIVIDING LINE BLOCK

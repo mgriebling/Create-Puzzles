@@ -11,13 +11,13 @@ struct GameListView: View {
 	// MARK: Data shared with me
 	@Binding var selection: Game?
 	@Binding var games: [Game]
-	let columnVisibility: NavigationSplitViewVisibility
+	let wordLists: [WordList]
+	let showToolbar: Bool
 	
-//	@Environment(\.scenePhase) private var scenePhase
-
 	// MARK: Data Owned by me
 	@State private var gameToEdit: Game?
 	@State private var showGameEditor: Bool = false
+	@State private var showOptions: Bool = false
 	
     var body: some View {
 		List(selection: $selection) {
@@ -37,42 +37,28 @@ struct GameListView: View {
 				games.move(fromOffsets: source, toOffset: destination)
 			}
 		}
-		//.navigationTitle(Text("Puzzles"))
-		//.navigationBarTitleDisplayMode(.inline)
 		.listStyle(.plain)
-//		.onAppear {
-//			if games.isEmpty {
-//				games = Game.loadGames()  // read back any saved games
-//			}
-//			addSampleGames()
-//		}
-//		.onDisappear {
-//			Game.save(games: games)
-//		}
-//		.onChange(of: scenePhase) { oldPhase, newPhase in
-//			if newPhase == .background {
-//				Game.save(games: games)
-//			}
-//		}
 		.onChange(of: selection) {
 			if let selection, !games.contains(selection) {
 				self.selection = nil
 			}
 		}
 		.toolbar {
-			if columnVisibility != .detailOnly {
+			if showToolbar {
 				addButton
-				// addChoice
 			}
 		}
     }
 	
 	var addButton: some View {
 		Button("Add Game", systemImage: "plus") {
-			gameToEdit = Game(board: GameBoard(size: 14,
-				words: WordList(name: "Unnamed", words: ["Word1", "Word2"])))
-			showGameEditor = true
+//			gameToEdit = Game(board: GameBoard(size: 14,
+//				words: WordList(name: "Unnamed", words: ["Word1", "Word2"])))
+			showOptions = true
 		}
+		.sheet(isPresented: $showOptions, content: {
+			GameCreationView(games: $games, wordLists: wordLists)
+		})
 		.sheet(isPresented: $showGameEditor) {
 			GameEditor(game: $gameToEdit) {
 				if let gameToEdit {
@@ -88,7 +74,7 @@ struct GameListView: View {
 		if games.isEmpty {
 			for i in 0..<4 {
 				let game = Game(board: GameBoard(size: 14 + i*2,
-										words: SampleWordLists.all[i]))
+						   words: SampleWordLists.all.randomElement()!))
 				games.append(game)
 			}
 		}
@@ -101,6 +87,6 @@ struct GameListView: View {
 		Game(board: GameBoard(size: 14, words: SampleWordLists.all[0]))
 	]
 	NavigationStack {
-		GameListView(selection: $selection, games: $games, columnVisibility: .all)
+		GameListView(selection: $selection, games: $games, wordLists: SampleWordLists.all, showToolbar: true)
 	}
 }

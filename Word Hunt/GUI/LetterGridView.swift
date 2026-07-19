@@ -256,7 +256,7 @@ extension CellIndex {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 6, words: SampleWordLists.all[0]))
+	@State var game = Game(board: GameBoard(size: 14, words: SampleWordLists.all[0]))
 	@Previewable @State var settings = SettingsType()
 	LetterGridView(game: game, allowDrag: true, settings: $settings)
 }
