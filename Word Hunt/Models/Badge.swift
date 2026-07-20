@@ -8,19 +8,19 @@
 import Foundation
 
 /// Use `timestamp` to determine if a badge is unlocked.
-/// A `Moment` may be deleted but the timestamp stays.
+/// A `Game` may be deleted but the timestamp stays.
 /// Once awarded, badges aren't relocked.
 ///
 struct Badge {
 	var details: BadgeDetails
-	// var moment: Moment?
+	var game: Game?
 	var timestamp: Date?
 	let id: UUID = UUID()
 	
-	init(details: BadgeDetails) {
+	init(details: BadgeDetails, game: Game? = nil, timestamp: Date? = nil) {
 		self.details = details
-//		self.moment = nil
-		self.timestamp = nil
+		self.game = game
+		self.timestamp = timestamp
 	}
 }
 
@@ -28,8 +28,6 @@ extension Badge: Identifiable { }
 
 extension Badge {
 	static var sample: Badge {
-		var badge = Badge(details: .first)
-		badge.timestamp = .now
-		return badge
+		Badge(details: .puzzle1, timestamp: .now)
 	}
 }

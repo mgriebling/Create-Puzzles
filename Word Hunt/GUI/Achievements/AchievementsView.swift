@@ -43,11 +43,11 @@ struct AchievementsView: View {
 	private var contentStack: some View {
 		VStack(alignment: .leading) {
 			header("Earned Points: \(settings.player.points)")
-			Text("Earn points for each completed puzzle. More difficult puzzles award more points. You can also earn points by completing puzzles in a row. Compete with friends to see who has the most points!")
+			Text("Earn points for each completed puzzle. More difficult puzzles award more points. One point is lost for each **hint \(Image(systemName: "lightbulb"))** button use. Compete with friends to see who has the most points!")
 				.font(.caption)
 
 			if !unlockedBadges.isEmpty {
-				header("Your Awards")
+				header("Your Earned Badges")
 				ScrollView(.horizontal) {
 					HStack {
 						ForEach(sortedUnlockedBadges) { badge in
@@ -60,7 +60,7 @@ struct AchievementsView: View {
 			}
 			
 			if !lockedBadges.isEmpty {
-				header("Locked Awards")
+				header("Locked Badges")
 				ForEach(sortedLockedBadges) { badge in
 					LockedAwardView(badge: badge)
 				}
@@ -79,7 +79,7 @@ struct AchievementsView: View {
 	
 	func createBadges() -> [Badge] {
 		var badges: [Badge] = []
-		for id in BadgeDetails.allCases { // .dropFirst(3) {
+		for id in BadgeDetails.allCases.dropFirst(3) {
 			badges.append(Badge(details: id))
 		}
 		return badges
@@ -87,7 +87,7 @@ struct AchievementsView: View {
 	
 	func createUnlockedBadges() -> [Badge] {
 		var badges: [Badge] = []
-		for id in [BadgeDetails.first, .bright, .skillful] {
+		for id in [BadgeDetails.puzzle1, .puzzle3, .puzzle5] {
 			badges.append(Badge(details: id))
 		}
 		return badges

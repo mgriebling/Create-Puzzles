@@ -160,7 +160,6 @@
 				4707A0112FF84B8400F88A40 /* MainAppView.swift */,
 				47E0ABE42FF069CB009D7BB0 /* GameListView.swift */,
 				47F140ED3003B18F00E8B927 /* WordListView.swift */,
-				47F140A73002519000E8B927 /* AboutView.swift */,
 				47800D1B2FEA9789009537EC /* WordView.swift */,
 				47E0AC292FF17361009D7BB0 /* GameView.swift */,
 				478BF13A2FEC2E6E001F4018 /* GameEditor.swift */,
@@ -170,16 +169,10 @@
 				476F03EB2FEDD2DE0041F2B8 /* GameSummary.swift */,
 				47800D152FE9D2FE009537EC /* WordsEditor.swift */,
 				47800D212FEAD186009537EC /* StringList.swift */,
+				47F140A73002519000E8B927 /* AboutView.swift */,
 				47079FFB2FF5AF9200F88A40 /* SettingsView.swift */,
-				47079FFD2FF5B83400F88A40 /* EditToolbar.swift */,
-				478BF1342FEC13A3001F4018 /* FileImportButton.swift */,
-				47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */,
-				47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */,
-				471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */,
-				47F141F03007A9F000E8B927 /* PersistentTextField.swift */,
 				47F141A7300572B800E8B927 /* Achievements */,
-				47F141F43007D77300E8B927 /* FloatingToolbar.swift */,
-				47F1422030096B1000E8B927 /* ToolbarButton.swift */,
+				47F1425D300E4A8400E8B927 /* Accessories */,
 			);
 			path = GUI;
 			sourceTree = "<group>";
@@ -210,6 +203,21 @@
 				47F141A83005740800E8B927 /* LockedAwardView.swift */,
 			);
 			path = Achievements;
+			sourceTree = "<group>";
+		};
+		47F1425D300E4A8400E8B927 /* Accessories */ = {
+			isa = PBXGroup;
+			children = (
+				47F141F03007A9F000E8B927 /* PersistentTextField.swift */,
+				47079FFD2FF5B83400F88A40 /* EditToolbar.swift */,
+				47E0AC252FF16FF3009D7BB0 /* ElapsedTimeTracker.swift */,
+				47E0AC272FF170FB009D7BB0 /* ElapsedTime.swift */,
+				471E2A222FFC4C4A00A1ADBD /* WinnerView.swift */,
+				478BF1342FEC13A3001F4018 /* FileImportButton.swift */,
+				47F141F43007D77300E8B927 /* FloatingToolbar.swift */,
+				47F1422030096B1000E8B927 /* ToolbarButton.swift */,
+			);
+			path = Accessories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

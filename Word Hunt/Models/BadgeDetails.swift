@@ -8,95 +8,109 @@
 import SwiftUI
 
 enum BadgeDetails: Int, Codable, CaseIterable {
-	case first
-	case novice
-	case bright
-	case skillful
-	case expert
-	case master
-	case ultimate
+	case puzzle1
+	case puzzle3
+	case puzzle5
+	case puzzle7
+	case puzzle10
+	case puzzle20
+	case puzzle30
+	case puzzle50
+	case puzzle75
+	case puzzle100
 	
 	var requirements: String {
 		switch self {
-			case .first:
+			case .puzzle1:
 				"Solve a puzzle to unlock this award."
-			case .novice:
-				"Complete five puzzles with increasing difficulty levels to earn this award."
-			case .bright:
-				"Add a photo to one of your moments."
-			case .skillful:
-				"Add three entries with photos."
-			case .expert:
-				"Add five moments with a photo and text."
-			case .master:
-				"Record at least 10 moments, collecting all the other badges along the way."
-			case .ultimate:
-				"Achieve all 10 badges."
+			case .puzzle3:
+				"Complete three puzzles with to earn this badge. Earlier solved puzzles count as well. At least one should be harder than the others."
+			case .puzzle5:
+				"Work out five puzzles to earn this badge. Two need to be more challenging than the others."
+			case .puzzle7:
+				"Unravel seven puzzles to earn this badge. Three need to be at a higher level than the others."
+			case .puzzle10:
+				"Crack ten puzzles to earn this badge. Four need to be more difficult than the others."
+			case .puzzle20:
+				"Decipher twenty puzzles for this badge. Five need to be more intense than the others."
+			case .puzzle30:
+				"Out of thirty puzzles for this badge, you'll at least five puzzles rated at level 10."
+			case .puzzle50:
+				"The magic number is 50 puzzles. Ten of them must be rated at level 10."
+			case .puzzle75:
+				"Solve a total of 75 puzzles. Twenty of them must be rated at level 10."
+			case .puzzle100:
+				"Successfully complete 100 puzzles and have all nine earlier badges. Thirty puzzles must be rated at level 10."
 		}
 	}
 	
 	var congratulatoryMessage: String {
 		switch self {
-			case .first:
+			case .puzzle1:
 				"Every journey begins with a single step. Congratulations — you’re on your way!"
-			case .novice:
+			case .puzzle3:
 				"You’re building momentum! The more you focus on regular practice, the better you get at choosing to keep up your intentioned habits."
-			case .bright:
-				"Photos are a great way to capture the moment and make it last. You're doing great work!"
-			case .skillful:
-				"Photos connect us to our past, and looking at them can take us right back to the grateful feeling we had when we snapped them."
-			case .expert:
-				"Look at you, giving yourself all the ways to savor your happy memories!"
-			case .master:
-				"You're getting the hang of your new habit! Keep it up and see how far it can take you."
-			case .ultimate:
-				"You've unlocked the full potential of your gratitude practice. Keep up the great work!"
+			case .puzzle5:
+				"Puzzles are a great way to invigorate your brain and keep your mind active. You're doing amazing work!"
+			case .puzzle7:
+				"Finding a word in a word search puzzle is like finding a needle in a haystack — but one that you know is there, just waiting to be discovered."
+			case .puzzle10:
+				"Look at you, improving yourself by solving all of these puzzles!"
+			case .puzzle20:
+				"For me, the most enjoyable part is the puzzle, the process of solving, not the solution itself. — Ernő Rubik"
+			case .puzzle30:
+				"Willingness to be puzzled is a valuable trait to cultivate, from childhood to advanced inquiry. — Noam Chomsky"
+			case .puzzle50:
+				"A puzzle a day helps keep Alzheimer's away. Keep up the great work!"
+			case .puzzle75:
+				"You're almost there. Persistance is key. You've made amazing progress!"
+			case .puzzle100:
+				"You've unlocked the full potential of your puzzle solving practice. Keep going!"
 		}
 	}
 	
 	var title: String {
 		switch self {
-			case .first: "Start the Journey"
-			case .novice:  "5 Stars"
-			case .bright: "Bright"
-			case .skillful: "Shutterbug"
-			case .expert: "Expressive"
-			case .master: "Perfect 10"
-			case .ultimate: "The Ultimate"
+			case .puzzle1:   "Start the Journey"
+			case .puzzle3:   "A Hat Trick"
+			case .puzzle5:   "5 Stars"
+			case .puzzle7:   "On a Streak"
+			case .puzzle10:  "Perfect 10"
+			case .puzzle20:  "Roaring Twenties"
+			case .puzzle30:  "Amazing Achievement"
+			case .puzzle50:  "Savant"
+			case .puzzle75:  "Master"
+			case .puzzle100: "Grand Master"
 		}
 	}
 	
 	var image: ImageResource {
 		switch self {
-			case .first: .first
-			case .novice:  .novice
-			case .bright: .bright
-			case .skillful: .skillful
-			case .expert: .expert
-			case .master: .master
-			case .ultimate: .ultimate
+			case .puzzle1: .puzzle1
+			case .puzzle3: .puzzle3
+			case .puzzle5: .puzzle5
+			case .puzzle7: .puzzle7
+			case .puzzle10: .puzzle10
+			case .puzzle20: .puzzle20
+			case .puzzle30: .puzzle30
+			case .puzzle50: .puzzle50
+			case .puzzle75: .puzzle75
+			case .puzzle100: .puzzle100
 		}
 	}
 	
-//	var lockedImage: ImageResource {
-//		switch self {
-//			case .firstEntry: .firstEntryLocked
-//			case .fiveStars:  .fiveStarsLocked
-//			case .shutterbug: .shutterbugLocked
-//			case .expressive: .expressiveLocked
-//			case .perfectTen: .perfectTenLocked
-//		}
-//	}
-	
 	var color: Color {
 		switch self {
-			case .first: Color(.classicBurgandy)
-			case .novice:  Color(.matteBlack)
-			case .bright: Color(.matteBlack)
-			case .skillful: Color(.emeraldGreen)
-			case .expert: Color(.midnightBlue)
-			case .master: Color(.crimsonRed)
-			case .ultimate: Color(.deepTeal)
+			case .puzzle1:   Color(.darkBlue)
+			case .puzzle3:   Color(.classicBurgandy)
+			case .puzzle5:   Color(.matteBlack)
+			case .puzzle7:   Color(.emeraldGreen)
+			case .puzzle10:  Color(.darkBlue)
+			case .puzzle20:  Color(.crimsonRed)
+			case .puzzle30:  Color(.deepTeal)
+			case .puzzle50:  Color(.matteBlack)
+			case .puzzle75:  Color(.matteBlack)
+			case .puzzle100: Color(.matteBlack)
 		}
 	}
 }

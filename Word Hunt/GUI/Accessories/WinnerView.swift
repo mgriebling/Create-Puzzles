@@ -2,7 +2,8 @@
 //  WinnerView.swift
 //  Word Hunt
 //
-//  Created by Michael Griebling on 06.07.2026.
+//  Original by Google AI on 06.07.2026.
+//  Modified by Michael Griebling on 06.10.2026
 //
 
 import SwiftUI
@@ -11,14 +12,21 @@ struct WinnerView: View {
 	let game: Game
 	let width: CGFloat
 	let points: Int
+	var badge: Badge? = nil
 	
 	@State private var displayValue = 0
 	@State private var winner: Bool = false
 	
 	var body: some View {
 		let scale = width / 270
-		let fontSize = (winner ? 50 : 20)*scale
-		VStack {
+		let fontSize = (winner ? 50 : 20) * scale
+		VStack(spacing: 0) {
+			if let badge {
+				Image(badge.details.image)
+					.resizable()
+					.aspectRatio(1, contentMode: .fit)
+					.frame(width: 75 * scale, height: 75 * scale)
+			}
 			Text("WINNER!")
 				.font(.system(size: fontSize, weight: .heavy, design: .rounded))
 				.lineLimit(1)
@@ -34,7 +42,7 @@ struct WinnerView: View {
 		.padding(20*scale)
 		.frame(width: width)
 		.foregroundStyle(Color.yellow)
-		.background(Color(.gray).opacity(0.7))
+		.background(Color(.systemGray))
 		.cornerRadius(20*scale)
 		.rotationEffect(winner ? .degrees(0) : .degrees(360))
 		.scaleEffect(winner ? 1 : 0)
@@ -70,7 +78,7 @@ struct WinnerView: View {
 #Preview {
 	@Previewable @State var game = Game(board: GameBoard(size: 15))
 	WinnerView(game: game, width: 270, points: 0)
-	WinnerView(game: game, width: 400, points: 10)
-	WinnerView(game: game, width: 800, points: 1000)
+	WinnerView(game: game, width: 400, points: 10, badge: Badge(details: .puzzle1))
+	WinnerView(game: game, width: 800, points: 1000, badge: Badge(details: .puzzle100))
 }
 
