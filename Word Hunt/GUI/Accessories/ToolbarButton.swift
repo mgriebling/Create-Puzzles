@@ -34,9 +34,8 @@ struct ToolbarButton: View {
 	
 	var body: some View {
 		let enlarged: Bool = selection == tag
-		// let background = Color.backColor2
-		let highlight: Color = .accentColor.mix(with: Color.backColor, by: 0.2)
-		let color = tag == -1 ? Color.gray.mix(with: Color.backColor, by: 0.35) : highlight
+		let highlight: Color = .accentColor.mix(with: Color.backColor, fraction: 0.2)
+		let color = tag == -1 ? Color.gray.mix(with: Color.backColor, fraction: 0.35) : highlight
 		Button(action: { selection = tag }) {
 			if text.isEmpty {
 				Image(systemName: icon)

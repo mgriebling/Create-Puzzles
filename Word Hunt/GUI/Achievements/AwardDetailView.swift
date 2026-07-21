@@ -37,7 +37,7 @@ struct AwardDetailView: View {
 			.clipShape(RoundedRectangle(cornerRadius: 16))
 		}
 		.scrollBounceBehavior(.basedOnSize)
-		.defaultScrollAnchor(.center, for: .alignment)
+		//.defaultScrollAnchor(.center, for: .alignment)
     }
 }
 

@@ -15,9 +15,33 @@ extension View {
 	}
 }
 
-//extension Int {
-//	func signum() -> Int { (self > 0) ? 1 : ((self < 0) ? -1 : 0) }
-//}
+extension Color {
+	func mix(with target: Color, fraction: Double) -> Color {
+		if #available(iOS 18.0, *) {
+			return self.mix(with: target, by: fraction)
+		} else {
+			let components1 = self.components
+			let components2 = target.components
+			
+			let red = components1.red + (components2.red - components1.red) * fraction
+			let green = components1.green + (components2.green - components1.green) * fraction
+			let blue = components1.blue + (components2.blue - components1.blue) * fraction
+			let alpha = components1.alpha + (components2.alpha - components1.alpha) * fraction
+			
+			return Color(red: red, green: green, blue: blue, opacity: alpha)
+		}
+	}
+
+	private var components: (red: Double, green: Double, blue: Double, alpha: Double) {
+		var r: CGFloat = 0
+		var g: CGFloat = 0
+		var b: CGFloat = 0
+		var a: CGFloat = 0
+		
+		UIColor(self).getRed(&r, green: &g, blue: &b, alpha: &a)
+		return (Double(r), Double(g), Double(b), Double(a))
+	}
+}
 
 extension CGPoint {
 	// MARK: - Geometry Math Helpers

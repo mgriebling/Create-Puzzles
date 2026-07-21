@@ -37,8 +37,8 @@ struct GameView: View {
 					divider()
 				}
 				LetterGridView(game: game, allowDrag: true, settings: $settings)
-					.layoutPriority(10)
-					.fixedSize(horizontal: true, vertical: false)
+					.layoutPriority(1)
+					//.fixedSize(horizontal: true, vertical: false)
 				if settings.horizontal == .right {
 					divider()
 					wordsList
@@ -52,7 +52,7 @@ struct GameView: View {
 					divider()
 				}
 				LetterGridView(game: game, allowDrag: true, settings: $settings)
-					.layoutPriority(10)
+					.layoutPriority(1)
 					.fixedSize(horizontal: false, vertical: true)
 				if settings.vertical == .below {
 					divider()
@@ -134,10 +134,10 @@ struct GameView: View {
 			}
 			floatingWord()
 		}
-		.frame(minWidth: WordView.width, maxWidth: 350)
+		.frame(minWidth: WordView.width, maxWidth: WordView.width * 7)
 	}
 	
-	// PANE 2: THE CUSTOM STYLED DIVIDING LINE BLOCK
+	/// the custom styled dividing line block by Google AI
 	func divider() -> some View {
 		#if os(macOS)
 		Group {
@@ -170,7 +170,7 @@ struct GameView: View {
 		let fontSize = cellSize * 0.6
 		let mix = colorScheme == .dark ? 0.4 : 0.2
 		let back = Color.backColor
-		let gray = back.mix(with: .primary, by: mix)
+		let gray = back.mix(with: .primary, fraction: mix)
 		let frameWidth = game.activeWord.count/2 + 1
 		Text(game.activeWord)
 			.font(.system(size: fontSize, weight: .bold))

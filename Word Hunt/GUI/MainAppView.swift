@@ -12,83 +12,118 @@ struct MainAppView: View {
 	@State private var wordLists: [WordList] = []
 	@State private var puzzlesExpanded: Bool = true
 	@State private var wordsExpanded: Bool = false
+	@State private var showDetail: Bool = true
 	@State private var columnVisibility: NavigationSplitViewVisibility = .detailOnly
 	
 	var body: some View {
-		NavigationSplitView(columnVisibility: $columnVisibility) {
-			Group {
-				switch activeTab {
-					case .puzzles:
-						GameListView(selection: $selectedPuzzle, games: $games, wordLists: wordLists, showToolbar: columnVisibility != .detailOnly)
-					case .words:
-						WordListView(selection: $selectedWords, wordLists: $wordLists, showToolbar: columnVisibility != .detailOnly)
-				}
-			}
-			.navigationSplitViewColumnWidth(min: 350, ideal: 350)
-			.toolbar {
-				if columnVisibility != .detailOnly {
-					ToolbarItem(placement: .principal) {
-						Picker("Tabs", selection: $activeTab) {
-							Text(Tabs.puzzle.name)
-								.tag(Tabs.puzzle)
-							Text(Tabs.wordList.name)
-								.tag(Tabs.wordList)
-						}
-						.pickerStyle(.segmented)
-						.fixedSize()
-					}
-				}
-			}
-		} detail: {
-			Group {
-				switch activeTab {
-					case .puzzles:
-						if let game = selectedPuzzle {
-							GameView(game: game)
-								.id(selectedPuzzle)
-								.onTapGesture {
-									columnVisibility = .detailOnly
-								}
-						} else {
-							blankView(for: activeTab)
-						}
-					case .words:
-						if let _ = selectedWords {
-							WordsEditor(words: $selectedWords)
-								.id(selectedWords)
-						} else {
-							blankView(for: activeTab)
-						}
-				}
+		Group {
+			if showDetail {
+				baseSplitview()
+					.navigationSplitViewStyle(.prominentDetail)
+			} else {
+				baseSplitview()
+					.navigationSplitViewStyle(.automatic)
 			}
 		}
-		.onChange(of: activeTab) {
-			withAnimation {
-				if activeTab == .puzzle {
-					columnVisibility = .detailOnly
-				} else {
-					columnVisibility = .all
-				}
-			}
-		}
-		.onChange(of: selectedPuzzle) {
-			withAnimation {
-				columnVisibility = .detailOnly
-			}
-		}
+		.padding(.horizontal)
+		.onChange(of: activeTab, showDetailOrAll)
+		.onChange(of: selectedPuzzle, showDetailOnly)
 		.focusEffectDisabled(true)
-		.navigationSplitViewStyle(.automatic)
-		.onAppear {
+		.onAppear(perform: initialize)
+	}
+	
+	private func showDetailOrAll() {
+		if activeTab == .puzzle {
+			showDetailOnly()
+		} else {
 			withAnimation {
-//				if games.isEmpty {
-//					games = Game.loadGames()  // read back any saved games
-//				}
-				addSampleGames()
-				addSampleWords()
-				selectedPuzzle = games.first
-				selectedWords = wordLists.first
-				activeTab = .puzzles(selectedPuzzle)
-				columnVisibility = .detailOnly
+				columnVisibility = .all
+				showDetail = false
+			}
+		}
+	}
+	
+	private func showDetailOnly() {
+		withAnimation {
+			columnVisibility = .detailOnly
+			showDetail = true
+		}
+	}
+	
+	private func baseSplitview() -> some View {
+		NavigationSplitView(columnVisibility: $columnVisibility) {
+			sidebarView()
+		} detail: {
+			detailView()
+		}
+	}
+	
+	private func detailView() -> some View {
+		Group {
+			switch activeTab {
+				case .puzzles:
+					if let game = selectedPuzzle {
+						GameView(game: game)
+							.id(selectedPuzzle)
+							.onTapGesture {
+								columnVisibility = .detailOnly
+							}
+					} else {
+						blankView(for: activeTab)
+					}
+				case .words:
+					if let _ = selectedWords {
+						WordsEditor(words: $selectedWords)
+							.id(selectedWords)
+					} else {
+						blankView(for: activeTab)
+					}
+			}
+		}
+	}
+	
+	private func initialize() {
+		withAnimation {
+			addSampleGames()
+			addSampleWords()
+			selectedPuzzle = games.first
+			selectedWords = wordLists.first
+			activeTab = .puzzles(selectedPuzzle)
+			columnVisibility = .detailOnly
+		}
+	}
+	
+	private func sidebarView() -> some View {
+		Group {
+			switch activeTab {
+				case .puzzles:
+					GameListView(selection: $selectedPuzzle,
+								 games: $games,
+								 wordLists: wordLists,
+								 showToolbar: columnVisibility != .detailOnly)
+				case .words:
+					WordListView(selection: $selectedWords,
+								 wordLists: $wordLists,
+								 showToolbar: columnVisibility != .detailOnly)
+			}
+		}
+		.toolbar {
+			tabToolbar()
+		}
+	}
+	
+	@ToolbarContentBuilder
+	private func tabToolbar() -> some ToolbarContent {
+		if columnVisibility != .detailOnly {
+			ToolbarItem(placement: .principal) {
+				Picker("Tabs", selection: $activeTab) {
+					Text(Tabs.puzzle.name)
+						.tag(Tabs.puzzle)
+					Text(Tabs.wordList.name)
+						.tag(Tabs.wordList)
+				}
+				.pickerStyle(.segmented)
+				.fixedSize()
 			}
 		}
 	}

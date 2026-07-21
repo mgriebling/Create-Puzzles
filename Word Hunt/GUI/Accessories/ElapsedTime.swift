@@ -23,7 +23,12 @@ struct ElapsedTime: View {
 					if let endTime = timer.endTime {
 						Text(.seconds(offset.timeIntervalSince(endTime)), format: format)
 					} else {
-						Text(.durationOffset(to: offset), format: format)
+						if #available(iOS 18.0, *) {
+							Text(.durationOffset(to: offset), format: format)
+						} else {
+							// Fallback on earlier versions
+							Text("N/A")
+						}
 					}
 				} else {
 					Text(.seconds(timer.elapsedTime), format: format)

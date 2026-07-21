@@ -46,9 +46,9 @@ public extension AppStorage {
 		self.init(wrappedValue: key.defaultValue, key.key, store: store)
 	}
 	
-	init(_ key: AppStorageKey<Value>, store: UserDefaults? = nil) where Value == Date {
-		self.init(wrappedValue: key.defaultValue, key.key, store: store)
-	}
+//	init(_ key: AppStorageKey<Value>, store: UserDefaults? = nil) where Value == Date {
+//		self.init(wrappedValue: key.defaultValue, key.key, store: store)
+//	}
 	
 	init(_ key: AppStorageKey<Value>, store: UserDefaults? = nil) where Value == Data {
 		self.init(wrappedValue: key.defaultValue, key.key, store: store)

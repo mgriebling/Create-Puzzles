@@ -90,9 +90,11 @@ struct LetterGridView: View {
 		let mix2 = selected ? 0.0 : 0.4
 		let scale = selected ? 1.0 : 0.84
 		let size = Double(cellSize)
+		let colorMix1 = color.mix(with: backColor, fraction: mix)
+		let colorMix2 = color.mix(with: backColor, fraction: mix2)
 		return Capsule()
-			.fill(fill ? color.mix(with: backColor, by: mix) : .clear)
-			.stroke(color.mix(with: backColor, by: mix2), lineWidth: lineWidth)
+			.fill(fill ? colorMix1 : .clear)
+			.stroke(colorMix2, lineWidth: lineWidth)
 			.frame(width: size * scale, height: startPoint.distance(to: endPoint) + size * scale)
 			.rotationEffect(Angle(radians: startPoint.angle(to: endPoint)))
 			.position(startPoint.midPoint(to: endPoint))

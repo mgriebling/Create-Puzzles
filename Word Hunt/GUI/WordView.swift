@@ -18,9 +18,7 @@ struct WordView: View {
 	var body: some View {
 		if style == .columns {
 			columnText()
-//				.onAppear {
-//					self.width = 
-//				}
+				.flexibleSystemFont(maximum: 15)
 		} else {
 			concatenatedText
 				.flexibleSystemFont(maximum: 15)
