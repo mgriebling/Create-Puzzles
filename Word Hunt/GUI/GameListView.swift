@@ -52,8 +52,6 @@ struct GameListView: View {
 	
 	var addButton: some View {
 		Button("Add Game", systemImage: "plus") {
-//			gameToEdit = Game(board: GameBoard(size: 14,
-//				words: WordList(name: "Unnamed", words: ["Word1", "Word2"])))
 			showOptions = true
 		}
 		.sheet(isPresented: $showOptions, content: {
@@ -73,8 +71,8 @@ struct GameListView: View {
 	private func addSampleGames() {
 		if games.isEmpty {
 			for i in 0..<4 {
-				let game = Game(board: GameBoard(size: 14 + i*2,
-						   words: SampleWordLists.all.randomElement()!))
+				let game = Game(size: 14 + i*2,
+								words: SampleWordLists.all.randomElement()!)
 				games.append(game)
 			}
 		}
@@ -84,7 +82,7 @@ struct GameListView: View {
 #Preview {
 	@Previewable @State var selection: Game?
 	@Previewable @State var games: [Game] = [
-		Game(board: GameBoard(size: 14, words: SampleWordLists.all[0]))
+		Game(size: 14, words: SampleWordLists.all[0])
 	]
 	NavigationStack {
 		GameListView(selection: $selection, games: $games, wordLists: SampleWordLists.all, showToolbar: true)

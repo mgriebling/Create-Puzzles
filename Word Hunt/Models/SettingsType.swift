@@ -8,10 +8,12 @@
 import SwiftUI
 
 public struct SettingsType {
-	static let maxGridRange = 4...20
+	static let maxGridRange = 5...20
 	
-	var gridDefaultSize: Int
 	var player: Player
+	
+	var creationMode: CreationMode
+	var difficulty: Difficulty
 	
 	var highlight: HighLight
 	var selectionColor: Color
@@ -27,7 +29,7 @@ public struct SettingsType {
 	var vertical: Vertical
 	
 	init() {
-		self.gridDefaultSize = 12
+		self.creationMode = .oneGame
 		self.player = Player()
 		self.highlight = .allCases.first!
 		self.selectionColor = .blue
@@ -38,6 +40,7 @@ public struct SettingsType {
 		self.showTimer = true
 		self.horizontal = .left
 		self.vertical = .below
+		self.difficulty = .five
 	}
 	
 	init(_ settings: Self) {
@@ -51,14 +54,14 @@ public extension AppStorageKey where Value == SettingsType {
 
 extension SettingsType: Codable {
 	enum CodingKeys: String, CodingKey {
-		case gridDefaultSize, player, highlight, selectionColor,
+		case creationMode, player, highlight, selectionColor,
 			 selectionOKColor, highlightColor, soundsOn, soundVolume, showTimer,
-			 horizontal, vertical
+			 horizontal, vertical, difficulty
 	}
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		self.gridDefaultSize = try container.decode(Int.self, forKey: .gridDefaultSize)
+		self.creationMode = try container.decode(CreationMode.self, forKey: .creationMode)
 		self.player = try container.decode(Player.self, forKey: .player)
 		self.highlight = try container.decode(HighLight.self, forKey: .highlight)
 		self.selectionColor = try container.decode(Color.self, forKey: .selectionColor)
@@ -69,11 +72,12 @@ extension SettingsType: Codable {
 		self.showTimer = try container.decode(Bool.self, forKey: .showTimer)
 		self.horizontal = try container.decode(Horizontal.self, forKey: .horizontal)
 		self.vertical = try container.decode(Vertical.self, forKey: .vertical)
+		self.difficulty = try container.decode(Difficulty.self, forKey: .difficulty)
 	}
 	
 	public func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encode(self.gridDefaultSize, forKey: .gridDefaultSize)
+		try container.encode(self.creationMode, forKey: .creationMode)
 		try container.encode(self.player, forKey: .player)
 		try container.encode(self.highlight, forKey: .highlight)
 		try container.encode(self.selectionColor, forKey: .selectionColor)
@@ -84,6 +88,7 @@ extension SettingsType: Codable {
 		try container.encode(self.showTimer, forKey: .showTimer)
 		try container.encode(self.horizontal, forKey: .horizontal)
 		try container.encode(self.vertical, forKey: .vertical)
+		try container.encode(self.difficulty, forKey: .difficulty)
 	}
 }
 
@@ -108,6 +113,36 @@ extension SettingsType: RawRepresentable {
 		}
 		return nil
 	}
+}
+
+enum Difficulty: String, CaseIterable, Identifiable, Codable {
+	case manual = "Man", three = "3", four = "4", five = "5", six = "6"
+	case seven = "7", eight = "8", nine = "9", ten = "10"
+	
+	var value: Int { Int(self.rawValue) ?? 0 }
+	
+	/// returns the game grid size to give this difficulty
+	var size: Int {
+		switch self {
+			case .three:  5
+			case .four:   6
+			case .five:   9
+			case .six: 	 11
+			case .seven: 12
+			case .eight: 15
+			case .nine:  18
+			case .ten:   20
+			default: 	  4
+		}
+	}
+
+	var id: Self { self }
+}
+
+enum CreationMode: String, CaseIterable, Identifiable, Codable {
+	case oneGame = "1 Game", fiveGames = "5 Games", tenGames = "10 Games", options = "Options"
+	
+	var id: Self { self }
 }
 
 enum HighLight: String, CaseIterable, Identifiable, Codable {

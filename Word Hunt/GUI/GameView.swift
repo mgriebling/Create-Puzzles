@@ -29,40 +29,9 @@ struct GameView: View {
 	#endif
 	
 	var body: some View {
-		Group {
-			if verticalSizeClass == .compact {
-				// landscape mode
-				HSView {
-					if settings.horizontal == .left {
-						wordsList
-						divider()
-					}
-					LetterGridView(game: game, allowDrag: true, settings: $settings)
-						.layoutPriority(1)
-					.fixedSize(horizontal: true, vertical: false)
-					if settings.horizontal == .right {
-						divider()
-						wordsList
-					}
-				}
-				
-			} else {
-				// portrait mode
-				VSView {
-					if settings.vertical == .above {
-						wordsList
-						divider()
-					}
-					LetterGridView(game: game, allowDrag: true, settings: $settings)
-						.layoutPriority(1)
-						.fixedSize(horizontal: false, vertical: true)
-					if settings.vertical == .below {
-						divider()
-						wordsList
-							.padding(.top)
-					}
-				}
-			}
+		ViewThatFits(in: .horizontal) {
+			landscapeView()
+			portraitView()
 		}
 //		.onAppear {
 //			print("Horizontal size class: \(horizontalSizeClass ?? .compact)")
@@ -123,7 +92,42 @@ struct GameView: View {
 //		#if os(ios)
 		.navigationTitle("")
 		.navigationBarTitleDisplayMode(.inline)
-//		#endif
+///		#endif
+	}
+	
+	private func landscapeView() -> some View {
+		// landscape mode
+		HSView {
+			if settings.horizontal == .left {
+				wordsList
+				divider()
+			}
+			LetterGridView(game: game, allowDrag: true, settings: $settings)
+				.layoutPriority(1)
+				.fixedSize(horizontal: true, vertical: false)
+			if settings.horizontal == .right {
+				divider()
+				wordsList
+			}
+		}
+	}
+	
+	private func portraitView() -> some View {
+		// portrait mode
+		VSView {
+			if settings.vertical == .above {
+				wordsList
+				divider()
+			}
+			LetterGridView(game: game, allowDrag: true, settings: $settings)
+				.layoutPriority(1)
+				.fixedSize(horizontal: false, vertical: true)
+			if settings.vertical == .below {
+				divider()
+				wordsList
+					.padding(.top)
+			}
+		}
 	}
 	
 	var wordsList: some View {
@@ -207,7 +211,7 @@ struct GameView: View {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 18, words: SampleWordLists.all[0]))
+	@State var game = Game(size: 18, words: SampleWordLists.all[0])
 	NavigationStack {
 		GameView(game: game)
 	}

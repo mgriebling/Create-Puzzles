@@ -18,26 +18,34 @@ struct SettingsView: View {
 	@Environment(\.dismiss) var dismiss
 	
 	@State private var internalSettings = SettingsType()
-	@State private var game = Game(board: GameBoard(size: 4, words: words))
+	@State private var game = Game(size: 4, words: words)
 	
 	var body: some View {
 		NavigationStack {
 			Form {
-				Section("Word List Creator Default Name") {
+				Section("Word List Author Default Name") {
 					TextField("Enter your name", text: $internalSettings.player.name)
 						.showClearButton($internalSettings.player.name)
 				}
 				
-//				Section("Word Grid Default Size: \(Int(internalSettings.gridDefaultSize))") {
-//					Slider(value: $internalSettings.gridDefaultSize, in: SettingsType.maxGridRange, step: 1) {
-//						Text("Word Grid Minimum")
-//					} minimumValueLabel: {
-//						Text("\(Int(SettingsType.maxGridRange.lowerBound))")
-//					} maximumValueLabel: {
-//						Text("\(Int(SettingsType.maxGridRange.upperBound))")
-//					}
-//				}
+				Section("Create Game Default (\(Image(systemName: "plus")) Touched)") {
+					Picker("Create Game:", selection: $internalSettings.creationMode) {
+						ForEach(CreationMode.allCases, id:\.self) { mode in
+							Text("\(mode.rawValue)").tag(mode)
+						}
+					}
+					.pickerStyle(.segmented)
+				}
 				
+				Section("Difficulty") {
+					Picker("Difficulty:", selection: $internalSettings.difficulty) {
+						ForEach(Difficulty.allCases.dropFirst(), id:\.self) { level in
+							Text("\(level.rawValue)").tag(level)
+						}
+					}
+					.pickerStyle(.segmented)
+				}
+	
 				Section("Word List (relative to letter grid):") {
 					Picker("Horizontal", selection: $internalSettings.horizontal) {
 						ForEach(Horizontal.allCases) { mode in

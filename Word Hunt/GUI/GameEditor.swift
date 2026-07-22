@@ -19,32 +19,25 @@ struct GameEditor: View {
 	@AppStorage(.settings) private var settings
 	
 	// MARK: Internal State
-	@State private var lgame = Game(board: GameBoard(size: 4)) // dummy board
+	@State private var lgame = Game(size: 4, words: WordList()) // dummy board
 	@State private var selectedWordList = WordList()    // active word list
 	@State private var wordLists = [WordList]()			// all the word lists
 	@State private var showWordList: Bool = true
 	@State private var showEmptyAlert: Bool = false
 	@State private var gameID: UUID = UUID()			// forces letter grid updates
+	@State private var level: Difficulty = .five
 	
 	var body: some View {
 		NavigationStack {
 			Form {
-//				let size = Int(settings.gridDefaultSize)
-//				Section(header: Text("\(selectedWordList.name) Game (\(size) Rows/Columns)")) {
-//					let range = SettingsType.maxGridRange
-//					Slider(value: $settings.gridDefaultSize, in: range, step: 1) {
-//						Text("Rows/Columns:")
-//					} minimumValueLabel: {
-//						Text("\(Int(range.lowerBound))")
-//					} maximumValueLabel: {
-//						Text("\(Int(range.upperBound))")
-//					}
-//					.onChange(of: settings.gridDefaultSize) {
-//						print("Updating grid size & game")
-//						withAnimation { updateGame() }
-//					}
-//				}
-					
+				Section("Default Difficulty") {
+					Picker("Difficulty:", selection: $level) {
+						ForEach(Difficulty.allCases.dropFirst(), id:\.self) { level in
+							Text("\(level.rawValue)").tag(level)
+						}
+					}
+					.pickerStyle(.segmented)
+				}
 				Section(wordHeader, isExpanded: $showWordList) {
 					Picker("Word List Selection:", selection: $selectedWordList) {
 						ForEach(wordLists, id:\.self) { Text($0.name) }
@@ -93,7 +86,6 @@ struct GameEditor: View {
 	func setUpGame() {
 		if let game {
 			lgame = game.copy()
-			settings.gridDefaultSize = game.board.size
 			if wordLists.isEmpty {
 				wordLists = SampleWordLists.all
 			}
@@ -137,9 +129,9 @@ struct GameEditor: View {
 	}
 	
 	func updateGame() {
-		print("Grid size: \(settings.gridDefaultSize)")
+		print("Grid size: \(settings.difficulty.size)")
 		print("Updating game with \(selectedWordList.words.count) words")
-		lgame = Game(board: GameBoard(size: Int(settings.gridDefaultSize), words: selectedWordList))
+		lgame = Game(size: settings.difficulty.size, words: selectedWordList)
 		gameID = UUID()
 		print("Finished game update")
 	}
@@ -147,7 +139,7 @@ struct GameEditor: View {
 
 #Preview {
 	@Previewable
-	@State var game : Game? = Game(board: GameBoard(size: 12))
+	@State var game: Game? = Game(size: 12, words: SampleWordLists.all[1])
 	GameEditor(game: $game) {
 		print("Updated game")
 	}

@@ -142,11 +142,9 @@ struct MainAppView: View {
 		games = []
 		if games.isEmpty {
 			for _ in 0..<10 {
-				let game = Game(board: GameBoard(size: Int.random(in: 6...20), words: SampleWordLists.all.randomElement()!))
+				let game = Game(size: Int.random(in: 8...20), words: SampleWordLists.all.randomElement()!)
 				games.append(game)
 			}
-//			let game = Game(board: GameBoard(size: 18, words: SampleWordLists.all[0]))
-//			games.append(game)
 		}
 	}
 	

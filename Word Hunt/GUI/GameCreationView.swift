@@ -18,7 +18,7 @@ struct GameCreationView: View {
 	@State private var minSize = Int(SettingsType.maxGridRange.lowerBound)
 	@State private var maxSize = Int(SettingsType.maxGridRange.upperBound)
 	@State private var sizeToAdd: Int?
-	@State private var level = 0
+	@State private var level: Difficulty = .seven
 	@State private var wordList: WordList?
 	@State private var wordListsToUse = [WordList]()
 	
@@ -35,16 +35,13 @@ struct GameCreationView: View {
 				}
 				Section("Difficulty") {
 					Picker("Difficulty:", selection: $level) {
-						Text("Man")
-							.fixedSize(horizontal: true, vertical: false)
-							.tag(0)
-						ForEach(3...10, id:\.self) { index in
-							Text("\(index)").tag(index)
+						ForEach(Difficulty.allCases, id:\.self) { level in
+							Text("\(level.rawValue)").tag(level)
 						}
 					}
 					.pickerStyle(.segmented)
 				}
-				if level == 0 {
+				if level == .manual {
 					Section("Puzzle Size") {
 						Picker("Choose size:", selection: $size) {
 							Text("Random").tag(0)
@@ -107,19 +104,8 @@ struct GameCreationView: View {
     }
 	
 	private func createGames() {
-		if level > 0 {
-			switch level {
-				case 3: size = 5
-				case 4: size = 6
-				case 5: size = 9
-				case 6: size = 11
-				case 7: size = 12
-				case 8: size = 15
-				case 9: size = 18
-				case 10: size = 20
-				default: size = 4
-			}
-			sizes = Array(repeating: size, count: numberOfGames)
+		if level != .manual {
+			sizes = Array(repeating: level.size, count: numberOfGames)
 			wordListOption = 1
 		}
 		if size == 0 || size == -1 {
@@ -146,12 +132,16 @@ struct GameCreationView: View {
 			var wordListsToUse = await self.wordListsToUse
 			while numberOfGames > 0 {
 				print("Generating game...")
-				let game = Game(board: GameBoard(size: sizes.removeFirst(), words: wordListsToUse.removeFirst()))
-				await MainActor.run {
-					print("Adding game \(game.name)")
-					self.games.insert(game, at: 0)
+				let game = Game(size: sizes[0], words: wordListsToUse[0])
+				if game.level == sizes[0] {
+					await MainActor.run {
+						print("Adding game \(game.name)")
+						self.games.insert(game, at: 0)
+					}
+					sizes.removeFirst()
+					wordListsToUse.removeFirst()
+					numberOfGames -= 1
 				}
-				numberOfGames -= 1
 			}
 		}
 //

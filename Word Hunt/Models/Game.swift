@@ -22,9 +22,22 @@ import SwiftUI
 	var placedSet: Set<String> 	  { Set(placedWords.map({ $0.extended })) }
 	
 	// MARK: Initializer
-	init(board: GameBoard) {
-		self.board = board
+	init(level: Difficulty, words: WordList) {
+		self.board = GameBoard(size: level.size, words: words)
 		self.timer = Timer()
+	}
+	
+	init(size: Int, words: WordList) {
+		let limitedSize = max(SettingsType.maxGridRange.lowerBound,
+					   min(size, SettingsType.maxGridRange.upperBound))
+		self.board = GameBoard(size: limitedSize, words: words)
+		self.timer = Timer()
+	}
+	
+	/// Copies a game
+	init(game: Game) {
+		self.board = game.board
+		self.timer = game.timer
 	}
 	
 	// MARK: Required for manual Codable compliance, warning issued otherwise
@@ -39,7 +52,7 @@ import SwiftUI
 			let decoder = JSONDecoder()
 			if let game = try? decoder.decode(Game.self, from: rawData) {
 				print("Loaded game: \(game.name)")
-				self.init(board: game.board)
+				self.init(game: game)
 			} else {
 				// remove corrupted file
 				try? FileManager.default.removeItem(at: file)
@@ -142,7 +155,7 @@ import SwiftUI
 		words.map { PlacedWord(word: $0) }
 	}
 	
-	func copy() -> Game { Game(board: self.board) }
+	func copy() -> Game { Game(game: self) }
     func clearWord() { board.clearWord() }
 }
 
