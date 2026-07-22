@@ -145,6 +145,8 @@ struct MainAppView: View {
 				let game = Game(board: GameBoard(size: Int.random(in: 6...20), words: SampleWordLists.all.randomElement()!))
 				games.append(game)
 			}
+//			let game = Game(board: GameBoard(size: 18, words: SampleWordLists.all[0]))
+//			games.append(game)
 		}
 	}
 	

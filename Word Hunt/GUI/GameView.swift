@@ -29,41 +29,45 @@ struct GameView: View {
 	#endif
 	
 	var body: some View {
-		ViewThatFits(in: .horizontal) {
-			// landscape mode
-			HSView {
-				if settings.horizontal == .left {
-					wordsList
-					divider()
+		Group {
+			if verticalSizeClass == .compact {
+				// landscape mode
+				HSView {
+					if settings.horizontal == .left {
+						wordsList
+						divider()
+					}
+					LetterGridView(game: game, allowDrag: true, settings: $settings)
+						.layoutPriority(1)
+					.fixedSize(horizontal: true, vertical: false)
+					if settings.horizontal == .right {
+						divider()
+						wordsList
+					}
 				}
-				LetterGridView(game: game, allowDrag: true, settings: $settings)
-					.layoutPriority(1)
-					//.fixedSize(horizontal: true, vertical: false)
-				if settings.horizontal == .right {
-					divider()
-					wordsList
-				}
-			}
-			
-			// portrait mode
-			VSView {
-				if settings.vertical == .above {
-					wordsList
-					divider()
-				}
-				LetterGridView(game: game, allowDrag: true, settings: $settings)
-					.layoutPriority(1)
-					.fixedSize(horizontal: false, vertical: true)
-				if settings.vertical == .below {
-					divider()
-					wordsList
+				
+			} else {
+				// portrait mode
+				VSView {
+					if settings.vertical == .above {
+						wordsList
+						divider()
+					}
+					LetterGridView(game: game, allowDrag: true, settings: $settings)
+						.layoutPriority(1)
+						.fixedSize(horizontal: false, vertical: true)
+					if settings.vertical == .below {
+						divider()
+						wordsList
+							.padding(.top)
+					}
 				}
 			}
 		}
-		.onAppear {
-			print("Horizontal size class: \(horizontalSizeClass ?? .compact)")
-			print("Vertical size class: \(verticalSizeClass ?? .compact)")
-		}
+//		.onAppear {
+//			print("Horizontal size class: \(horizontalSizeClass ?? .compact)")
+//			print("Vertical size class: \(verticalSizeClass ?? .compact)")
+//		}
 		.sheet(isPresented: $showAbout) {
 			AboutView()
 		}
@@ -132,9 +136,9 @@ struct GameView: View {
 				.fixedSize(horizontal: false, vertical: true)
 				WordView(words: game.board.wordPlacements)
 			}
+			.frame(minWidth: WordView.width, maxWidth: WordView.width * 7)
 			floatingWord()
 		}
-		.frame(minWidth: WordView.width, maxWidth: WordView.width * 7)
 	}
 	
 	/// the custom styled dividing line block by Google AI

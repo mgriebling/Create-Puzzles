@@ -26,9 +26,9 @@ extension Color {
 			let red = components1.red + (components2.red - components1.red) * fraction
 			let green = components1.green + (components2.green - components1.green) * fraction
 			let blue = components1.blue + (components2.blue - components1.blue) * fraction
-			let alpha = components1.alpha + (components2.alpha - components1.alpha) * fraction
+			//let alpha = components1.alpha + (components2.alpha - components1.alpha) * fraction
 			
-			return Color(red: red, green: green, blue: blue, opacity: alpha)
+			return Color(red: red, green: green, blue: blue)
 		}
 	}
 

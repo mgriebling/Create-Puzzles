@@ -17,6 +17,7 @@ struct LetterGridView: View {
 	@Binding var settings: SettingsType
 	
 	@Environment(\.colorScheme) var colorScheme: ColorScheme
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass
 
 	// Active Interaction States
 	@State private var dragStartCell: CellIndex?
@@ -27,19 +28,17 @@ struct LetterGridView: View {
 	@State private var animateWin = false
 	@State private var done: Bool = false
 	@State private var width: CGFloat = 0	// for the WinnerView
+	// @State private var cellSize: CGFloat = 12   // for 18 x 18
 	
 	let spacing = 0	// space between columns and rows
 
 	var body: some View {
 		VStack(spacing: 0) {
 			GeometryReader { geometry in
-				let cellSize = (geometry.size.width - CGFloat(spacing * (numCols - 1))) / CGFloat(numCols)
-				
 				// 1. Text Grid
+				// let scale = horizontalSizeClass == .compact ? 0.5 : 1.0
+				let cellSize = (geometry.size.width - CGFloat(spacing * (numCols - 1))) / CGFloat(numCols)
 				textGrid(cellSize: cellSize)
-					.onAppear {
-						self.width = geometry.size.width * 0.8
-					}
 					.coordinateSpace(name: "GridSpace")
 					.background {
 						// 2. Persistent Layer: Displays correctly guessed historical word
@@ -64,18 +63,20 @@ struct LetterGridView: View {
 							},
 						isEnabled: allowDrag && !game.isOver
 					)
+					.onAppear {
+						numRows = game.board.size
+						numCols = game.board.size
+						self.width = geometry.size.width * 0.8
+						print("width = \(self.width)")
+					}
+					.overlay {
+						if game.isOver && animateWin {
+							WinnerView(game: game, width: width, points: settings.player.points)
+						}
+					}
 			}
-			.onAppear {
-				numRows = game.board.size
-				numCols = game.board.size
-			}
-			.aspectRatio(1, contentMode: .fit)
 		}
-		.overlay {
-			if game.isOver && animateWin {
-				WinnerView(game: game, width: width, points: settings.player.points)
-			}
-		}
+		.aspectRatio(1, contentMode: .fit)
 	}
 	
 	private func capsuleView(cellSize: CGFloat, start: CellIndex, end: CellIndex, selected: Bool) -> some View {
@@ -87,11 +88,11 @@ struct LetterGridView: View {
 		let color = selected ? fillColor : settings.highlightColor
 		let backColor = Color.backColor
 		let mix = selected ? 0.2 : 0.6
-		let mix2 = selected ? 0.0 : 0.4
+		let mix2 = selected ? 0.2 : colorScheme == .dark ? 0.4 : 0.2
 		let scale = selected ? 1.0 : 0.84
 		let size = Double(cellSize)
 		let colorMix1 = color.mix(with: backColor, fraction: mix)
-		let colorMix2 = color.mix(with: backColor, fraction: mix2)
+		let colorMix2 = color.mix(with: .black, fraction: mix2)
 		return Capsule()
 			.fill(fill ? colorMix1 : .clear)
 			.stroke(colorMix2, lineWidth: lineWidth)
@@ -115,6 +116,21 @@ struct LetterGridView: View {
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
+	
+//	private func newGrid(cellSize: CGFloat) -> some View {
+//		Grid {
+//			ForEach(0..<numRows, id: \.self) { row in
+//				GridRow {
+//					ForEach(0..<numCols, id: \.self) { col in
+//						Text(game.board[row, col].letter)
+////							.bold()
+//							.font(.system(size: cellSize * 0.7, weight: .bold))
+//							.frame(width: cellSize, height: cellSize)
+//					}
+//				}
+//			}
+//		}
+//	}
 	
 	// MARK: - Word Evaluation Mechanics
 	
@@ -258,7 +274,7 @@ extension CellIndex {
 
 #Preview {
 	@Previewable
-	@State var game = Game(board: GameBoard(size: 14, words: SampleWordLists.all[0]))
+	@State var game = Game(board: GameBoard(size: 18, words: SampleWordLists.all[0]))
 	@Previewable @State var settings = SettingsType()
 	LetterGridView(game: game, allowDrag: true, settings: $settings)
 }

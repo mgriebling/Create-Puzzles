@@ -30,7 +30,7 @@ struct WordView: View {
 		let columns = [
 			GridItem(.adaptive(minimum: width, maximum: .infinity), spacing: 0)
 		]
-		ScrollView {
+		ScrollView(.vertical) {
 			LazyVGrid(columns: columns, alignment: .leading) {
 				ForEach(words.indices, id: \.self) { index in
 					let word = words[index]
