@@ -13,14 +13,37 @@ struct WinnerView: View {
 	let width: CGFloat
 	let points: Int
 	var badge: Badge? = nil
+	var animation = true
 	
 	@State private var displayValue = 0
 	@State private var winner: Bool = false
 	
 	var body: some View {
 		let scale = width / 270
-		let fontSize = (winner ? 50 : 20) * scale
+		if animation {
+			basicView(fontSize: (winner ? 50 : 20), scale: scale)
+				.rotationEffect(winner ? .degrees(0) : .degrees(360))
+				.scaleEffect(winner ? 1 : 0)
+				.opacity(winner ? 1 : 0)
+				.onAppear {
+					withAnimation(.linear(duration: 3)) {
+						winner = game.isOver
+					} completion: {
+						if animation { startCounting() }
+						displayValue = points
+					}
+				}
+		} else {
+			basicView(fontSize: 50, scale: scale)
+				.onAppear {
+					displayValue = points
+				}
+		}
+	}
+	
+	private func basicView(fontSize: CGFloat, scale: CGFloat) -> some View {
 		VStack(spacing: 0) {
+			let fontSize = fontSize * scale
 			if let badge {
 				Image(badge.details.image)
 					.resizable()
@@ -36,24 +59,14 @@ struct WinnerView: View {
 				.monospacedDigit()
 				// Enables the rolling number transition
 				.contentTransition(.numericText())
-				// Triggers the animation when 'count' changes
+				// Triggers the animation when 'points' changes
 				.animation(.bouncy, value: points)
 		}
 		.padding(20*scale)
 		.frame(width: width)
 		.foregroundStyle(Color.yellow)
-		.background(Color(.systemGray))
+		.background(Color(.systemGray).opacity(0.8))
 		.cornerRadius(20*scale)
-		.rotationEffect(winner ? .degrees(0) : .degrees(360))
-		.scaleEffect(winner ? 1 : 0)
-		.opacity(winner ? 1 : 0)
-		.onAppear {
-			withAnimation(.linear(duration: 3)) {
-				winner = game.isOver
-			} completion: {
-				startCounting()
-			}
-		}
 	}
 	
 	private func startCounting() {
@@ -77,7 +90,7 @@ struct WinnerView: View {
 
 #Preview {
 	@Previewable @State var game = Game(size: 15, words: WordList())
-	WinnerView(game: game, width: 270, points: 0)
+	WinnerView(game: game, width: 270, points: 100, animation: false)
 	WinnerView(game: game, width: 400, points: 10, badge: Badge(details: .puzzle1))
 	WinnerView(game: game, width: 800, points: 1000, badge: Badge(details: .puzzle100))
 }

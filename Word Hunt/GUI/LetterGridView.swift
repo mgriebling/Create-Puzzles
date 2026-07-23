@@ -28,7 +28,6 @@ struct LetterGridView: View {
 	@State private var animateWin = false
 	@State private var done: Bool = false
 	@State private var width: CGFloat = 0	// for the WinnerView
-	// @State private var cellSize: CGFloat = 12   // for 18 x 18
 	
 	let spacing: CGFloat = 0	// space between columns and rows
 

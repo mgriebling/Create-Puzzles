@@ -27,10 +27,11 @@ struct GameSummary: View {
 		.onGeometryChange(for: CGFloat.self) { proxy in
 			proxy.size.width
 		} action: { width in
-			self.width = width * 0.8
+			self.width = width * 0.6
 		}
 		.overlay {
-			WinnerView(game: game, width: width, points: settings.player.points)
+			WinnerView(game: game, width: width, points: settings.player.points,
+					   animation: false)
 		}
 	}
 }
@@ -40,11 +41,11 @@ struct GameSummary: View {
 	@State var game = Game(size: 20, words: SampleWordLists.all[0])
 	GameSummary(game: game)
 		.onAppear {
-//			for i in game.board.wordPlacements.indices {
+//			for i in game.board.wordPlacements.indices.dropLast() {
 //				game.board.highlightWord(i)
 //			}
 			game.board.highlightWord(0)
 			game.board.highlightWord(5)
-			game.board.highlightWord(10)
+			game.board.highlightWord(game.board.wordPlacements.indices.last!)
 		}
 }

@@ -24,23 +24,23 @@ enum BadgeDetails: Int, Codable, CaseIterable {
 			case .puzzle1:
 				"Solve a puzzle to unlock this award."
 			case .puzzle3:
-				"Complete three puzzles with to earn this badge. Earlier solved puzzles count as well. At least one should be harder than the others."
+				"Complete three puzzles with to earn this badge. Earlier solved puzzles count as well. At least one should be level 5 or higher."
 			case .puzzle5:
-				"Work out five puzzles to earn this badge. Two need to be more challenging than the others."
+				"Work out five puzzles to earn this badge. At least two need to be level 6 or higher."
 			case .puzzle7:
-				"Unravel seven puzzles to earn this badge. Three need to be at a higher level than the others."
+				"Unravel seven puzzles to earn this badge. A minimum of three need to be at level 7 or higher."
 			case .puzzle10:
-				"Crack ten puzzles to earn this badge. Four need to be more difficult than the others."
+				"Crack ten puzzles to earn this badge. Four need to be at difficulty level 8 or higher."
 			case .puzzle20:
-				"Decipher twenty puzzles for this badge. Five need to be more intense than the others."
+				"Decipher twenty puzzles for this badge. At least five need to be at level 9 or higher."
 			case .puzzle30:
 				"Out of thirty puzzles for this badge, you'll at least five puzzles rated at level 10."
 			case .puzzle50:
-				"The magic number is 50 puzzles. Ten of them must be rated at level 10."
+				"The magic number is 50 puzzles. Ten or more puzzles must be rated at level 10."
 			case .puzzle75:
-				"Solve a total of 75 puzzles. Twenty of them must be rated at level 10."
+				"Solve a total of 75 puzzles. A minimum of 20 puzzles must be rated at level 10."
 			case .puzzle100:
-				"Successfully complete 100 puzzles and have all nine earlier badges. Thirty puzzles must be rated at level 10."
+				"Successfully complete 100 puzzles and have all nine earlier badges. At least 30 puzzles must be at level 10."
 		}
 	}
 	
@@ -61,11 +61,11 @@ enum BadgeDetails: Int, Codable, CaseIterable {
 			case .puzzle30:
 				"Willingness to be puzzled is a valuable trait to cultivate, from childhood to advanced inquiry. — Noam Chomsky"
 			case .puzzle50:
-				"A puzzle a day helps keep Alzheimer's away. Keep up the great work!"
+				"Exercising the mind is as important as exercise for the body. Keep up the great work!"
 			case .puzzle75:
-				"You're almost there. Persistance is key. You've made amazing progress!"
+				"You're almost there. Persistance is key to achieving your goal. You've made amazing progress!"
 			case .puzzle100:
-				"You've unlocked the full potential of your puzzle solving practice. Keep going!"
+				"You've unlocked the full potential of your puzzle solving practice. But don't stop now - keep going!"
 		}
 	}
 	

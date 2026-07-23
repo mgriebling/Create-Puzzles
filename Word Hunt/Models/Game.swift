@@ -10,6 +10,7 @@ import SwiftUI
 @Observable class Game {
 	var board: GameBoard
 	var timer: Timer
+	var badges: [Badge] = []
 	
 	// MARK: Convenience attributes
 	var activeWord: String 		  { board.selectedWord }

@@ -11,7 +11,7 @@ import Foundation
 /// A `Game` may be deleted but the timestamp stays.
 /// Once awarded, badges aren't relocked.
 ///
-struct Badge {
+class Badge {
 	var details: BadgeDetails
 	var game: Game?
 	var timestamp: Date?

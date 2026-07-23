@@ -28,6 +28,7 @@
 		47800D202FEAAC90009537EC /* WordListSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D1F2FEAAC90009537EC /* WordListSummary.swift */; };
 		47800D222FEAD186009537EC /* StringList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47800D212FEAD186009537EC /* StringList.swift */; };
 		47820B8329298242009B16A1 /* Subsonic in Frameworks */ = {isa = PBXBuildFile; productRef = 47820B8229298242009B16A1 /* Subsonic */; };
+		478458B3301267630072D040 /* BadgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478458B2301267630072D040 /* BadgeManager.swift */; };
 		478BF1352FEC13A3001F4018 /* FileImportButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF1342FEC13A3001F4018 /* FileImportButton.swift */; };
 		478BF13B2FEC2E6E001F4018 /* GameEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478BF13A2FEC2E6E001F4018 /* GameEditor.swift */; };
 		47E0ABE52FF069CB009D7BB0 /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E0ABE42FF069CB009D7BB0 /* GameListView.swift */; };
@@ -73,6 +74,7 @@
 		47800D1B2FEA9789009537EC /* WordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordView.swift; sourceTree = "<group>"; };
 		47800D1F2FEAAC90009537EC /* WordListSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListSummary.swift; sourceTree = "<group>"; };
 		47800D212FEAD186009537EC /* StringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringList.swift; sourceTree = "<group>"; };
+		478458B2301267630072D040 /* BadgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeManager.swift; sourceTree = "<group>"; };
 		478BF1342FEC13A3001F4018 /* FileImportButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportButton.swift; sourceTree = "<group>"; };
 		478BF13A2FEC2E6E001F4018 /* GameEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditor.swift; sourceTree = "<group>"; };
 		47E0ABE42FF069CB009D7BB0 /* GameListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListView.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				47F1412130052B7000E8B927 /* Player.swift */,
 				47F141573005315D00E8B927 /* Badge.swift */,
 				4771F1752FEF208B00A98387 /* SampleWordLists.swift */,
+				478458B2301267630072D040 /* BadgeManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				4771F1762FEF208B00A98387 /* SampleWordLists.swift in Sources */,
 				47F141AB300574CB00E8B927 /* AchievementsView.swift in Sources */,
 				47F1412430052FFE00E8B927 /* AwardDetailView.swift in Sources */,
+				478458B3301267630072D040 /* BadgeManager.swift in Sources */,
 				47E0AC282FF170FB009D7BB0 /* ElapsedTime.swift in Sources */,
 				47F141A93005740800E8B927 /* LockedAwardView.swift in Sources */,
 				4707A01C2FF93FF300F88A40 /* SettingsType.swift in Sources */,
