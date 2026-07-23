@@ -21,10 +21,37 @@ struct CellIndex: Equatable, Codable, Hashable, CustomStringConvertible {
 		self.col = col
 	}
 	
-	func centerOfCell(cellSize: CGFloat, spacing: Int) -> CGPoint {
-		let x = CGFloat(col) * (cellSize + CGFloat(spacing)) + cellSize / 2.0
-		let y = CGFloat(row) * (cellSize + CGFloat(spacing)) + cellSize / 2.0
+	func centerOfCell(cellSize: CGFloat, spacing: CGFloat) -> CGPoint {
+		let x = CGFloat(col) * (cellSize + spacing) + cellSize / 2.0
+		let y = CGFloat(row) * (cellSize + spacing) + cellSize / 2.0
 		return CGPoint(x: x, y: y)
+	}
+	
+	static func ifloor(_ point: CGPoint) -> CellIndex {
+		let x = Int(point.x.rounded(.down))
+		let y = Int(point.y.rounded(.down))
+		return CellIndex(row: y, col: x)
+	}
+	
+	static func - (lhs: CellIndex, rhs: CellIndex) -> CellIndex {
+		CellIndex(row: lhs.row - rhs.row, col: lhs.col - rhs.col)
+	}
+	
+	static func + (lhs: inout CellIndex, rhs: Direction) -> CellIndex {
+		CellIndex(row: lhs.row + rhs.deltaRow, col: lhs.col + rhs.deltaCol)
+	}
+	
+	func limit(to row: Range<Int>, column: Range<Int>) -> CellIndex {
+		let row = max(row.lowerBound, min(self.row, row.upperBound-1))
+		let col = max(column.lowerBound, min(self.col, column.upperBound-1))
+		return CellIndex(row: row, col: col)
+	}
+	
+	func inRange(row: Range<Int>, column: Range<Int>) -> Bool {
+		if self.row < row.upperBound, self.row >= row.lowerBound, self.col < column.upperBound, self.col >= column.lowerBound {
+			return true
+		}
+		return false
 	}
 }
 

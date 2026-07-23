@@ -133,19 +133,13 @@ import SwiftUI
 		}
 	}
 	
-	func delete() {
-//		// 2. Get the URL for the user's Documents directory
-//		guard let documentsDirectory = Self.documentDirectory else { return }
-//		
-//		// 3. Append the desired filename to the directory path
-//		let fileURL = documentsDirectory.appendingPathComponent("\(self.name).json")
-		try? FileManager.default.removeItem(at: url)
-	}
+	func delete() { try? FileManager.default.removeItem(at: url) }
 	
-	func isWordMatch(start: CellIndex?) -> Bool {
-		guard !activeWord.isEmpty, let start else { return false }
-		let setElement = PlacedWord(word: activeWord, start: start).extended
-		if placedSet.contains(setElement) {
+	func isWordMatch(start: CellIndex?, end: CellIndex?) -> Bool {
+		guard !activeWord.isEmpty, let start, let end else { return false }
+		let setElement1 = PlacedWord(word: activeWord, start: start).extended
+		let setElement2 = PlacedWord(word: activeWord, start: end).extended
+		if placedSet.contains(setElement1) || placedSet.contains(setElement2) {
 			return true
 		}
 		return false

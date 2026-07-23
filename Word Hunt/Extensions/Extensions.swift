@@ -55,6 +55,14 @@ extension CGPoint {
 	func midPoint(to: CGPoint) -> CGPoint {
 		CGPoint(x: (self.x + to.x) / 2, y: (self.y + to.y) / 2)
 	}
+	
+	static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+		CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
+	}
+	
+	static func / (lhs: CGPoint, rhs: CGFloat) -> CGPoint {
+		CGPoint(x: lhs.x / rhs, y: lhs.y / rhs)
+	}
 }
 
 extension Bundle {

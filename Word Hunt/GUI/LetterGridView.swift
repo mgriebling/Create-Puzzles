@@ -30,14 +30,14 @@ struct LetterGridView: View {
 	@State private var width: CGFloat = 0	// for the WinnerView
 	// @State private var cellSize: CGFloat = 12   // for 18 x 18
 	
-	let spacing = 0	// space between columns and rows
+	let spacing: CGFloat = 0	// space between columns and rows
 
 	var body: some View {
-		VStack(spacing: 0) {
+		VStack {
 			GeometryReader { geometry in
 				// 1. Text Grid
 				// let scale = horizontalSizeClass == .compact ? 0.5 : 1.0
-				let cellSize = (geometry.size.width - CGFloat(spacing * (numCols - 1))) / CGFloat(numCols)
+				let cellSize = (geometry.size.width - (spacing * CGFloat(numCols - 1))) / CGFloat(numCols)
 				textGrid(cellSize: cellSize)
 					.coordinateSpace(name: "GridSpace")
 					.background {
@@ -67,7 +67,7 @@ struct LetterGridView: View {
 						numRows = game.board.size
 						numCols = game.board.size
 						self.width = geometry.size.width * 0.8
-						print("width = \(self.width)")
+					//	print("width = \(self.width)")
 					}
 					.overlay {
 						if game.isOver && animateWin {
@@ -103,9 +103,9 @@ struct LetterGridView: View {
 	}
 	
 	private func textGrid(cellSize: CGFloat) -> some View {
-		VStack(spacing: 0) {
+		VStack(spacing: spacing) {
 			ForEach(0..<numRows, id: \.self) { row in
-				HStack(spacing: 0) {
+				HStack(spacing: spacing) {
 					ForEach(0..<numCols, id: \.self) { col in
 						Text(game.board[row, col].letter)
 							.font(.system(size: cellSize * 0.7, weight: .bold))
@@ -116,21 +116,6 @@ struct LetterGridView: View {
 		}
 		.frame(maxWidth: .infinity, maxHeight: .infinity)
 	}
-	
-//	private func newGrid(cellSize: CGFloat) -> some View {
-//		Grid {
-//			ForEach(0..<numRows, id: \.self) { row in
-//				GridRow {
-//					ForEach(0..<numCols, id: \.self) { col in
-//						Text(game.board[row, col].letter)
-////							.bold()
-//							.font(.system(size: cellSize * 0.7, weight: .bold))
-//							.frame(width: cellSize, height: cellSize)
-//					}
-//				}
-//			}
-//		}
-//	}
 	
 	// MARK: - Word Evaluation Mechanics
 	
@@ -187,7 +172,7 @@ struct LetterGridView: View {
 	
 	// Helper to evaluate if the current selection forms a valid word
 	private var detectedWord: String? {
-		if game.isWordMatch(start: dragStartCell) {
+		if game.isWordMatch(start: dragStartCell, end: dragCurrentCell) {
 			return game.board.selectedWord
 		}
 		return nil
@@ -231,50 +216,9 @@ struct LetterGridView: View {
 	}
 }
 
-extension CGPoint {
-	
-	static func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
-		CGPoint(x: lhs.x + rhs.x, y: lhs.y + rhs.y)
-	}
-	
-	static func / (lhs: CGPoint, rhs: CGFloat) -> CGPoint {
-		CGPoint(x: lhs.x / rhs, y: lhs.y / rhs)
-	}
-}
-
-extension CellIndex {
-	
-	static func ifloor(_ point: CGPoint) -> CellIndex {
-		let x = Int(point.x.rounded(.down))
-		let y = Int(point.y.rounded(.down))
-		return CellIndex(row: y, col: x)
-	}
-	
-	static func - (lhs: CellIndex, rhs: CellIndex) -> CellIndex {
-		CellIndex(row: lhs.row - rhs.row, col: lhs.col - rhs.col)
-	}
-	
-	static func + (lhs: inout CellIndex, rhs: Direction) -> CellIndex {
-		CellIndex(row: lhs.row + rhs.deltaRow, col: lhs.col + rhs.deltaCol)
-	}
-	
-	func limit(to row: Range<Int>, column: Range<Int>) -> CellIndex {
-		let row = max(row.lowerBound, min(self.row, row.upperBound))
-		let col = max(column.lowerBound, min(self.col, column.upperBound))
-		return CellIndex(row: row, col: col)
-	}
-	
-	func inRange(row: Range<Int>, column: Range<Int>) -> Bool {
-		if self.row <= row.upperBound, self.row >= row.lowerBound, self.col <= column.upperBound, self.col >= column.lowerBound {
-			return true
-		}
-		return false
-	}
-}
-
 #Preview {
 	@Previewable
-	@State var game = Game(size: 18, words: SampleWordLists.all[0])
+	@State var game = Game(size: 10, words: SampleWordLists.all[6])
 	@Previewable @State var settings = SettingsType()
 	LetterGridView(game: game, allowDrag: true, settings: $settings)
 }
